@@ -41,6 +41,7 @@
 		</form>
 		<button class="btn btn-lg btn-primary btn-block" type="button">Sign
 				in</button>
+		<a href="list">list</a>
 	</div>
 </div>
 <div>심진영 테스트중</div>
