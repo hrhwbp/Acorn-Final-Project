@@ -7,7 +7,7 @@
 	 <!-- 공유자원 설정 -->
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     	<property name="locations">
-    		<value>classpath:com/remind/resource/db.properties</value>
+    		<value>classpath:com/mybatis/resource/db.properties</value>
     	</property>
     </bean>
     
