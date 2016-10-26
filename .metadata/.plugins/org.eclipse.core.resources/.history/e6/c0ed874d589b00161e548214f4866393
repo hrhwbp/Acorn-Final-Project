@@ -59,15 +59,16 @@ function join() {
 		</div>
 		<div class="container col-md-5">
 			<div class="row col-md-12" title="" id="showlogin" style="padding-top: 18%">
-				<form class="form-signin" method="post" action="login">
+				<form class="form-signin">
 					<h2 class="form-signin-heading text-center">로그인</h2>
 					<div class="col-md-12">
-						<label for="inputEmail" class="sr-only">Email address</label> 
-						<input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="m_email" required autofocus>
+						<label for="inputEmail" class="sr-only">Email address</label> <input
+							type="email" id="inputEmail" class="form-control"
+							placeholder="Email address" required autofocus>
 					</div>
 					<div class="col-md-12 top_pd">
 						<label for="inputPassword" class="sr-only">Password</label> <input
-							type="password" id="inputPassword" class="form-control" name="m_password"
+							type="password" id="inputPassword" class="form-control"
 							placeholder="Password" required>
 					</div>
 					<div class="col-md-12 top_pd">
@@ -81,37 +82,31 @@ function join() {
 			
 			<!-- -------------------------------------- -->
 			<div class="row col-md-12" id="showjoin">
-				<form class="form-signin" action="join" method="post">
+				<form class="form-signin">
 					<h2 class="form-signin-heading text-center">회원가입</h2>
 					<div class="row-md-12">
-						<label for="inputEmail" class="sr-only">Email address</label> 
-						<input
-							name="m_email"
+						<label for="inputEmail" class="sr-only">Email address</label> <input
 							type="email" id="inputEmail" class="form-control"
 							placeholder="Email address" required autofocus>
 					</div>
 					<div class="row-md-12 top_pd">
-						<label for="inputPassword" class="sr-only">Password</label> 
-						<input 
+						<label for="inputPassword" class="sr-only">Password</label> <input
 							type="password" id="inputPassword" class="form-control"
 							placeholder="Password" required>
 					</div>
 					<div class="row-md-12 top_pd">
-						<label for="passwordCheck" class="sr-only">PasswordCheck</label> 
-						<input name="m_password"
+						<label for="passwordCheck" class="sr-only">PasswordCheck</label> <input
 							type="password" id="passwordCheck" class="form-control"
 							placeholder="PasswordCheck" required>
 					</div>
 					<div class="row-md-12 top_pd">
-						<label for="inputName" class="sr-only">Name</label> 
-						<input name="m_name"
+						<label for="inputName" class="sr-only">Name</label> <input
 							type="text" class="form-control" id="inputName"
 							placeholder="Name" required>
 					</div>
 					<div class="row form-group">
 						<div class="col-md-4 top_pd text-right">
-							<label class="">년도</label>
-							<select class="form-control" name="year">
+							<label class="">년도</label> <select class="form-control">
 								<option>9999</option>
 								<option>2</option>
 								<option>3</option>
@@ -121,8 +116,7 @@ function join() {
 						</div>
 
 						<div class="col-md-3 col-md-offset-2 top_pd text-right">
-							<label class="">월</label>
-							<select class="form-control" name="month">
+							<label class="">월</label> <select class="form-control">
 								<option>1</option>
 								<option>2</option>
 								<option>3</option>
@@ -132,8 +126,7 @@ function join() {
 						</div>
 
 						<div class="col-md-3 top_pd text-right">
-							<label class="" for="ss">일</label> 
-							<select id="ss" name="day"
+							<label class="" for="ss">일</label> <select id="ss"
 								class="form-control" style="font-size: 10px">
 								<option>1</option>
 								<option>2</option>
