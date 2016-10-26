@@ -17,9 +17,11 @@ public class MemberController {
 	
 	@RequestMapping(value="join", method= RequestMethod.POST)
 	public String join(MemberBean bean){
+		
+		bean.setM_bdate(bean.getYear()+ "-" + bean.getMonth() + "-" + bean.getDay());
 		boolean b = daoInter.joinMember(bean);
 		if(b)
-			return "redirect:/index";
+			return "redirect:/index.jsp";
 		else return "redirect:/error.jsp";
 	}
 	@RequestMapping(value="out", method = RequestMethod.GET)
@@ -30,7 +32,7 @@ public class MemberController {
 	public String out(@RequestParam("m_no") String m_no){
 		boolean b = daoInter.outMember(m_no);
 		if(b)
-			return "redirect:/index";
+			return "redirect:/index.jsp";
 		else return "redirect:/error.jsp";
 	}
 	@RequestMapping(value="update", method=RequestMethod.GET)

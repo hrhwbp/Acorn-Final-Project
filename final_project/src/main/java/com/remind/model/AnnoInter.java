@@ -16,7 +16,7 @@ import com.remind.controller.WishlistBean;
 
 public interface AnnoInter {
 	// sns board
-	@Select("select * from board where b_mno = (select f_mno from follow where f_sno=#{m_no}")
+	@Select("select * from board where b_mno = (select f_mno from follow where f_sno=#{m_no})")
 	List<BoardDto> showBoard(String m_no);
 
 	@Select("select * from board where b_no1=#{b_no1}")
@@ -35,7 +35,7 @@ public interface AnnoInter {
 	@Select("select * from member where m_no=#{m_no}")
 	MemberDto showMemberDetail(String m_no);
 	
-	@Insert("insert into member (m_name, m_bdate, m_email, m_gender, m_password) ")
+	@Insert("insert into member (m_name, m_bdate, m_email, m_gender, m_password) values (#{m_name}, #{m_bdate}, #{m_email}, #{m_gender}, #{m_password})")
 	boolean joinMember(MemberBean bean);
 	
 	@Delete("delete from member where m_no = #{m_no}")
@@ -54,7 +54,7 @@ public interface AnnoInter {
 	@Select("select * from follow where f_mno = #{m_no}")
 	List<FollowDto> showIFollow(String m_no);
 	
-	@Insert("insert into follow (f_sno,f_mno) values(#{f_sno},#{f_mno}") 
+	@Insert("insert into follow (f_sno,f_mno) values(#{f_sno},#{f_mno})")
 	boolean follow(FollowBean bean);	//f_sno°¡ f_mno¸¦ follow
 	
 	@Delete("delete from follow where f_sno = #{f_sno} and f_mno = #{f_mno}")

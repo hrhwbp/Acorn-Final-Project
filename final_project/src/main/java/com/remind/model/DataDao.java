@@ -65,7 +65,7 @@ public class DataDao implements DaoInter{
 			annoInter.joinMember(bean);
 			return true;
 		} catch (Exception e) {
-			System.out.println("joinmember err");
+			System.out.println("joinmember err" + e);
 			return false;
 		}
 	}

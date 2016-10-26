@@ -1,7 +1,31 @@
 package com.remind.controller;
 
 public class MemberBean {
-String m_no, m_name, m_bdate, m_email, m_gender, m_password;
+String m_no, m_name, m_bdate, m_email, m_gender, m_password, year, month, day, gender;
+
+public String getYear() {
+	return year;
+}
+
+public void setYear(String year) {
+	this.year = year;
+}
+
+public String getMonth() {
+	return month;
+}
+
+public void setMonth(String month) {
+	this.month = month;
+}
+
+public String getDay() {
+	return day;
+}
+
+public void setDay(String day) {
+	this.day = day;
+}
 
 public String getM_no() {
 	return m_no;
