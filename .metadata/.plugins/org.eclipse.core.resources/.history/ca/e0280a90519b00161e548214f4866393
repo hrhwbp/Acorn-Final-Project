@@ -1,0 +1,157 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>REMIND</title>
+<!-- 합쳐지고 최소화된 최신 CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<!-- 부가적인 테마 -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<style type="text/css">
+.top_pd {
+	padding-top: 2%;
+}
+
+.bottom_pd {
+	padding-bottom: 2%;
+}
+
+.main_pd {
+	padding-top: 15%;
+	padding-bottom: 20%;
+}
+
+.lbl_pd {
+	padding-top: 3%
+}
+</style>
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#showjoin").hide()
+})
+
+function login() {
+	$("#showjoin").hide()
+	$("#showlogin").show()
+}
+
+function join() {
+	$("#showlogin").hide()
+	$("#showjoin").show()
+}
+</script>
+</head>
+<body class="center-block()">
+	<div class="container main_pd">
+		<div class="container col-md-5 col-md-offset-1"></div>
+		<div class="container col-md-5">
+			<div class="row-md-12" title="" id="showlogin">
+				<form class="form-signin">
+					<h2 class="form-signin-heading text-center">로그인</h2>
+					<div class="row">
+						<label for="inputEmail" class="sr-only">Email address</label> <input
+							type="email" id="inputEmail" class="form-control"
+							placeholder="Email address" required autofocus>
+					</div>
+					<div class="row top_pd bottom_pd">
+						<label for="inputPassword" class="sr-only">Password</label> <input
+							type="password" id="inputPassword" class="form-control"
+							placeholder="Password" required>
+					</div>
+
+					<button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
+				</form>
+				<button class="btn btn-lg btn-primary btn-block" type="button">회원가입</button>
+			</div>
+			
+			<!-- -------------------------------------- -->
+			<div class="row col-md-12" id="showjoin">
+				<form class="form-signin">
+					<h2 class="form-signin-heading text-center">회원가입</h2>
+					<div class="row-md-12">
+						<label for="inputEmail" class="sr-only">Email address</label> <input
+							type="email" id="inputEmail" class="form-control"
+							placeholder="Email address" required autofocus>
+					</div>
+					<div class="row-md-12 top_pd">
+						<label for="inputPassword" class="sr-only">Password</label> <input
+							type="password" id="inputPassword" class="form-control"
+							placeholder="Password" required>
+					</div>
+					<div class="row-md-12 top_pd">
+						<label for="passwordCheck" class="sr-only">PasswordCheck</label> <input
+							type="password" id="passwordCheck" class="form-control"
+							placeholder="PasswordCheck" required>
+					</div>
+					<div class="row-md-12 top_pd">
+						<label for="inputName" class="sr-only">Name</label> <input
+							type="text" class="form-control" id="inputName"
+							placeholder="Name" required>
+					</div>
+					<div class="row form-group">
+						<div class="col-md-4 top_pd text-right">
+							<label class="">년도</label> <select class="form-control">
+								<option>9999</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>1115</option>
+							</select>
+						</div>
+
+						<div class="col-md-3 col-md-offset-2 top_pd text-right">
+							<label class="">월</label> <select class="form-control">
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>10</option>
+							</select>
+						</div>
+
+						<div class="col-md-3 top_pd text-right">
+							<label class="" for="ss">일</label> <select id="ss"
+								class="form-control" style="font-size: 10px">
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>10</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<label class="col-md-6">성별을 선택해주세요</label>
+						<div class="col-md-4 col-md-offset-2">
+						<label class="radio-inline"> <input type="radio"
+							name="inlineRadioOptions" id="inlineRadio1" value="option1">
+							남
+						</label> <label class="radio-inline"> <input type="radio"
+							name="inlineRadioOptions" id="inlineRadio2" value="option2">
+							여
+						</label>
+						</div>
+					</div>
+					<div class="row-md-12 top_pd">
+						<button class="btn btn-lg btn-primary btn-block" type="submit">가입완료</button>
+					</div>
+				</form>
+					<div class="row-md-12 text-right">
+						아이디가 있으십니까? &nbsp; <a href="javascript:func()">로그인</a>
+					</div>
+
+			</div>
+		</div>
+	</div>
+	<%@include file="bottom.jsp"%>
+</body>
+</html>
