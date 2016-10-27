@@ -18,7 +18,7 @@
     <link href="http://getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="navbar-fixed-top.css" rel="stylesheet">
+    <link href="http://bootstrapk.com/examples/navbar-fixed-top/navbar-fixed-top.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -42,11 +42,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">REMIND</a>
+          <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-gift" aria-hidden="true">RE:MIND</span></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
             <li><a href="#contact"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
