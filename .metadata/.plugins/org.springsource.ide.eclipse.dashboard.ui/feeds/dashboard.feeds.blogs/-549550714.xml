@@ -5,7 +5,164 @@
   <link rel="self" href="https://spring.io/blog.atom" />
   <id>http://spring.io/blog.atom</id>
   <icon>https://spring.io/favicon.ico</icon>
-  <updated>2016-10-25T14:23:11Z</updated>
+  <updated>2016-10-27T02:57:00Z</updated>
+  <entry>
+    <title>Spring Tips: Circuit Breakers</title>
+    <link rel="alternate" href="https://spring.io/blog/2016/10/27/spring-tips-circuit-breakers" />
+    <category term="engineering" label="Engineering" />
+    <author>
+      <name>Josh Long</name>
+    </author>
+    <id>tag:spring.io,2016-10-27:2670</id>
+    <updated>2016-10-27T02:57:00Z</updated>
+    <content type="html">&lt;p&gt;Speaker: &lt;a href="https://www.twitter.com/starbuxman"&gt;Josh Long&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Hi Spring fans! In this tip, we&amp;rsquo;ll quickly look at the Netflix Hystrix circuit breaker in Spring Cloud and the circuit breaker in Spring Retry &lt;/p&gt;
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/Kc7dDxn9cUg" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</content>
+  </entry>
+  <entry>
+    <title>Spring Cloud Pipelines 1.0.0.M2 Released</title>
+    <link rel="alternate" href="https://spring.io/blog/2016/10/26/spring-cloud-pipelines-1-0-0-m2-released" />
+    <category term="releases" label="Releases" />
+    <author>
+      <name>Marcin Grzejszczak</name>
+    </author>
+    <id>tag:spring.io,2016-10-26:2669</id>
+    <updated>2016-10-26T21:10:43Z</updated>
+    <content type="html">&lt;div class="paragraph"&gt;
+&lt;p&gt;On behalf of the Spring Cloud team it is my pleasure to announce a new milestone release of Spring Cloud Pipelines - &lt;code&gt;1.0.0.M2&lt;/code&gt;. Apart from some bug fixes it&amp;#8217;s providing an out of the box support for Gradle projects.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;In order for the Gradle project to work out of the box the following opinionated decisions were taken:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;usage of Gradlew Wrapper&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;custom &lt;code&gt;deploy&lt;/code&gt; task is used for artifacts deployment&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;running smoke tests on a deployed app via the custom &lt;code&gt;smoke&lt;/code&gt; task&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;running end to end tests on a deployed app via the custom &lt;code&gt;e2e&lt;/code&gt; task&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;custom &lt;code&gt;groupId&lt;/code&gt; task to retrieve group id&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;custom &lt;code&gt;artifactId&lt;/code&gt; task to retrieve artifact id&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;custom &lt;code&gt;currentVersion&lt;/code&gt; task to retrieve the current version&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;custom &lt;code&gt;stubIds&lt;/code&gt; task to retrieve list of collaborators for which stubs should be downloaded&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Example implementation of these tasks can be found &lt;a href="https://github.com/spring-cloud-samples/github-analytics/blob/master/gradle/pipeline.gradle"&gt;here&lt;/a&gt;. We&amp;#8217;re pasting its contents below:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="listingblock"&gt;
+&lt;div class="content"&gt;
+&lt;pre class="prettyprint highlight"&gt;&lt;code class="language-groovy" data-lang="groovy"&gt;test {
+    description = "Task to run unit and integration tests"
+    testLogging {
+        exceptionFormat = 'full'
+    }
+    jvmArgs = systemPropsFromGradle()
+    exclude 'smoke/**'
+    exclude 'e2e/**'
+}
+
+task smoke(type: Test) {
+    description = "Task to run smoke tests"
+    testLogging {
+        exceptionFormat = 'full'
+    }
+    jvmArgs = systemPropsFromGradle()
+    include 'smoke/**'
+}
+
+task e2e(type: Test) {
+    description = "Task to run end to end tests"
+    testLogging {
+        exceptionFormat = 'full'
+    }
+    jvmArgs = systemPropsFromGradle()
+    include 'e2e/**'
+}
+
+task deploy(dependsOn: 'publish') {
+    description = "Abstraction over publishing artifacts to Artifactory / Nexus"
+}
+
+task groupId &amp;lt;&amp;lt; {
+    println projectGroupId
+}
+groupId.description = "Task to retrieve Group ID"
+
+task artifactId &amp;lt;&amp;lt; {
+    println projectArtifactId
+}
+artifactId.description = "Task to retrieve Artifact ID"
+
+task currentVersion &amp;lt;&amp;lt; {
+    println projectVersion
+}
+currentVersion.description = "Task to retrieve version"
+
+task stubIds &amp;lt;&amp;lt; {
+    println stubrunnerIds
+}
+stubIds.description = "Task to retrieve Stub Runner IDS"
+
+[test, smoke, e2e, deploy, groupId, artifactId, currentVersion, stubIds].each {
+    it.group = "Pipeline"
+}
+
+private List&amp;lt;String&amp;gt; systemPropsFromGradle() {
+    return project.gradle.startParameter.systemPropertiesArgs.entrySet().collect { "-D${it.key}=${it.value}" }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Unlike most of Spring projects this one is not available at any repository since it¡¯s not a library, but instead it is available as a github repo for you to download and use as template for creating a deployment pipeline.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="paragraph"&gt;
+&lt;p&gt;Please check out any of these links for more information or to contact us:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="ulist"&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="http://cloud.spring.io/spring-cloud-pipelines/"&gt;Project page&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="http://cloud.spring.io/spring-cloud-pipelines/spring-cloud-pipelines.html"&gt;Project documentation&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="http://cloud.spring.io/spring-cloud-pipelines/spring-cloud-pipelines.html#concourse"&gt;Concourse opinionated pipeline setup&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="http://concourse.ci"&gt;Concourse Website&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="http://cloud.spring.io/spring-cloud-pipelines/spring-cloud-pipelines.html#jenkins"&gt;Jenkins opinionated pipeline setup&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://github.com/jenkinsci/job-dsl-plugin/wiki"&gt;Jenkins Job Dsl Plugin&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://gitter.im/spring-cloud/spring-cloud-pipelines"&gt;Spring Cloud Pipelines Gitter&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href="https://github.com/spring-cloud/spring-cloud-pipelines"&gt;Spring Cloud Pipelines GitHub page&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;</content>
+  </entry>
   <entry>
     <title>Spring LDAP 2.2.0 Released</title>
     <link rel="alternate" href="https://spring.io/blog/2016/10/25/spring-ldap-2-2-0-released" />
@@ -804,41 +961,5 @@ public class ExampleApplication implements CommandLineRunner {&#xD;
 &lt;div class="paragraph"&gt;
 &lt;p&gt;As part of these releases, Spring Cloud Deployer for Cloud Foundry 1.0.1.GA and 1.1.0.M1 were also made available and can be consumed by any project that needs to leverage deployment capability to Cloud Foundry using the Spring Cloud Deployer abstraction.&lt;/p&gt;
 &lt;/div&gt;</content>
-  </entry>
-  <entry>
-    <title>Spring Tips: Functional Reactive Endpoints with Spring Framework 5.0</title>
-    <link rel="alternate" href="https://spring.io/blog/2016/10/05/spring-tips-functional-reactive-endpoints-with-spring-framework-5-0" />
-    <category term="news" label="News and Events" />
-    <author>
-      <name>Pieter Humphrey</name>
-    </author>
-    <id>tag:spring.io,2016-10-05:2647</id>
-    <updated>2016-10-05T13:25:00Z</updated>
-    <content type="html">&lt;p&gt;Speaker: Josh Long&lt;br/&gt;&lt;a href="https://www.twitter.com/starbuxman"&gt;https://www.twitter.com/starbuxman&lt;/a&gt;&lt;/p&gt;
-&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/JjrAmhlTjug" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</content>
-  </entry>
-  <entry>
-    <title>This Week in Spring - October 4th, 2016</title>
-    <link rel="alternate" href="https://spring.io/blog/2016/10/05/this-week-in-spring-october-4th-2016" />
-    <category term="engineering" label="Engineering" />
-    <author>
-      <name>Josh Long</name>
-    </author>
-    <id>tag:spring.io,2016-10-05:2646</id>
-    <updated>2016-10-05T01:09:14Z</updated>
-    <content type="html">&lt;p&gt;Welcome to another installment of &lt;em&gt;This Week in Spring&lt;/em&gt;! We&amp;rsquo;ve got a lot to look at so let&amp;rsquo;s get to it!&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Spring Security lead Rob Winch &lt;a href="https://spring.io/blog/2016/10/04/spring-ldap-2-2-rc1"&gt;just released Spring Security LDAP 2.2RC1&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Integration lead Gary Russell &lt;a href="https://spring.io/blog/2016/10/03/spring-integration-amqp-maintenance-releases-available"&gt;just announced Spring Integration and Spring AMQP release candidates&lt;/a&gt;; get the bits now!&lt;/li&gt;
-  &lt;li&gt;Spring Data ninja Thomas Risberg just &lt;a href="https://spring.io/blog/2016/10/03/spring-cloud-data-flow-for-kubernetes-1-1-m1-and-1-0-1-ga-released"&gt;released Spring Cloud Data Flow for Kubernetes 1.1.M1&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Data &lt;a href="https://spring.io/blog/2016/10/03/spring-data-hopper-sr4-and-gosling-sr6-released"&gt;lead Oliver Gierke announced Spring Data Hopper SR4 and Spring Data Gosling SR6&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Spring Statemachine lead &lt;a href="https://spring.io/blog/2016/09/29/spring-statemachine-1-2-0-m1-released"&gt;Janne Valkealahti just announced Spring Statemachine 1.2.0M1&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;I liked this GR8Conf talk by Jenn Strater on a test-driven approach to documenting REST APIs &lt;a href="https://www.youtube.com/watch?v=-HocWtMO3FY"&gt;with Spring REST Docs&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;This German language news roundup ever so briefly &lt;a href="https://jaxenter.de/spring5-eclipse-unide-atomist-kubernetes-rust-machine-learning-47485"&gt;looks at Spring 5 and Rod Johnson&amp;rsquo;s new endeavor, Atomist&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="https://jaxenter.com/most-important-benefit-microservices-is-agility-129472.html"&gt;JAXenter interviewed me, as well&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;check out &lt;a href="https://www.infoq.com/news/2016/10/netflix-zuul-asynch-nonblocking"&gt;what&amp;rsquo;s coming in Netflix Zuul&amp;rsquo;s future&lt;/a&gt; in this nice InfoQ post&lt;/li&gt;
-  &lt;li&gt;EMC&amp;rsquo;s Paul Warren has some interesting projects you might dig: &lt;a href="https://paulcwarren.github.io/ginkgo4j/"&gt;check out Ginkgo4j do a BDD and Ginkgo-style test using Java&lt;/a&gt; and check out &lt;a href="https://paulcwarren.github.io/spring-content/"&gt;his Spring Data extensions to support arbitrary blob storage&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Also, I wanted to note the loss today &lt;a href="http://hintjens.com"&gt;of Pieter Hintjens&lt;/a&gt;, who - among his many contributions to the world - was the original designer of what would become the AMQP protocol that powers RabbitMQ. Rest in peace, Pieter.&lt;/p&gt;</content>
   </entry>
 </feed>
