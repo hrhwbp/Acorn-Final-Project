@@ -33,12 +33,14 @@ public interface DaoInter {
 	
 	//reply
 	List<ReplyDto> showReply(String b_no1) throws DataAccessException;
+	List<ReplyDto> showReplyall() throws DataAccessException;
+	ReplyDto showReplyDetail(String r_no) throws DataAccessException;
 	boolean writeReply(ReplyBean bean) throws DataAccessException;
 	boolean deleteReply(String r_no) throws DataAccessException;
 	boolean updateReply(ReplyBean bean) throws DataAccessException;
 	
 	//wishlist
-	List<WishlistDto> showWishList(String w_no) throws DataAccessException;
+	List<WishlistDto> showWishList(String w_mno) throws DataAccessException;
 	boolean writeWishlist(WishlistBean bean) throws DataAccessException;
 	boolean deleteWishlist(String w_no) throws DataAccessException;
 	boolean updateWishlist(WishlistBean bean) throws DataAccessException;

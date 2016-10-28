@@ -127,6 +127,16 @@ public class DataDao implements DaoInter{
 		return annoInter.showReply(b_no1);
 	}
 	@Override
+	public List<ReplyDto> showReplyall() throws DataAccessException {
+		
+		return annoInter.showReplyall();
+	}
+	@Override
+	public ReplyDto showReplyDetail(String r_no) throws DataAccessException {
+		
+		return annoInter.showReplyDetail(r_no);
+	}
+	@Override
 	public boolean writeReply(ReplyBean bean) throws DataAccessException{
 		try {
 			annoInter.writeReply(bean);

@@ -18,7 +18,7 @@ public interface AnnoInter {
 	// sns board
 	@Select("select * from board where b_mno = (select f_mno from follow where f_sno=#{m_no})")
 	List<BoardDto> showBoard(String m_no);
-
+	
 	@Select("select * from board where b_no1=#{b_no1}")
 	BoardDto showBoardDetail(String b_no1);
 
@@ -63,6 +63,13 @@ public interface AnnoInter {
 	// reply
 	@Select("select * from reply where r_bno = #{b_no1}")
 	List<ReplyDto> showReply(String b_no1);
+	
+	@Select("select * from reply")
+	List<ReplyDto> showReplyall();
+	
+	@Select("select * from reply where r_no = #{r_no}")
+	ReplyDto showReplyDetail(String r_no);
+	
 	
 	@Insert("insert into reply (r_bno, r_content) values(#{r_bno},#{r_content}")
 	boolean writeReply(ReplyBean bean);
