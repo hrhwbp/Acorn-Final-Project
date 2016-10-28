@@ -64,9 +64,9 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span></a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
+            <li><a href="main.jsp"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
+            <li><a href="wishlist.jsp"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span></a></li>
+            <li><a href="myinfo.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
