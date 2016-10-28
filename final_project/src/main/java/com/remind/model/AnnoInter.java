@@ -32,6 +32,8 @@ public interface AnnoInter {
 	boolean updateBoard(BoardBean bean);
 
 	// member
+	@Select("select * from board where b_mno = #{b_mno}")
+	List<BoardDto> showMyMain(String b_mno);
 	@Select("select * from member where m_no=#{m_no}")
 	MemberDto showMemberDetail(String m_no);
 	

@@ -25,7 +25,7 @@
 	}
 </script>
 </head>
-<%@include file="top.jsp"%>
+
 <body class="center-block()">
 	<div class="container main_pd">
 		<div class="container col-md-5 col-md-offset-1">

@@ -20,11 +20,13 @@ public interface DaoInter {
 	
 	
 	//member
+	List<BoardDto> showMyMain(String b_mno);
 	MemberDto showMemberDetail(String m_no) throws DataAccessException;
 	boolean joinMember(MemberBean bean) throws DataAccessException;
 	boolean outMember(String m_no) throws DataAccessException;
 	boolean updateMember(MemberBean bean) throws DataAccessException;
 	MemberDto login(MemberBean bean);
+	
 	//follow
 	List<FollowDto> showMyFollower(String m_no) throws DataAccessException;
 	List<FollowDto> showIFollow(String m_no) throws DataAccessException;

@@ -55,6 +55,12 @@ public class DataDao implements DaoInter{
 			return false;
 		}
 	}
+	
+	@Override
+	public List<BoardDto> showMyMain(String b_mno) {
+		
+		return annoInter.showMyMain(b_mno);
+	}
 	@Override
 	public MemberDto showMemberDetail(String m_no) throws DataAccessException{
 		return annoInter.showMemberDetail(m_no);

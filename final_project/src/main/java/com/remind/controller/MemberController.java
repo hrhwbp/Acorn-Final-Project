@@ -14,6 +14,10 @@ import com.remind.model.MemberDto;
 public class MemberController {
 	@Autowired
 	private DaoInter daoInter;
+	@RequestMapping(value="showMyMain", method = RequestMethod.GET)
+	public ModelAndView showMyMain(@RequestParam("b_mno") String b_mno){
+		return new ModelAndView("myMain","myboard",daoInter.showMyMain(b_mno));
+	}
 	
 	@RequestMapping(value="join", method= RequestMethod.POST)
 	public String join(MemberBean bean){
