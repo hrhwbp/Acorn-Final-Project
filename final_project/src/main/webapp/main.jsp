@@ -6,34 +6,31 @@
 <meta charset="UTF-8">
 <title>ReMind : [RE:AD MIND]</title>
 <style type="text/css">
-.follower_post {
-	position: relative;
-	left: 5%;
-	top: 50%;
+
+body {
+	background-color: white;	
+}
+body .container{
+	background-color: rgb(250, 250, 250)
+}
+.row .col-md-12 .table-condensed{
+	background-color: rgb(245, 245, 245); 
+	/* width: 100%" */
 }
 
-.mywishlist_table {
-	background-color: lightblue;
-	border: black;
-	border-style: solid;
-	border-width: thin;
+.container col-md-3{
+	padding-top: 15%;
 }
 
-.upcomingevent_table {
-	background-color: pink;
-	border: black;
-	border-style: solid;
-	border-width: thin;
-}
+
 </style>
 
 
 </head>
 <%@include file="common.jsp"%>
 <%@include file="top.jsp"%>
-<body style="background-color: white">
-	<div class="container col-md-5 col-md-offset-3"
-		style="background-color: rgb(250, 250, 250)">
+<body>
+	<div class="container col-md-5 col-md-offset-3">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="thumbnail">
@@ -58,8 +55,7 @@
 						</div>
 						<div class="row">
 							<div class="col-md-12">
-								<table class="table-condensed small"
-									style="background-color: rgb(245, 245, 245); width: 100%">
+								<table class="table-condensed small">
 									<tr>
 										<td><a href="#">hongeunii👍👏🏻👏🏻</a> way to go 잘먹고
 											건강한게 최고!</td>
@@ -97,8 +93,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container col-md-3 col-md-offset-1"
-		style="padding-top: 15%">
+	<div class="container col-md-3 col-md-offset-1" style="padding-top: 15%;">
 		<div class="col-md-3 " role="complementray">
 			<div class="row">
 				<div class="col-md-10 col-md-offset-2">
