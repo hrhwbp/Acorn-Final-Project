@@ -35,7 +35,7 @@ public interface DaoInter {
 	
 	//reply
 	List<ReplyDto> showReply(String b_no1) throws DataAccessException;
-	List<ReplyDto> showReplyall() throws DataAccessException;
+	List<ReplyDto> showReplyall(String m_no) throws DataAccessException;
 	ReplyDto showReplyDetail(String r_no) throws DataAccessException;
 	boolean writeReply(ReplyBean bean) throws DataAccessException;
 	boolean deleteReply(String r_no) throws DataAccessException;

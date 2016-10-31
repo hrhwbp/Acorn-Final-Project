@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +23,26 @@ public class BoardController {
 	@Autowired
 	private DaoInter daoInter;
 	
-	@RequestMapping(value="snslist", method = RequestMethod.GET)
+	/*@RequestMapping(value="snslist", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam("mno") String m_no){
 		List<BoardDto> list = daoInter.showBoard(m_no);
 		ModelAndView model = new ModelAndView();
 		
 		model.addObject("list", list);
 		model.addObject("reply",daoInter.showReplyall());
+		model.setViewName("../../main");
+		return model;
+	}*/
+	@RequestMapping(value="snslist", method = RequestMethod.GET)
+	public ModelAndView list(HttpSession session){
+		String m_no = (String) session.getAttribute("mno");
+		List<BoardDto> list = daoInter.showBoard(m_no);
+		List<ReplyDto> reply = daoInter.showReplyall(m_no);
+		ModelAndView model = new ModelAndView();
+		model.addObject("reply",reply);
+		model.addObject("list", list);
+		
+		
 		model.setViewName("../../main");
 		return model;
 	}

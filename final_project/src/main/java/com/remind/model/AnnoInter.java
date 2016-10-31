@@ -16,19 +16,19 @@ import com.remind.controller.WishlistBean;
 
 public interface AnnoInter {
 	// sns board
-	@Select("select * from board where b_mno = (select f_mno from follow where f_sno=#{m_no})")
+	@Select("select b_no, b_image, b_content, b_date, b_like, (select m_name from member where m_no = b_mno) b_mname from board where b_mno = (select f_mno from follow where f_sno=#{m_no}) or b_mno = #{m_no}")
 	List<BoardDto> showBoard(String m_no);
 	
-	@Select("select * from board where b_no1=#{b_no1}")
-	BoardDto showBoardDetail(String b_no1);
+	@Select("select * from board where b_no=#{b_no}")
+	BoardDto showBoardDetail(String b_no);
 
-	@Delete("delete from board whre b_no1=#{b_no1}")
-	boolean eraseBoard(String b_no1);
+	@Delete("delete from board whre b_no=#{b_no}")
+	boolean eraseBoard(String b_no);
 
 	@Insert("insert into board (b_mno, b_image, b_content, b_like) values (#{b_mno}, #{b_image}, #{b_content}, #{b_like})")
 	boolean write(BoardBean bean);
 	
-	@Update("update board set b_content=#{b_content} where b_no1=#{b_no1}")
+	@Update("update board set b_content=#{b_content} where b_no=#{b_no}")
 	boolean updateBoard(BoardBean bean);
 
 	// member
@@ -63,11 +63,11 @@ public interface AnnoInter {
 	boolean followCancel(FollowBean bean);
 	
 	// reply
-	@Select("select * from reply where r_bno = #{b_no1}")
-	List<ReplyDto> showReply(String b_no1);
+	@Select("select * from reply where r_bno = #{b_no}")
+	List<ReplyDto> showReply(String b_no);
 	
-	@Select("select * from reply")
-	List<ReplyDto> showReplyall();
+	@Select("select r_no, r_bno, r_content, r_date, (select m_name from member where m_no = r_mno) r_name from board left outer join reply on b_no = r_bno where b_mno = (select f_mno from follow where f_sno=#{m_no}) or b_mno = #{m_no}")
+	List<ReplyDto> showReplyall(String m_no);
 	
 	@Select("select * from reply where r_no = #{r_no}")
 	ReplyDto showReplyDetail(String r_no);

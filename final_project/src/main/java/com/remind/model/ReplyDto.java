@@ -1,7 +1,15 @@
 package com.remind.model;
 
 public class ReplyDto {
-String r_no, r_bno, r_mno, r_content, r_date;
+String r_no, r_bno, r_mno, r_content, r_date, r_name;
+
+public String getR_name() {
+	return r_name;
+}
+
+public void setR_name(String r_name) {
+	this.r_name = r_name;
+}
 
 public String getR_no() {
 	return r_no;

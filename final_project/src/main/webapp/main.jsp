@@ -39,17 +39,16 @@
 
 	<div style="padding-top: 2%">	<!--Top menubar와의 거리 2% -->
    <div class="container col-md-5 col-md-offset-0 " style="background-color: rgb(250, 250, 250); padding-top: 1%">
+   	<c:forEach var="list" items="${list }">
       <div class="row">
          <div class="col-md-12">
             <div class="thumbnail" >
-
-               <img alt="food" src="https://static.pexels.com/photos/5317/food-salad-restaurant-person.jpg" height="400px">
-
+               <img alt="food" src="${list.b_image}" height="400px">
                <div class="caption">
                <div class="row">
                   <div class="col-md-12">
-                  <h3>NYC_Jenny</h3>
-                  <p>맛있는 저녁</p>
+                  <h3>${list.b_mname} </h3>
+                  <p>${list.b_content}</p>
                   </div>
                </div>
                <div class="row">
@@ -62,21 +61,13 @@
                <div class="row">
                   <div class="col-md-12">
                      <table class="table-condensed small" style="background-color: rgb(245, 245, 245); width: 100%">
+                    <c:forEach var="re" items="${reply }">
+                    <c:if test="${list.b_no == re.r_bno }">
                         <tr>
-                           <td><a href="#">hongeunii👍👏🏻👏🏻</a> way to go 잘먹고 건강한게
-                              최고!</td>
+                           <td><a href="#">${re.r_name }</a> ${re.r_content }</td>
                         </tr>
-                        <tr>
-                           <td><a href="#">yeanayapeter</a> 엄청잘먹는걸로 ㅇㅠ명잖아요 ...</td>
-                        </tr>
-                        <tr>
-                           <td><a href="#">clara.s.zhang@hongeunii</a> 맞아맞아 건강이 우선!!
-                              건강은 무조건 지키자!!🤓💪 건강을위해 적당히 먹어야할거같어😅</td>
-                        </tr>
-                        <tr>
-                           <td><a href="#">clara.s.zhang@yeanaya</a> 언니~ 피터 살이 너무
-                              쪘어요. 모든 근육이 melted 되고 fat 으로 replaced...😅</td>
-                        </tr>
+                        </c:if>
+                     </c:forEach>
                      </table>
                   </div>
                </div>
@@ -96,74 +87,13 @@
             </div>
          </div>
       </div>
-      <div class="row">
-         <div class="col-md-12">
-            <div class="thumbnail" >
-
-               <img alt="food" src="http://www.dzimg.com/Dahong/201610/D696952_m.jpg" height="400px">
-
-               <div class="caption">
-               <div class="row">
-                  <div class="col-md-12">
-                  <h3>NYC_Jenny</h3>
-                  <p>맛있는 저녁</p>
-                  </div>
-               </div>
-               <div class="row">
-                  <div class="col-md-12">
-                     &nbsp;<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;
-                     yeanaya, hanul120, hongeunii, eshim7, mitchkim48, shinyoung_h님이
-                     좋아합니다.
-                  </div>
-               </div>
-               <div class="row">
-                  <div class="col-md-12">
-                     <table class="table-condensed small" style="background-color: rgb(245, 245, 245); width: 100%">
-                        <tr>
-                           <td><a href="#">hongeunii👍👏🏻👏🏻</a> way to go 잘먹고 건강한게
-                              최고!</td>
-                        </tr>
-                        <tr>
-                           <td><a href="#">yeanayapeter</a> 엄청잘먹는걸로 ㅇㅠ명잖아요 ...</td>
-                        </tr>
-                        <tr>
-                           <td><a href="#">clara.s.zhang@hongeunii</a> 맞아맞아 건강이 우선!!
-                              건강은 무조건 지키자!!🤓💪 건강을위해 적당히 먹어야할거같어😅</td>
-                        </tr>
-                        <tr>
-                           <td><a href="#">clara.s.zhang@yeanaya</a> 언니~ 피터 살이 너무
-                              쪘어요. 모든 근육이 melted 되고 fat 으로 replaced...😅</td>
-                        </tr>
-                     </table>
-                  </div>
-               </div>
-               <div class="row top_pd">
-                  <div class="col-md-9">
-                  <div class="input-group">
-                     <span class="input-group-addon " id="sizing-addon2"><span class="glyphicon glyphicon-heart"></span></span> 
-                        <input type="text" class="form-control" placeholder="답글달기..." aria-describedby="sizing-addon2">
-                  </div>
-                  </div>
-                  <div class="col-md-3">
-                  <a href="#" class="btn btn-default col-md-12" role="button">답글</a>
-                  </div>
-                  
-               </div>
-               </div>
-            </div>
-         </div>
-      </div>
+      </c:forEach>
    </div>
    </div>
-   
-  
-   
-   <div class="container col-md-3 col-md-offset-1" >
+    <div class="container col-md-3 col-md-offset-1" >
       <div class="col-md-3 " role="complementray">
          <div class="row">
             <div class="col-md-10 col-md-offset-2">
-            
-            	
                <nav class="bs-docs-sidebar hidden-print hidden-xs affix">
                   <ul class="nav bs-docs-sidenav text-right">
                      <li>${mno }현재 이벤트현재 이벤트현재 이벤트현재 이벤트</li>
@@ -175,8 +105,6 @@
 
       </div>
    </div>
-   
-   
    
 </body>
 <%@include file="bottom.jsp"%>

@@ -133,9 +133,9 @@ public class DataDao implements DaoInter{
 		return annoInter.showReply(b_no1);
 	}
 	@Override
-	public List<ReplyDto> showReplyall() throws DataAccessException {
-		
-		return annoInter.showReplyall();
+	public List<ReplyDto> showReplyall(String m_no) throws DataAccessException {
+		System.out.println( m_no);
+		return annoInter.showReplyall(m_no);
 	}
 	@Override
 	public ReplyDto showReplyDetail(String r_no) throws DataAccessException {

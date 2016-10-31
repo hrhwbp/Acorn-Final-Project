@@ -67,7 +67,7 @@ public class MemberController {
 		
 		if(dto.getM_no()!= null){
 			session.setAttribute("mno", dto.getM_no());
-			System.out.println("ì„¸ì…˜ê°’ì€" + session.getAttribute("mno"));
+			System.out.println("¼¼¼Ç°ªÀº" + session.getAttribute("mno"));
 			return "redirect:/snslist";  //+ dto.getM_no()
 		}else{
 			return "login.jsp";
@@ -77,7 +77,7 @@ public class MemberController {
 	@RequestMapping(value="logout", method = RequestMethod.GET)
 	public String logoutConfirm(HttpSession session){
 		session.removeAttribute("mno");
-		System.out.println("ì„¸ì…˜ê°’ì€" + session.getAttribute("mno"));
+		System.out.println("¼¼¼Ç°ªÀº" + session.getAttribute("mno"));
 		return "../../index";
 	}
 	
