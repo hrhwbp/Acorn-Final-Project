@@ -99,7 +99,7 @@ body .container{
 				<div class="col-md-10 col-md-offset-2">
 					<nav class="bs-docs-sidebar hidden-print hidden-xs affix">
 						<ul class="nav bs-docs-sidenav text-right">
-							<li>현재 이벤트현재 이벤트현재 이벤트현재 이벤트</li>
+							<li>${mno}현재 이벤트현재 이벤트현재 이벤트현재 이벤트</li>
 
 						</ul>
 

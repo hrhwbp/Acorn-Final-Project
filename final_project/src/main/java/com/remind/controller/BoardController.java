@@ -1,6 +1,5 @@
 package com.remind.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.remind.model.BoardDto;
 import com.remind.model.DaoInter;
-import com.remind.model.MemberDto;
 import com.remind.model.ReplyDto;
 
 @Controller
@@ -24,7 +22,7 @@ public class BoardController {
 	private DaoInter daoInter;
 	
 	@RequestMapping(value="snslist", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam("m_no") String m_no){
+	public ModelAndView list(@RequestParam("mno") String m_no){
 		List<BoardDto> list = daoInter.showBoard(m_no);
 		ModelAndView model = new ModelAndView();
 		

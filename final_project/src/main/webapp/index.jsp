@@ -37,7 +37,7 @@
 		<div class="container col-md-5">
 			<div class="row col-md-12" title="" id="showlogin"
 				style="padding-top: 18%">
-				<form class="form-signin" method="post" action="login">
+				<form class="form-signin" method="post" action="login	">
 					<h2 class="form-signin-heading text-center">로그인</h2>
 					<div class="col-md-12">
 						<label for="inputEmail" class="sr-only">Email address</label> <input
@@ -137,6 +137,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<%@include file="bottom.jsp"%>
 </body>
 </html>
