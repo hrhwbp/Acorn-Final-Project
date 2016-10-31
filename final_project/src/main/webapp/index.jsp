@@ -107,7 +107,7 @@
 
 						<div class="col-md-3 top_pd text-right">
 							<label class="" for="ss">일</label> <select id="ss" name="day"
-								class="form-control" style="font-size: 10px">
+								class="form-control" >
 								<c:forEach var="i" begin="1" end ="31" step="1">
 								<option>${i}</option>
 								</c:forEach>
