@@ -1,16 +1,25 @@
 package com.remind.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionAttributeStore;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.remind.model.DaoInter;
 import com.remind.model.MemberDto;
 
 @Controller
+@SessionAttributes("mno")
 public class MemberController {
 	@Autowired
 	private DaoInter daoInter;
@@ -52,11 +61,24 @@ public class MemberController {
 			
 	}
 	@RequestMapping(value="login", method = RequestMethod.POST)
-	public String login(MemberBean bean){
+	public String login(MemberBean bean, HttpSession session){
 		MemberDto dto = daoInter.login(bean);
-		if(dto.getM_no()!= null)
-			return "redirect:/snslist?m_no=" + dto.getM_no();
-		else
+		
+		
+		if(dto.getM_no()!= null){
+			session.setAttribute("mno", dto.getM_no());
+			System.out.println("세션값은" + session.getAttribute("mno"));
+			return "redirect:/snslist";  //+ dto.getM_no()
+		}else{
 			return "login.jsp";
+		}
 	}
+	
+	@RequestMapping(value="logout", method = RequestMethod.GET)
+	public String logoutConfirm(HttpSession session){
+		session.removeAttribute("mno");
+		System.out.println("세션값은" + session.getAttribute("mno"));
+		return "../../index";
+	}
+	
 }

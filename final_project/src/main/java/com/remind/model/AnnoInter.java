@@ -57,7 +57,7 @@ public interface AnnoInter {
 	List<FollowDto> showIFollow(String m_no);
 	
 	@Insert("insert into follow (f_sno,f_mno) values(#{f_sno},#{f_mno})")
-	boolean follow(FollowBean bean);	//f_sno°¡ f_mno¸¦ follow
+	boolean follow(FollowBean bean);	//f_snoï¿½ï¿½ f_mnoï¿½ï¿½ follow
 	
 	@Delete("delete from follow where f_sno = #{f_sno} and f_mno = #{f_mno}")
 	boolean followCancel(FollowBean bean);
