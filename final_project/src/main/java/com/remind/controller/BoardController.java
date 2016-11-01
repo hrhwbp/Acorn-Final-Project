@@ -48,9 +48,9 @@ public class BoardController {
 	}
 	@RequestMapping(value="showDetail", method=RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> ShowDetail(@RequestParam("b_no1") String b_no1){
-		List<ReplyDto> listReply = daoInter.showReply(b_no1);
-		BoardDto showDetail =  daoInter.showBoardDetail(b_no1);
+	public Map<String, Object> ShowDetail(@RequestParam("b_no") String b_no){
+		List<ReplyDto> listReply = daoInter.showReply(b_no);
+		BoardDto showDetail =  daoInter.showBoardDetail(b_no);
 	/*	List<Map<String, String>> replyList = new ArrayList<Map<String,String>>();
 		Map<String, String> reply = null;
 		for(ReplyDto dto:listReply){

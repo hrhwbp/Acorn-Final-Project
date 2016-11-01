@@ -1,5 +1,12 @@
 package com.remind.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,11 +21,25 @@ import com.remind.model.ReplyDto;
 public class ReplyController {
 	@Autowired
 	private DaoInter daoInter;
+	
 	@RequestMapping(value="insertReply", method=RequestMethod.POST)
-	public String writeReply(ReplyBean bean){
-		boolean b = daoInter.writeReply(bean);
-		if(b) return "showDetail"+bean.getR_bno();
-		else return "redirect:/error.jsp";
+	@ResponseBody
+	public Map<String, Object> writeReply(ReplyBean bean){
+		 daoInter.writeReply(bean);
+		List<ReplyDto> reply = daoInter.showReply(bean.getR_bno());
+		List<Map<String, String>> dataList = new ArrayList<Map<String, String>>();
+		Map<String, String> data = null;
+		System.out.println("sadfdfsadfsafasfd");
+		for(ReplyDto dto : reply){
+			data = new HashMap<String, String>();
+			data.put("r_name", dto.getR_name());
+			data.put("r_content",dto.getR_content());
+			dataList.add(data);
+		}
+		Map<String, Object> replyData = new HashMap<String, Object>();
+		replyData.put("datas", dataList);
+		return replyData;
+		
 	}
 	@RequestMapping(value="deleteReply", method = RequestMethod.GET)
 	public String deleteReply(@RequestParam("r_no")String r_no){

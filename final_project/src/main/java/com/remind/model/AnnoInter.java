@@ -63,7 +63,7 @@ public interface AnnoInter {
 	boolean followCancel(FollowBean bean);
 	
 	// reply
-	@Select("select * from reply where r_bno = #{b_no}")
+	@Select("select r_no, r_bno, r_content, r_date, (select m_name from member where m_no = r_mno) r_name from reply where r_bno = #{b_no}")
 	List<ReplyDto> showReply(String b_no);
 	
 	@Select("select r_no, r_bno, r_content, r_date, (select m_name from member where m_no = r_mno) r_name from board left outer join reply on b_no = r_bno where b_mno = (select f_mno from follow where f_sno=#{m_no}) or b_mno = #{m_no}")
@@ -73,7 +73,7 @@ public interface AnnoInter {
 	ReplyDto showReplyDetail(String r_no);
 	
 	
-	@Insert("insert into reply (r_bno, r_content) values(#{r_bno},#{r_content}")
+	@Insert("insert into reply (r_mno, r_bno, r_content) values(#{r_mno}, #{r_bno},#{r_content})")
 	boolean writeReply(ReplyBean bean);
 	
 	@Delete("delete from reply where r_no = #{r_no}")
@@ -86,7 +86,7 @@ public interface AnnoInter {
 	@Select("select * from wishlist where w_mno = #{w_mno}")
 	List<WishlistDto> showWishList(String w_mno);
 	
-	@Insert("insert into wishlist (w_mno, w_pname, w_price, w_image, w_addr, w_detail, w_lock) values(#{w_mno}, #{w_pname}, #{w_price}, #{w_image}, #{w_addr}, #{w_detail}, #{w_lock}")
+	@Insert("insert into wishlist (w_mno, w_pname, w_price, w_image, w_addr, w_detail, w_lock) values(#{w_mno}, #{w_pname}, #{w_price}, #{w_image}, #{w_addr}, #{w_detail}, #{w_lock})")
 	boolean writeWishlist(WishlistBean bean);
 	
 	@Delete("delete from wishlist where w_no = #{w_no}")
