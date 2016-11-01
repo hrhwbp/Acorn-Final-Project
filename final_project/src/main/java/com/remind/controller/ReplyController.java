@@ -26,10 +26,11 @@ public class ReplyController {
 	@ResponseBody
 	public Map<String, Object> writeReply(ReplyBean bean){
 		 daoInter.writeReply(bean);
+		 System.out.println(bean.getR_bno());
 		List<ReplyDto> reply = daoInter.showReply(bean.getR_bno());
 		List<Map<String, String>> dataList = new ArrayList<Map<String, String>>();
 		Map<String, String> data = null;
-		System.out.println("sadfdfsadfsafasfd");
+		
 		for(ReplyDto dto : reply){
 			data = new HashMap<String, String>();
 			data.put("r_name", dto.getR_name());

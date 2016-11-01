@@ -9,37 +9,33 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		$('#replySubmit').click(function(){
+		<c:forEach var="list" items="${list }">
+		jQuery('a[name=replySubmit${list.b_no}]').click(function(){
 			//$("#reply").submit();
-			$("#showreply").empty();
+			jQuery("#showreply${list.b_no}").empty();
 			  
 		$.ajax({
 			type:"post",
 			url:"insertReply",
 			dataType:"json",
-			data:$("#reply").serialize(),
+			data:$("#reply${list.b_no}").serialize(),
 			success:function(replyData){
 				
 				var str = "<table class='table-condensed small' style='background-color: rgb(245, 245, 245); width: 100%'>"
 				var list = replyData.datas;
 				   
-				$(list).each(function(index, objArr){
+				jQuery(list).each(function(index, objArr){
 					str += "<tr>";
 					str += "<td><a href='#'>" + objArr.r_name +"</a>"+ objArr.r_content + "</td>";
 					str += "</tr>";
 				})
 				str += "</table>";
-				$("#showreply").html(str);
-				$("#r_content").val("");
-				
+				jQuery("#showreply${list.b_no}").html(str);
+				jQuery("#r_content${list.b_no}").val("");
 			}
-			
 		});
 		});
-		 
-	
-
-			
+		</c:forEach>
 	});
 </script>
 <style type="text/css">
@@ -93,7 +89,7 @@
                </div>
                <div class="row">
                   <div class="col-md-12">
-                  <div id="showreply">
+                  <div id="showreply${list.b_no}">
                      <table class="table-condensed small" style="background-color: rgb(245, 245, 245); width: 100%">
                     <c:forEach var="re" items="${reply }">
                     <c:if test="${list.b_no == re.r_bno }">
@@ -107,17 +103,17 @@
                   </div>
                </div>
                <div class="row top_pd">
-               <form action = "insertReply" method="post" id = "reply" name = "reply">
+               <form action = "insertReply" method="post" id = "reply${list.b_no}" name = "reply">
                   <div class="col-md-9">
                   <div class="input-group">
                      <span class="input-group-addon " id="sizing-addon2"><span class="glyphicon glyphicon-heart"></span></span> 
-                        <input type="text" class="form-control" placeholder="답글달기..." aria-describedby="sizing-addon2" name="r_content" id = "r_content">
+                        <input type="text" class="form-control" placeholder="답글달기..." aria-describedby="sizing-addon2" name="r_content" id = "r_content${list.b_no}">
                         <input type="hidden" name="r_bno" value="${list. b_no}">
                         <input type="hidden" name="r_mno" value="${mno }">
                   </div>
                   </div>
                   <div class="col-md-3">
-                  <a href="javascript:;" id = "replySubmit" class="btn btn-default col-md-12" role="button">답글</a>
+                  <a href="javascript:;" name = "replySubmit${list.b_no }" class="btn btn-default col-md-12" role="button">답글</a>
                   </div>
                   </form>
                </div>
