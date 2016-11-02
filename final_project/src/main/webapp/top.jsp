@@ -67,7 +67,12 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="../navbar/">Default</a></li>
             <li><a href="../navbar-static-top/">Static top</a></li>
+            <% if(session.getAttribute("mno") != null){%>
             <li><a href="logout">LogOut <span class="sr-only">(current)</span></a></li>
+            <%}else{
+            	response.sendRedirect("index.jsp");
+            }
+            %>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
