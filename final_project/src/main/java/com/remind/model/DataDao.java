@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.remind.controller.BoardBean;
 import com.remind.controller.FollowBean;
+import com.remind.controller.LikeBean;
 import com.remind.controller.MemberBean;
 import com.remind.controller.ReplyBean;
 import com.remind.controller.WishlistBean;
@@ -134,9 +135,9 @@ public class DataDao implements DaoInter{
 	}
 	@Override
 	public List<ReplyDto> showReplyall(String m_no) throws DataAccessException {
-		System.out.println( m_no);
 		return annoInter.showReplyall(m_no);
 	}
+	
 	@Override
 	public ReplyDto showReplyDetail(String r_no) throws DataAccessException {
 		
@@ -214,6 +215,7 @@ public class DataDao implements DaoInter{
 		return annoInter.showWishGroup(wg_mno);		
 	}
 	
+	
 	@Override
 	public boolean writeWishGroup(WishlistBean bean) throws DataAccessException {
 		try {
@@ -247,5 +249,42 @@ public class DataDao implements DaoInter{
 		}		
 	}
 	
+	//like
+	@Override
+	public List<LikeDto> showLike(String b_no) throws DataAccessException {
+		
+		return annoInter.showLike(b_no);
+	}
+	@Override
+	public int likeYN(LikeBean bean) throws DataAccessException {
+		if(annoInter.likeYN(bean) != null)
+		return 1;
+		else
+			return 0;
+	}
+	@Override
+	public LikeDto countLike(String b_no) throws DataAccessException {
+		return annoInter.countLike(b_no);
+	}
+	@Override
+	public boolean like(LikeBean bean) throws DataAccessException {
+		try {
+			annoInter.like(bean);
+			return true;
+		} catch (Exception e) {
+			System.out.println("deletewishlist err");
+			return false;
+		}
+	}
+	@Override
+	public boolean likeCancel(LikeBean bean) throws DataAccessException {
+		try {
+			annoInter.likeCancel(bean);
+			return true;
+		} catch (Exception e) {
+			System.out.println("deletewishlist err");
+			return false;
+		}
+	}
 	
 }

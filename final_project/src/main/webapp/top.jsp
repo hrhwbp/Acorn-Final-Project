@@ -49,7 +49,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li><a href="index.jsp"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
-            <li><a href="wishlist.jsp"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span></a></li>
+            <li><a href="showWishList?w_mno=<%=session.getAttribute("mno")%>"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span></a></li>
             <li><a href="myinfo.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>

@@ -6,6 +6,7 @@ import org.springframework.dao.DataAccessException;
 
 import com.remind.controller.BoardBean;
 import com.remind.controller.FollowBean;
+import com.remind.controller.LikeBean;
 import com.remind.controller.MemberBean;
 import com.remind.controller.ReplyBean;
 import com.remind.controller.WishlistBean;
@@ -47,12 +48,19 @@ public interface DaoInter {
 	boolean deleteWishlist(String w_no) throws DataAccessException;
 	boolean updateWishlist(WishlistBean bean) throws DataAccessException;
 	
+
 	//Wishlist Group
 	List<WishlistDto> showWishGroup(String wg_mno) throws DataAccessException;
 	boolean writeWishGroup(WishlistBean bean) throws DataAccessException;
 	boolean deleteWishGroup(String wg_no) throws DataAccessException;
 	boolean updateWishGroup(WishlistBean bean) throws DataAccessException;
-	
+
+	//like
+	List<LikeDto> showLike(String m_no) throws DataAccessException;
+	int likeYN(LikeBean bean) throws DataAccessException;
+	LikeDto countLike(String b_no) throws DataAccessException;
+	boolean like(LikeBean bean) throws DataAccessException;
+	boolean likeCancel(LikeBean bean) throws DataAccessException;
 	
 
 }
