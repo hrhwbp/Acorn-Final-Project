@@ -64,6 +64,4 @@ public interface DaoInter {
 	boolean like(LikeBean bean) throws DataAccessException;
 	boolean likeCancel(LikeBean bean) throws DataAccessException;
 
-
-
 }

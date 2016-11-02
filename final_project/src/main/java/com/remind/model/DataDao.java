@@ -244,7 +244,7 @@ public class DataDao implements DaoInter{
 			return false;
 		}
 	}
-	
+
 	//WISHGROUP LIST 
 	@Override
 	public List<WishlistDto> showWishGroup(String wg_mno) throws DataAccessException {
@@ -283,6 +283,7 @@ public class DataDao implements DaoInter{
 			System.out.println("Delete WishListGroup err");
 			return false;
 		}		
+
 	}
 	
 }

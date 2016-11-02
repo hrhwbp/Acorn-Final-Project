@@ -33,6 +33,7 @@ public interface AnnoInter {
 	boolean updateBoard(BoardBean bean);
 
 	
+	
 	// member
 	@Select("select * from board where b_mno = #{b_mno}")
 	List<BoardDto> showMyMain(String b_mno);
@@ -50,7 +51,7 @@ public interface AnnoInter {
 	
 	@Select("select * from member where m_email = #{m_email} and m_password = #{m_password}")
 	MemberDto login(MemberBean bean);
-	
+
 	
 	// follow
 	@Select("select * from follow where f_sno = #{m_no}")
@@ -100,8 +101,7 @@ public interface AnnoInter {
 	
 	@Update("update wishlist set w_pname=#{w_pname}, w_price=#{w_price}, w_image=#{w_image}, w_addr=#{w_addr}, w_detail=#{w_detail} where w_no = #{w_no}")
 	boolean updateWishlist(WishlistBean bean);
-	
-	// Wishlist Group
+
 	@Select("select * from wishgroup where wg_mno=#{wg_mno}")
 	List<WishlistDto> showWishGroup(String wg_mno);
 	
@@ -113,7 +113,6 @@ public interface AnnoInter {
 	
 	@Update("update wishgroup set wg_detail=#{wg_detail} where wg_no = #{wg_no}")
 	boolean updateWishGroup(WishlistBean bean);
-	
 
 	// like
 	/*@Select("select l_bno, l_mno, (select m_name from member where m_no = l_mno) l_mname from likeTable left outer join board on l_bno = b_no "
