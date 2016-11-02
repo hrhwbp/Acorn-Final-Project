@@ -202,9 +202,49 @@ public class DataDao implements DaoInter{
 			annoInter.updateWishlist(bean);
 			return true;
 		} catch (Exception e) {
-			System.out.println("eraseboard err");
+			System.out.println("Delete Wishlist err");
 			return false;
 		}
+	}
+	
+	
+	//WISHGROUP LIST 
+	@Override
+	public List<WishlistDto> showWishGroup(String wg_mno) throws DataAccessException {
+		return annoInter.showWishGroup(wg_mno);		
+	}
+	
+	@Override
+	public boolean writeWishGroup(WishlistBean bean) throws DataAccessException {
+		try {
+			annoInter.writeWishGroup(bean);
+			return true;
+		} catch (Exception e) {
+			System.out.println("writewishlistgroup err");
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean deleteWishGroup(String wg_no) throws DataAccessException {
+		try {
+			annoInter.deleteWishGroup(wg_no);
+			return true;
+		} catch (Exception e) {
+			System.out.println("deletewishlistGroup err");
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean updateWishGroup(WishlistBean bean) throws DataAccessException {
+		try {
+			annoInter.updateWishGroup(bean);
+			return true;
+		} catch (Exception e) {
+			System.out.println("Delete WishListGroup err");
+			return false;
+		}		
 	}
 	
 	
