@@ -207,7 +207,43 @@ public class DataDao implements DaoInter{
 			return false;
 		}
 	}
-	
+	//like
+	@Override
+	public List<LikeDto> showLike(String b_no) throws DataAccessException {
+		
+		return annoInter.showLike(b_no);
+	}
+	@Override
+	public int likeYN(LikeBean bean) throws DataAccessException {
+		if(annoInter.likeYN(bean) != null)
+		return 1;
+		else
+			return 0;
+	}
+	@Override
+	public LikeDto countLike(String b_no) throws DataAccessException {
+		return annoInter.countLike(b_no);
+	}
+	@Override
+	public boolean like(LikeBean bean) throws DataAccessException {
+		try {
+			annoInter.like(bean);
+			return true;
+		} catch (Exception e) {
+			System.out.println("deletewishlist err");
+			return false;
+		}
+	}
+	@Override
+	public boolean likeCancel(LikeBean bean) throws DataAccessException {
+		try {
+			annoInter.likeCancel(bean);
+			return true;
+		} catch (Exception e) {
+			System.out.println("deletewishlist err");
+			return false;
+		}
+	}
 	
 	//WISHGROUP LIST 
 	@Override
@@ -247,44 +283,6 @@ public class DataDao implements DaoInter{
 			System.out.println("Delete WishListGroup err");
 			return false;
 		}		
-	}
-	
-	//like
-	@Override
-	public List<LikeDto> showLike(String b_no) throws DataAccessException {
-		
-		return annoInter.showLike(b_no);
-	}
-	@Override
-	public int likeYN(LikeBean bean) throws DataAccessException {
-		if(annoInter.likeYN(bean) != null)
-		return 1;
-		else
-			return 0;
-	}
-	@Override
-	public LikeDto countLike(String b_no) throws DataAccessException {
-		return annoInter.countLike(b_no);
-	}
-	@Override
-	public boolean like(LikeBean bean) throws DataAccessException {
-		try {
-			annoInter.like(bean);
-			return true;
-		} catch (Exception e) {
-			System.out.println("deletewishlist err");
-			return false;
-		}
-	}
-	@Override
-	public boolean likeCancel(LikeBean bean) throws DataAccessException {
-		try {
-			annoInter.likeCancel(bean);
-			return true;
-		} catch (Exception e) {
-			System.out.println("deletewishlist err");
-			return false;
-		}
 	}
 	
 }
