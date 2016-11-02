@@ -64,7 +64,7 @@
 
 <body style="background-color: white">
 	<div style="padding-top: 2%">	<!--Top menubar와의 거리 2% -->
-   <div class="container col-md-5 col-md-offset-0 " style="background-color: rgb(250, 250, 250); padding-top: 1%">
+   <div class="container col-md-5 col-md-offset-0 " style="background-color: rgb(250, 250, 250); padding-top: 1%; padding-bottom:2%">
 
    
    	<c:forEach var="list" items="${list }">
