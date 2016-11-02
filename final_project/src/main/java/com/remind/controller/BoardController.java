@@ -1,5 +1,6 @@
 package com.remind.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.remind.model.BoardDto;
 import com.remind.model.DaoInter;
+import com.remind.model.LikeDto;
 import com.remind.model.ReplyDto;
 
 @Controller
@@ -36,15 +38,56 @@ public class BoardController {
 	@RequestMapping(value="snslist", method = RequestMethod.GET)
 	public ModelAndView list(HttpSession session){
 		String m_no = (String) session.getAttribute("mno");
-		List<BoardDto> list = daoInter.showBoard(m_no);
-		List<ReplyDto> reply = daoInter.showReplyall(m_no);
 		ModelAndView model = new ModelAndView();
-		model.addObject("reply",reply);
+		List<BoardDto> list = daoInter.showBoard(m_no);
+		for (int i = 0; i < list.size(); i++) {
+			List<ReplyDto> reply = daoInter.showReply(list.get(i).getB_no());
+			model.addObject("reply" + list.get(i).getB_no(), reply);	
+		}
+		for (int i = 0; i < list.size(); i++) {
+			List<LikeDto> like = daoInter.showLike(list.get(i).getB_no());
+			model.addObject("like" + list.get(i).getB_no(), like);	
+		}
+		//List<LikeDto> like = daoInter.showLike(m_no);
+		//List<LikeDto> countlike = daoInter.countLike(m_no);
+		
+		//model.addObject("like",like);
+		
 		model.addObject("list", list);
 		
-		
+		//model.addObject("countlike", countlike);
 		model.setViewName("../../main");
 		return model;
+	}
+	@RequestMapping(value="snslist", method = RequestMethod.POST)
+	public Map<String, Object> listPOST(@RequestParam("b_no") String b_no){
+		System.out.println("snslist test" + b_no);
+		List<ReplyDto> reply = daoInter.showReply(b_no);
+		List<LikeDto> like = daoInter.showLike(b_no);
+		LikeDto countlike = daoInter.countLike(b_no);
+		List<Map<String, String>> replydataList = new ArrayList<Map<String, String>>();
+		Map<String, String> replydata = null;
+		for (ReplyDto dto:reply){
+			replydata = new HashMap<String, String>();
+			replydata.put("r_name", dto.getR_name());
+			replydata.put("r_content",dto.getR_content());
+			replydataList.add(replydata);
+		}
+		List<Map<String, String>> likeList = new ArrayList<Map<String, String>>();
+		Map<String, String> likedata = null;
+		for (LikeDto dto:like){
+			likedata = new HashMap<String, String>();
+			likedata.put("l_name", dto.getL_mname());
+			likeList.add(likedata);
+		}
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("replydata"+b_no,replydataList);
+		data.put("likedata"+b_no, likeList);
+		
+		return data;
+		
+		
+		
 	}
 	@RequestMapping(value="showDetail", method=RequestMethod.GET)
 	@ResponseBody
