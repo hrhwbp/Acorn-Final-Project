@@ -19,7 +19,7 @@ import com.remind.model.DaoInter;
 import com.remind.model.MemberDto;
 
 @Controller
-@SessionAttributes("mno")
+//@SessionAttributes("mno")
 public class MemberController {
 	@Autowired
 	private DaoInter daoInter;
@@ -66,8 +66,7 @@ public class MemberController {
 		
 		
 		if(dto.getM_no()!= null){
-			session.setAttribute("mno", dto.getM_no());
-			System.out.println("技记蔼篮" + session.getAttribute("mno"));
+			session.setAttribute("mno", dto.getM_no());			
 			return "redirect:/snslist";  //+ dto.getM_no()
 		}else{
 			return "login.jsp";
@@ -75,9 +74,8 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="logout", method = RequestMethod.GET)
-	public String logoutConfirm(HttpSession session){
-		session.removeAttribute("mno");
-		System.out.println("技记蔼篮" + session.getAttribute("mno"));
+	public String logoutConfirm(HttpSession session){		
+		session.removeAttribute("mno");		
 		return "../../index";
 	}
 	
