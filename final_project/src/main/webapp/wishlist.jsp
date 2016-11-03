@@ -9,11 +9,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 
-<link rel="stylesheet"
-	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script
-	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 </head>
 
@@ -76,7 +74,7 @@
 										<input type="text" name="wg_detail" class="form-control" placeholder="새로운 소원목록명...">
 										<input type="hidden" name="wg_mno" value="<%=session.getAttribute("mno") %>">
 										<span class="input-group-btn">
-										<button class="btn btn-default" id="wishgroup_submit" type="button">추가</button>
+										<button class="btn btn-default" id="btn_wishgroup_submit" type="button">추가</button>
 										</span>
 									</div><!-- /input-group -->
 								</form>
