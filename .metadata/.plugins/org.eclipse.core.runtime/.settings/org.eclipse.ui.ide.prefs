@@ -2,6 +2,10 @@ IMPORT_FILES_AND_FOLDERS_RELATIVE=true
 IMPORT_FILES_AND_FOLDERS_TYPE=23,1
 PROBLEMS_FILTERS_MIGRATE=true
 eclipse.preferences.version=1
+<<<<<<< HEAD
 platformState=1474531036734
+=======
+platformState=1477381142486
+>>>>>>> b37080a874b5a3a698f65cbcc6502d69273ceff4
 quickStart=false
 tipsAndTricks=true

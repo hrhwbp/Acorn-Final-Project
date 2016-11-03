@@ -11,7 +11,11 @@
 	<properties>
 		<java-version>1.6</java-version>
 
+<<<<<<< HEAD
 		<org.springframework-version>3.2.3.RELEASE</org.springframework-version>
+=======
+		<org.springframework-version>4.2.8.RELEASE</org.springframework-version>
+>>>>>>> b37080a874b5a3a698f65cbcc6502d69273ceff4
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 	</properties>

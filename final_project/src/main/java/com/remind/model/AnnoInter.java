@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -68,8 +69,10 @@ public interface AnnoInter {
 	
 	
 	// reply
-	@Select("select r_no, r_bno, r_content, r_date, (select m_name from member where m_no = r_mno) r_name from reply where r_bno = #{b_no}")
-	List<ReplyDto> showReply(String b_no);
+	@Select("select r_no, r_bno, r_content, r_date, (select m_name from member where m_no = r_mno) r_name from reply where r_bno = #{b_no} limit ${limit},5")
+	List<ReplyDto> showReply(@Param("b_no") String b_no, @Param("limit")int limit);
+	@Select("select count(*) from reply where r_bno = #{b_no}")
+	int countreply(String b_no);
 	
 	@Select("select r_no, r_bno, r_content, r_date, (select m_name from member where m_no = r_mno) r_name from board "
 			+ "left outer join reply on b_no = r_bno where b_mno = (select f_mno from follow where f_sno=#{m_no}) or b_mno = #{m_no}")
@@ -89,7 +92,7 @@ public interface AnnoInter {
 	boolean updateReply(ReplyBean bean);
 
 	
-	// wishlist
+	//WishList
 	@Select("select * from wishlist where w_mno = #{w_mno}")
 	List<WishlistDto> showWishList(String w_mno);
 	
@@ -102,11 +105,13 @@ public interface AnnoInter {
 	@Update("update wishlist set w_pname=#{w_pname}, w_price=#{w_price}, w_image=#{w_image}, w_addr=#{w_addr}, w_detail=#{w_detail} where w_no = #{w_no}")
 	boolean updateWishlist(WishlistBean bean);
 
+	
+	//WishGroup
 	@Select("select * from wishgroup where wg_mno=#{wg_mno}")
 	List<WishlistDto> showWishGroup(String wg_mno);
 	
 	@Insert("insert into wishgroup (wg_mno, wg_detail) values(#{wg_mno},#{wg_detail})")
-	boolean writeWishGroup(WishlistBean bean);
+	boolean insertWishGroup(WishlistBean bean);
 	
 	@Delete("delete from wishgroup where wg_no = #{wg_no}")
 	boolean deleteWishGroup(String wg_no);
@@ -122,7 +127,7 @@ public interface AnnoInter {
 	@Select("select l_bno, l_mno, (select m_name from member where m_no = l_mno) l_mname from likeTable where l_bno = #{b_no}")
 	List<LikeDto> showLike(String b_no);
 	
-	@Select("select * from likeTable where l_bno = #{b_no} and l_mno = #{l_mno}")
+	@Select("select * from likeTable where l_bno = #{l_bno} and l_mno = #{l_mno}")
 	LikeDto likeYN(LikeBean bean);
 	
 	/*@Select("select count(*) l_count, l_bno from likeTable left outer join board on l_bno = b_no "

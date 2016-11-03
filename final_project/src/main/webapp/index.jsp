@@ -29,7 +29,7 @@
 String mno = (String)session.getAttribute("mno");
 	
 if (session.getAttribute("mno") != null){	
-	response.sendRedirect("main.jsp");	
+	response.sendRedirect("snslist");	
 }
 %>
 <body class="center-block()">
