@@ -33,6 +33,11 @@
 	.lbl_pd {
 		padding-top: 3%
 	}
+	
+	.body_pd {
+		padding-top: 70px;
+		padding-bottom: 70px;
+	}
 	</style>
 	<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
 	<script
