@@ -45,6 +45,7 @@
 			type:"post",
 			url:"insertReply",
 			data:$("#reply${list.b_no}").serialize(),
+			dataType:'json',
 			success:function(replyData){
 				var str = "<table class='table-condensed small' style='background-color: rgb(245, 245, 245); width: 100%'>"
 				var list = replyData.datas;
@@ -59,10 +60,37 @@
 			}
 		});
 		});
-		
 		</c:forEach>
-		
 	});
+	
+	function likesubmit(b_no){
+		
+		jQuery("#showlike"+b_no).empty();
+		
+	
+		jQuery.ajax({
+			type:"post",
+			url:"insertLike",
+			data:{"b_no":b_no, "m_no":"${mno}"},
+			dataType:'json',
+			success:function(likeData){
+				var list = likeData.datas;
+				str = "";
+				if(list.length() >11){
+             	    str += list.size() + "명이 좋아합니다";
+                   }
+               else if(list.size()<=11){
+            	   jQuery(list).each(function(index, objArr){
+                      str += objArr.l_name + ",";
+                     }) 
+                     str += "님이 좋아합니다";
+                   }
+				jQuery("#showlike"+b_no).html(str);
+				jQuery("#r_content" + b_no).val("");
+			}
+		});
+    	
+	}
 	
 </script>
 <style type="text/css">
@@ -116,7 +144,9 @@
             			</c:if> 
             			</c:forEach>
             			님이  좋아합니다. --%>
+            			
             			 <c:set var="like" value="like${list.b_no}" />
+            			 <span id="showlike${list.b_no}">
                   <%List<LikeDto> like = (List<LikeDto>)request.getAttribute((String)pageContext.getAttribute("like")); %>
                   <%if(like.size() == 0){ %>
                   	처음 좋아요의 주인공이 되세요
@@ -131,8 +161,7 @@
                     <%}%>님이 좋아합니다<%}
                   
                   	%>
-                     
-            	     
+                  	</span>
                   </div>
                </div>
                <div class="row">
@@ -155,7 +184,8 @@
                <form action = "insertReply" method="post" id = "reply${list.b_no}" name = "reply">
                   <div class="col-md-9">
                   <div class="input-group">
-                     <span class="input-group-addon " id="sizing-addon2"><span class="glyphicon glyphicon-heart"></span></span> 
+                     <span class="input-group-addon " id="sizing-addon2">
+                     <span class="glyphicon glyphicon-heart" onclick="likesubmit(${list.b_no})"></span></span> 
                         <input type="text" class="form-control" placeholder="답글달기..." aria-describedby="sizing-addon2" name="r_content" id = "r_content${list.b_no}">
                         <input type="hidden" name="r_bno" value="${list. b_no}">
                         <input type="hidden" name="r_mno" value="${mno }">

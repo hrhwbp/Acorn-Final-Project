@@ -1,5 +1,7 @@
 package com.remind.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,20 +13,29 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.remind.model.DaoInter;
 import com.remind.model.LikeDto;
+import com.remind.model.ReplyDto;
 
 @Controller
 public class LikeController {
 	@Autowired
 	private DaoInter daoInter;
 	
-	/*@RequestMapping(value="insertReply", method=RequestMethod.POST)
+	@RequestMapping(value="insertLike", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> like(LikeBean bean){
 		daoInter.like(bean);
 		List<LikeDto> like = daoInter.showLike(bean.getL_bno());
-		int countLike = daoInter.countLike(bean.getL_bno());
-		int LikeYN = daoInter.likeYN(bean);
+		List<Map<String, String>> dataList = new ArrayList<Map<String, String>>();
+		Map<String, String> data = null;
 		
+		for(LikeDto dto : like){
+			data = new HashMap<String, String>();
+			data.put("l_name", dto.getL_mname());
+			dataList.add(data);
+		}
+		Map<String, Object> replyData = new HashMap<String, Object>();
+		replyData.put("datas", dataList);
+		return replyData;
 				
-	}*/
+	}
 }

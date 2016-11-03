@@ -48,23 +48,15 @@ public class BoardController {
 			List<LikeDto> like = daoInter.showLike(list.get(i).getB_no());
 			model.addObject("like" + list.get(i).getB_no(), like);	
 		}
-		//List<LikeDto> like = daoInter.showLike(m_no);
-		//List<LikeDto> countlike = daoInter.countLike(m_no);
-		
-		//model.addObject("like",like);
-		
 		model.addObject("list", list);
-		
-		//model.addObject("countlike", countlike);
 		model.setViewName("../../main");
 		return model;
 	}
-	@RequestMapping(value="snslist", method = RequestMethod.POST)
+	/*@RequestMapping(value="snslist", method = RequestMethod.POST)
 	public Map<String, Object> listPOST(@RequestParam("b_no") String b_no){
 		System.out.println("snslist test" + b_no);
 		List<ReplyDto> reply = daoInter.showReply(b_no);
 		List<LikeDto> like = daoInter.showLike(b_no);
-		LikeDto countlike = daoInter.countLike(b_no);
 		List<Map<String, String>> replydataList = new ArrayList<Map<String, String>>();
 		Map<String, String> replydata = null;
 		for (ReplyDto dto:reply){
@@ -88,7 +80,7 @@ public class BoardController {
 		
 		
 		
-	}
+	}*/
 	@RequestMapping(value="showDetail", method=RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> ShowDetail(@RequestParam("b_no") String b_no){
