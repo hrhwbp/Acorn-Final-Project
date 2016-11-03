@@ -13,84 +13,78 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		<c:forEach var="list" items="${list }">
-	/* 	$.ajax({
-			type:"post",
-			url:"snslist",
-			data:{"b_no":"${list.b_no}"},
-			success:function(data){
-				
-				var like = data.likedata[0];
-				var reply = data.replydata[0];
-				
-				var str = "<table class='table-condensed small' style='background-color: rgb(245, 245, 245); width: 100%'>"
-				
-				jQuery(reply).each(function(index, objArr){
-					str += "<tr>";
-					str += "<td><a href='#'>" + objArr.r_name +"</a>"+ objArr.r_content + "</td>";
-					str += "</tr>";
-				})
-				str += "</table>";
-				jQuery("#showreply${list.b_no}").html(str);
-				
-			},error:function(request,status,error){
-		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		       }
-		}); */
-		jQuery('a[name=replySubmit${list.b_no}]').click(function(){
-			//$("#reply").submit();
-			jQuery("#showreply${list.b_no}").empty();
-			  
-		$.ajax({
-			type:"post",
-			url:"insertReply",
-			data:$("#reply${list.b_no}").serialize(),
-			dataType:'json',
-			success:function(replyData){
-				var str = "<table class='table-condensed small' style='background-color: rgb(245, 245, 245); width: 100%'>"
-				var list = replyData.datas;
-				jQuery(list).each(function(index, objArr){
-					str += "<tr>";
-					str += "<td><a href='#'>" + objArr.r_name +"</a>"+ objArr.r_content + "</td>";
-					str += "</tr>";
-				})
-				str += "</table>";
-				jQuery("#showreply${list.b_no}").html(str);
-				jQuery("#r_content${list.b_no}").val("");
-			}
-		});
-		});
-		</c:forEach>
 	});
-	
+	function replySubmit(no){
+	$.ajax({
+		type:"post",
+		url:"insertReply",
+		data:$("#reply"+no).serialize(),
+		dataType:'json',
+		success:function(replyData){
+			var str = "<table class='table-condensed small' style='background-color: rgb(245, 245, 245); width: 100%'>"
+			var list = replyData.datas;
+			jQuery(list).each(function(index, objArr){
+				str += "<tr>";
+				str += "<td><a href='#'>" + objArr.r_name +"</a>"+ objArr.r_content + "</td>";
+				str += "</tr>";
+			})
+			str += "</table>";
+			jQuery("#showreply"+no).html(str);
+			jQuery("#r_content"+no).val("");
+		}
+	});
+	};
 	function likesubmit(b_no){
-		
-		jQuery("#showlike"+b_no).empty();
-		
-	
-		jQuery.ajax({
+			jQuery.ajax({
 			type:"post",
 			url:"insertLike",
-			data:{"b_no":b_no, "m_no":"${mno}"},
+			data:{"l_bno":b_no, "l_mno":"${mno}"},
 			dataType:'json',
 			success:function(likeData){
 				var list = likeData.datas;
+				var count = likeData.likecount
 				str = "";
-				if(list.size >11){
-             	    str += list.size() + "명이 좋아합니다";
+				if(count >11){
+             	    str += count + "명이 좋아합니다";
                    }
-               else if(list.size<=11){
+               else if(count<=11){
+            	   jQuery(list).each(function(index, objArr){
+                      str += objArr.l_name + "&nbsp&nbsp";
+                     }) 
+                     str += "님이 좋아합니다";
+                   }
+				jQuery("#showlike"+b_no).html(str);
+				jQuery("#likeYN"+b_no).attr({style:'color: red'});
+				jQuery("#likeYN"+b_no).attr({onclick:'likecancel('+b_no+')'})
+		}
+    })
+	}
+	function likecancel(b_no){
+			jQuery.ajax({
+			type:"post",
+			url:"cancelLike",
+			data:{"l_bno":b_no, "l_mno":"${mno}"},
+			dataType:'json',
+			success:function(likeData){
+				var list = likeData.datas;
+				var count = likeData.likecount
+				str = "";
+				if(count >11){
+             	    str += count + "명이 좋아합니다";
+                   }
+               else if(count<=11){
             	   jQuery(list).each(function(index, objArr){
                       str += objArr.l_name + ",";
                      }) 
                      str += "님이 좋아합니다";
                    }
 				jQuery("#showlike"+b_no).html(str);
-				jQuery("#r_content" + b_no).val("");
+				jQuery("#likeYN"+b_no).removeAttr("style");
+				jQuery("#likeYN"+b_no).attr({onclick:'likesubmit('+b_no+')'})
 			}
 		});
-    	
 	}
+    	
 	
 </script>
 <style type="text/css">
@@ -137,7 +131,7 @@
                </div>
                <div class="row">
                   <div class="col-md-12">
-                     &nbsp;<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;
+                     &nbsp;<span class="glyphicon glyphicon-heart" aria-hidden="true"  ></span>&nbsp;
                      	<%-- <c:forEach var = "like" items="${like }">
                      	<c:if test="${list.b_no	 == like.l_bno }">
             			${like.l_mname },
@@ -157,7 +151,7 @@
                      <%}
                   else if(like.size()<=11){
                 	  for(LikeDto dto:like){%>
-                      <%=dto.getL_mname() %>,
+                      <%=dto.getL_mname() %>&nbsp;
                     <%}%>님이 좋아합니다<%}
                   
                   	%>
@@ -185,14 +179,21 @@
                   <div class="col-md-9">
                   <div class="input-group">
                      <span class="input-group-addon " id="sizing-addon2">
-                     <span class="glyphicon glyphicon-heart" onclick="likesubmit(${list.b_no})"></span></span> 
+                     <c:set var="likeYN" value="likeYN${list.b_no}" />
+                     <%int likeYN = (Integer)request.getAttribute((String)pageContext.getAttribute("likeYN")); %>
+                     <%if(likeYN >=1){ %>
+                     <span class="glyphicon glyphicon-heart" onclick="likecancel(${list.b_no})" style="color:red" id="likeYN${list.b_no }"></span>
+                     <%}else{ %> 
+                     <span class="glyphicon glyphicon-heart" onclick="likesubmit(${list.b_no})" id="likeYN${list.b_no }"></span>
+                     <%} %>
+                     </span>
                         <input type="text" class="form-control" placeholder="답글달기..." aria-describedby="sizing-addon2" name="r_content" id = "r_content${list.b_no}">
                         <input type="hidden" name="r_bno" value="${list. b_no}">
                         <input type="hidden" name="r_mno" value="${mno }">
                   </div>
                   </div>
                   <div class="col-md-3">
-                  <a href="javascript:;" name = "replySubmit${list.b_no }" class="btn btn-default col-md-12" role="button">답글</a>
+                  <a href="javascript:;" onclick= "replySubmit(${list.b_no })" class="btn btn-default col-md-12" role="button">답글</a>
                   </div>
                   </form>
                </div>

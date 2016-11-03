@@ -33,9 +33,29 @@ public class LikeController {
 			data.put("l_name", dto.getL_mname());
 			dataList.add(data);
 		}
-		Map<String, Object> replyData = new HashMap<String, Object>();
-		replyData.put("datas", dataList);
-		return replyData;
+		Map<String, Object> likeData = new HashMap<String, Object>();
+		likeData.put("datas", dataList);
+		likeData.put("likecount", daoInter.countLike(bean.getL_bno()).getL_count());
+		return likeData;
+				
+	}
+	@RequestMapping(value="cancelLike", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> cancellike(LikeBean bean){
+		daoInter.likeCancel(bean);
+		List<LikeDto> like = daoInter.showLike(bean.getL_bno());
+		List<Map<String, String>> dataList = new ArrayList<Map<String, String>>();
+		Map<String, String> data = null;
+		
+		for(LikeDto dto : like){
+			data = new HashMap<String, String>();
+			data.put("l_name", dto.getL_mname());
+			dataList.add(data);
+		}
+		Map<String, Object> likeData = new HashMap<String, Object>();
+		likeData.put("datas", dataList);
+		likeData.put("likecount", daoInter.countLike(bean.getL_bno()).getL_count());
+		return likeData;
 				
 	}
 }

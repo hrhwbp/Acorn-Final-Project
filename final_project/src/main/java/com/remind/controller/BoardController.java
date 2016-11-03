@@ -48,6 +48,13 @@ public class BoardController {
 			List<LikeDto> like = daoInter.showLike(list.get(i).getB_no());
 			model.addObject("like" + list.get(i).getB_no(), like);	
 		}
+		for (int i = 0; i < list.size(); i++) {
+			LikeBean bean = new LikeBean();
+			bean.setL_bno(list.get(i).getB_no());
+			bean.setL_mno(m_no);
+			int likeYN = daoInter.likeYN(bean);
+			model.addObject("likeYN" + list.get(i).getB_no(), likeYN);	
+		}
 		model.addObject("list", list);
 		model.setViewName("../../main");
 		return model;

@@ -230,7 +230,7 @@ public class DataDao implements DaoInter{
 			annoInter.like(bean);
 			return true;
 		} catch (Exception e) {
-			System.out.println("deletewishlist err");
+			System.out.println("like err" +e);
 			return false;
 		}
 	}

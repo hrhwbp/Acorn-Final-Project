@@ -122,7 +122,7 @@ public interface AnnoInter {
 	@Select("select l_bno, l_mno, (select m_name from member where m_no = l_mno) l_mname from likeTable where l_bno = #{b_no}")
 	List<LikeDto> showLike(String b_no);
 	
-	@Select("select * from likeTable where l_bno = #{b_no} and l_mno = #{l_mno}")
+	@Select("select * from likeTable where l_bno = #{l_bno} and l_mno = #{l_mno}")
 	LikeDto likeYN(LikeBean bean);
 	
 	/*@Select("select count(*) l_count, l_bno from likeTable left outer join board on l_bno = b_no "
