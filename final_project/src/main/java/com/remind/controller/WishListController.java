@@ -61,8 +61,11 @@ public class WishListController {
 	@RequestMapping(value="insertWishGroup", method = RequestMethod.POST)
 	public String insertWishGroup(WishlistBean bean){	
 		boolean b = daoInter.insertWishGroup(bean);
+		String w_mno = bean.getW_mno();
+		System.out.println(bean.getW_mno());
+		System.out.println(b);
 		if(b)
-			return "showWishList?w_mno=" + bean.getW_mno();
+			return "redirect:/showWishList?w_mno=" + w_mno;  //"showWishList?w_mno=" + bean.getW_mno();
 		else
 			return	"redirect:/error.jsp";
 		

@@ -1,3 +1,4 @@
+<%@page import="com.remind.controller.WishlistBean"%>
 <%@page import="com.fasterxml.jackson.annotation.JsonInclude.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -65,6 +66,8 @@ $(document).ready(function(){
 								<div class="panel-body">
 									<!-- ---------각 상품 내용일 들어갈 자리-----------  -->
 									<table>
+										<% 	WishlistBean wBean = new WishlistBean();
+											if(wBean.getWg_no() != null){ %>
 									<c:forEach var="wlist" items="${wishlist }">	
 										<tr>
 											<td>상품명</td><td>가격</td><td>상세정보</td>
@@ -73,6 +76,9 @@ $(document).ready(function(){
 											<td>${wlist.w_pname}</td><td>${wlist.w_price}</td><td>${wlist.w_detail}</td>
 										</tr>								
 									</c:forEach>
+									<%}else{ %>
+										<p>새로운 물품을 추가하세요</p>
+										<%} %>
 									</table>		
 								</div>
 							</div>
@@ -90,7 +96,7 @@ $(document).ready(function(){
 							<div id="collapseThree" class="panel-collapse collapse">
 								<div class="panel-body">
 								
-								<form action="insertWishGroup" name="wishGroupForm" method="get">
+								<form name="wishGroupForm">
 									<div class="input-group">
 										<input type="text" name="wg_detail" id="wg_detail" class="form-control" placeholder="새로운 소원목록명...">
 										<input type="hidden" name="wg_mno" id="wg_mno" value="<%=session.getAttribute("mno") %>">
