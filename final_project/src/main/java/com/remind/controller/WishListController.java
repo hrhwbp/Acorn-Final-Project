@@ -58,14 +58,27 @@ public class WishListController {
 			return "redirect:/error.jsp";
 	}
 	
-	//WishList Group ó��
+	//WishList Group 愿��젴
 	@RequestMapping(value="insertWishGroup", method = RequestMethod.GET)
-	public String insertWishGroup(WishlistBean bean){	
-		System.out.println("�Դٰ���");
-		return null;
+	public String insertWishGroup(){	
+		ModelAndView modelAndView = new ModelAndView();
+		//modelAndView.addObject("wishgroup",daoInter.showWishGroup());
+		modelAndView.setViewName("../../wishlist");
+		modelAndView.setViewName("../../wishlist");
+		System.out.println("�떎��媛묐땲�떎");
+		return null;	
 		
 	}	
-	
+	@RequestMapping(value="insertWishGroup", method = RequestMethod.POST)
+	public ModelAndView insertWishGroup(WishlistBean bean){	
+		ModelAndView modelAndView = new ModelAndView();
+		//modelAndView.addObject("wishgroup",daoInter.showWishGroup(wg_mno));
+		modelAndView.setViewName("../../wishlist");
+		modelAndView.setViewName("../../wishlist");
+		System.out.println("�떎��媛묐땲�떎");
+		return modelAndView;	
+		
+	}		
 	
 	
 }

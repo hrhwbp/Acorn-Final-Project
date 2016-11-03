@@ -7,12 +7,33 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>ReMind : [RE:AD MIND]</title>
 
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
+<script	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+	
+	$("#btn_wishgroup_submit").click(function(){
+		//alert("hi");
+		if($("#wg_detail").val()== ""){
+			alert("새로운 목록의 이름을 넣어주세요!")
+		}else{
+			document.wishGroupForm.action = "insertWishGroup";
+			document.wishGroupForm.method = "get";
+			document.wishGroupForm.submit();
+		} 
+	});
+
+});
+
+	
+
+</script>
 </head>
 
 <%@include file="common.jsp"%>
@@ -69,10 +90,10 @@
 							<div id="collapseThree" class="panel-collapse collapse">
 								<div class="panel-body">
 								
-								<form action="insertWishGroup" method="get">
+								<form action="insertWishGroup" name="wishGroupForm" method="get">
 									<div class="input-group">
-										<input type="text" name="wg_detail" class="form-control" placeholder="새로운 소원목록명...">
-										<input type="hidden" name="wg_mno" value="<%=session.getAttribute("mno") %>">
+										<input type="text" name="wg_detail" id="wg_detail" class="form-control" placeholder="새로운 소원목록명...">
+										<input type="hidden" name="wg_mno" id="wg_mno" value="<%=session.getAttribute("mno") %>">
 										<span class="input-group-btn">
 										<button class="btn btn-default" id="btn_wishgroup_submit" type="button">추가</button>
 										</span>
