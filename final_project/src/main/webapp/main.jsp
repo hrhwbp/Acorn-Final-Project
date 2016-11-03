@@ -76,10 +76,10 @@
 			success:function(likeData){
 				var list = likeData.datas;
 				str = "";
-				if(list.length() >11){
+				if(list.size >11){
              	    str += list.size() + "명이 좋아합니다";
                    }
-               else if(list.size()<=11){
+               else if(list.size<=11){
             	   jQuery(list).each(function(index, objArr){
                       str += objArr.l_name + ",";
                      }) 
