@@ -33,13 +33,13 @@
 
 					<div class="panel-group" id="accordion">
 					
-					<c:forEach var="wgroup" items="wishgroup">							
+					<c:forEach var="wgroup" items="${wishgroup }">							
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h4 class="panel-title">
 									<a class="accordion-toggle" data-toggle="collapse"
 										data-parent="#accordion" href="#collapseTwo"> 
-										Collapsible	Group Item #2 </a>
+										${wgroup.wg_detail}</a>
 								</h4>
 							</div>
 							<div id="collapseTwo" class="panel-collapse collapse">
