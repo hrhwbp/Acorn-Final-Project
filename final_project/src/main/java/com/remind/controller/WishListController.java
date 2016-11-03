@@ -16,8 +16,11 @@ public class WishListController {
 	
 	@RequestMapping(value="showWishList", method = RequestMethod.GET)
 	public ModelAndView showWishList(@RequestParam("w_mno")String w_mno){
-		ModelAndView modelAndView = new ModelAndView("../../wishlist","wishlist",daoInter.showWishList(w_mno));
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("wishlist",daoInter.showWishList(w_mno));	
 		modelAndView.addObject("wishgroup",daoInter.showWishGroup(w_mno));
+		System.out.println();
+		modelAndView.setViewName("../../wishlist");
 		return modelAndView;
 	}
 	@RequestMapping(value="insertWishList", method = RequestMethod.GET)

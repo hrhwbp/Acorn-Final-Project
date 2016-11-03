@@ -33,27 +33,29 @@
 
 					<div class="panel-group" id="accordion">
 					
-					<c:forEach var="wgroup" items="wishgroup">							
+					<c:forEach var="wgroup" items="${wishgroup }">							
 						<div class="panel panel-default">
 							<div class="panel-heading">
 								<h4 class="panel-title">
 									<a class="accordion-toggle" data-toggle="collapse"
 										data-parent="#accordion" href="#collapseTwo"> 
-										Collapsible	Group Item #2 </a>
+										${wgroup.wg_detail}</a>
 								</h4>
 							</div>
 							<div id="collapseTwo" class="panel-collapse collapse">
-								<div class="panel-body">Anim pariatur cliche
-									reprehenderit, enim eiusmod high life accusamus terry
-									richardson ad squid. 3 wolf moon officia aute, non cupidatat
-									skateboard dolor brunch. Food truck quinoa nesciunt laborum
-									eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on
-									it squid single-origin coffee nulla assumenda shoreditch et.
-									Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-									cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-									vice lomo. Leggings occaecat craft beer farm-to-table, raw
-									denim aesthetic synth nesciunt you probably haven't heard of
-									them accusamus labore sustainable VHS.</div>
+								<div class="panel-body">
+									<!-- ---------각 상품 내용일 들어갈 자리-----------  -->
+									<table>
+									<c:forEach var="wlist" items="${wishlist }">	
+										<tr>
+											<td>상품명</td><td>가격</td><td>상세정보</td>
+										</tr>
+										<tr>
+											<td>${wlist.w_pname}</td><td>${wlist.w_price}</td><td>${wlist.w_detail}</td>
+										</tr>								
+									</c:forEach>
+									</table>		
+								</div>
 							</div>
 						</div>
 						</c:forEach>
@@ -63,11 +65,20 @@
 								<h4 class="panel-title">
 									<a class="accordion-toggle" data-toggle="collapse"
 										data-parent="#accordion" href="#collapseThree">
-										새로운 소원목록 작성하기<%=session.getAttribute("mno") %>  </a>
+										새로운 소원목록 작성하기  </a>
 								</h4>
 							</div>
 							<div id="collapseThree" class="panel-collapse collapse">
-								<div class="panel-body">아직 아무것도 추가 안하셨네요~~ㅋㅋㅋ 추가하셈<input type="text"></div>
+								<div class="panel-body">
+								
+									<div class="input-group">
+										<input type="text" class="form-control" placeholder="새로운 소원목록명...">
+										<span class="input-group-btn">
+										<button class="btn btn-default" type="button">추가</button>
+										</span>
+									</div><!-- /input-group -->
+								
+								</div>
 							</div>
 						</div>
 					</div>
