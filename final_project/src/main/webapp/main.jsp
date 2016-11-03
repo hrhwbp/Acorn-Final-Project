@@ -1,6 +1,10 @@
+<%@page import="com.remind.model.LikeDto"%>
+<%@page import="com.remind.model.ReplyDto"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib  prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE PUBLIC>
 <html>
 <head>
@@ -10,6 +14,29 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		<c:forEach var="list" items="${list }">
+	/* 	$.ajax({
+			type:"post",
+			url:"snslist",
+			data:{"b_no":"${list.b_no}"},
+			success:function(data){
+				
+				var like = data.likedata[0];
+				var reply = data.replydata[0];
+				
+				var str = "<table class='table-condensed small' style='background-color: rgb(245, 245, 245); width: 100%'>"
+				
+				jQuery(reply).each(function(index, objArr){
+					str += "<tr>";
+					str += "<td><a href='#'>" + objArr.r_name +"</a>"+ objArr.r_content + "</td>";
+					str += "</tr>";
+				})
+				str += "</table>";
+				jQuery("#showreply${list.b_no}").html(str);
+				
+			},error:function(request,status,error){
+		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		       }
+		}); */
 		jQuery('a[name=replySubmit${list.b_no}]').click(function(){
 			//$("#reply").submit();
 			jQuery("#showreply${list.b_no}").empty();
@@ -17,13 +44,10 @@
 		$.ajax({
 			type:"post",
 			url:"insertReply",
-			dataType:"json",
 			data:$("#reply${list.b_no}").serialize(),
 			success:function(replyData){
-				
 				var str = "<table class='table-condensed small' style='background-color: rgb(245, 245, 245); width: 100%'>"
 				var list = replyData.datas;
-				   
 				jQuery(list).each(function(index, objArr){
 					str += "<tr>";
 					str += "<td><a href='#'>" + objArr.r_name +"</a>"+ objArr.r_content + "</td>";
@@ -35,8 +59,11 @@
 			}
 		});
 		});
+		
 		</c:forEach>
+		
 	});
+	
 </script>
 <style type="text/css">
 .follower_post {
@@ -64,7 +91,7 @@
 
 <body style="background-color: white">
 	<div style="padding-top: 2%">	<!--Top menubar와의 거리 2% -->
-   <div class="container col-md-5 col-md-offset-0 " style="background-color: rgb(250, 250, 250); padding-top: 1%">
+   <div class="container col-md-5 col-md-offset-0 " style="background-color: rgb(250, 250, 250); padding-top: 1%; padding-bottom:2%">
 
    
    	<c:forEach var="list" items="${list }">
@@ -83,21 +110,43 @@
                <div class="row">
                   <div class="col-md-12">
                      &nbsp;<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;
-                     yeanaya, hanul120, hongeunii, eshim7, mitchkim48, shinyoung_h님이
-                     좋아합니다.
+                     	<%-- <c:forEach var = "like" items="${like }">
+                     	<c:if test="${list.b_no	 == like.l_bno }">
+            			${like.l_mname },
+            			</c:if> 
+            			</c:forEach>
+            			님이  좋아합니다. --%>
+            			 <c:set var="like" value="like${list.b_no}" />
+                  <%List<LikeDto> like = (List<LikeDto>)request.getAttribute((String)pageContext.getAttribute("like")); %>
+                  <%if(like.size() == 0){ %>
+                  	처음 좋아요의 주인공이 되세요
+                  <%}else if(like.size() >11){
+                	  %>
+                       <%=like.size() %>명이 좋아합니다
+                       
+                     <%}
+                  else if(like.size()<=11){
+                	  for(LikeDto dto:like){%>
+                      <%=dto.getL_mname() %>,
+                    <%}%>님이 좋아합니다<%}
+                  
+                  	%>
+                     
+            	     
                   </div>
                </div>
                <div class="row">
                   <div class="col-md-12">
                   <div id="showreply${list.b_no}">
+                  <c:set var="re" value="reply${list.b_no}" />
+                  <%List<ReplyDto> reply = (List<ReplyDto>)request.getAttribute((String)pageContext.getAttribute("re")); %>
                      <table class="table-condensed small" style="background-color: rgb(245, 245, 245); width: 100%">
-                    <c:forEach var="re" items="${reply }">
-                    <c:if test="${list.b_no == re.r_bno }">
-                        <tr>
-                           <td><a href="#">${re.r_name }</a> ${re.r_content }</td>
+                    <%for(ReplyDto dto:reply){%>
+                       <tr>
+                           <td><a href="#"><%=dto.getR_name() %></a> <%=dto.getR_content() %></td>
                         </tr>
-                        </c:if>
-                     </c:forEach>
+                       
+                     <%} %>
                      </table>
                      </div>
                   </div>

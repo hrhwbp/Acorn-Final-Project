@@ -13,7 +13,13 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<!-- 부가적인 테마 -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-	
+	<!-- 어코디언 적용을 위한 시험 -->
+	<script src="http://v4-alpha.getbootstrap.com/assets/js/vendor/tether.min.js"></script>
+	<script src="http://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
+	<script src="http://v4-alpha.getbootstrap.com/assets/js/docs.min.js"></script>
+	<!-- Documentation extras -->
+	<link href="http://v4-alpha.getbootstrap.com/assets/css/docs.min.css" rel="stylesheet">
+	<!-- 시험끝 -->
 	
 	
 	<style type="text/css">

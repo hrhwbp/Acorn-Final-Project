@@ -25,7 +25,13 @@
 	}
 </script>
 </head>
-
+<% 
+String mno = (String)session.getAttribute("mno");
+	
+if (session.getAttribute("mno") != null){	
+	response.sendRedirect("main.jsp");	
+}
+%>
 <body class="center-block()">
 	<div class="container main_pd">
 		<div class="container col-md-5 col-md-offset-1">

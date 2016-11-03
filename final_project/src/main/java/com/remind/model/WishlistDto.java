@@ -1,8 +1,10 @@
 package com.remind.model;
 
 public class WishlistDto {
-String w_no, w_mno, w_pname, w_image, w_addr, w_detail, w_like, w_lock;
+	
+String w_no, w_mno, w_pname, w_image, w_addr, w_detail, w_like, w_lock, wg_detail, wg_no, wg_mno;
 int w_price;
+
 public String getW_no() {
 	return w_no;
 }
@@ -14,6 +16,24 @@ public String getW_mno() {
 }
 public void setW_mno(String w_mno) {
 	this.w_mno = w_mno;
+}
+public String getWg_detail() {
+	return wg_detail;
+}
+public void setWg_detail(String wg_detail) {
+	this.wg_detail = wg_detail;
+}
+public String getWg_no() {
+	return wg_no;
+}
+public void setWg_no(String wg_no) {
+	this.wg_no = wg_no;
+}
+public String getWg_mno() {
+	return wg_mno;
+}
+public void setWg_mno(String wg_mno) {
+	this.wg_mno = wg_mno;
 }
 public String getW_pname() {
 	return w_pname;
