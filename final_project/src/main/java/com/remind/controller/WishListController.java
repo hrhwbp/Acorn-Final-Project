@@ -18,8 +18,7 @@ public class WishListController {
 	public ModelAndView showWishList(@RequestParam("w_mno")String w_mno){
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("wishlist",daoInter.showWishList(w_mno));	
-		modelAndView.addObject("wishgroup",daoInter.showWishGroup(w_mno));
-		System.out.println();
+		modelAndView.addObject("wishgroup",daoInter.showWishGroup(w_mno));		
 		modelAndView.setViewName("../../wishlist");
 		return modelAndView;
 	}
@@ -58,27 +57,16 @@ public class WishListController {
 			return "redirect:/error.jsp";
 	}
 	
-	//WishList Group 愿��젴
-	@RequestMapping(value="insertWishGroup", method = RequestMethod.GET)
-	public String insertWishGroup(){	
-		ModelAndView modelAndView = new ModelAndView();
-		//modelAndView.addObject("wishgroup",daoInter.showWishGroup());
-		modelAndView.setViewName("../../wishlist");
-		modelAndView.setViewName("../../wishlist");
-		System.out.println("�떎��媛묐땲�떎");
-		return null;	
-		
-	}	
+	//WishList Group 	
 	@RequestMapping(value="insertWishGroup", method = RequestMethod.POST)
-	public ModelAndView insertWishGroup(WishlistBean bean){	
-		ModelAndView modelAndView = new ModelAndView();
-		//modelAndView.addObject("wishgroup",daoInter.showWishGroup(wg_mno));
-		modelAndView.setViewName("../../wishlist");
-		modelAndView.setViewName("../../wishlist");
-		System.out.println("�떎��媛묐땲�떎");
-		return modelAndView;	
+	public String insertWishGroup(WishlistBean bean){	
+		boolean b = daoInter.insertWishGroup(bean);
+		if(b)
+			return "showWishList?w_mno=" + bean.getW_mno();
+		else
+			return	"redirect:/error.jsp";
 		
 	}		
-	
+
 	
 }

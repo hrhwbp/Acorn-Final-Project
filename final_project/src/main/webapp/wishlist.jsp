@@ -24,7 +24,7 @@ $(document).ready(function(){
 			alert("새로운 목록의 이름을 넣어주세요!")
 		}else{
 			document.wishGroupForm.action = "insertWishGroup";
-			document.wishGroupForm.method = "get";
+			document.wishGroupForm.method = "post";
 			document.wishGroupForm.submit();
 		} 
 	});
@@ -94,6 +94,7 @@ $(document).ready(function(){
 									<div class="input-group">
 										<input type="text" name="wg_detail" id="wg_detail" class="form-control" placeholder="새로운 소원목록명...">
 										<input type="hidden" name="wg_mno" id="wg_mno" value="<%=session.getAttribute("mno") %>">
+										<input type="hidden" name="w_mno" id="w_mno" value="<%=session.getAttribute("mno") %>">
 										<span class="input-group-btn">
 										<button class="btn btn-default" id="btn_wishgroup_submit" type="button">추가</button>
 										</span>
