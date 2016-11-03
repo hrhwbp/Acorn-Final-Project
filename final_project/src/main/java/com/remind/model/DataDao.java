@@ -131,7 +131,11 @@ public class DataDao implements DaoInter{
 	}
 	@Override
 	public List<ReplyDto> showReply(String b_no1) throws DataAccessException{
-		return annoInter.showReply(b_no1);
+		if( annoInter.countreply(b_no1)<5){
+		return annoInter.showReply(b_no1, 0);	
+		}else{
+		return annoInter.showReply(b_no1,annoInter.countreply(b_no1)-5);
+		}
 	}
 	@Override
 	public List<ReplyDto> showReplyall(String m_no) throws DataAccessException {
