@@ -1,4 +1,0 @@
-driver=org.mariadb.jdbc.Driver
-url=jdbc:mysql://rise3370.iptime.org
-username=wbp
-password=123
