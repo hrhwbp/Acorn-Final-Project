@@ -7,35 +7,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>REMIND</title>
-<!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<!-- 부가적인 테마 -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-<style type="text/css">
-.top_pd {
-	padding-top: 2%;
-}
+<%@include file="common.jsp"%>
 
-.bottom_pd {
-	padding-bottom: 2%;
-}
-
-.main_pd {
-	padding-top: 15%;
-	padding-bottom: 20%;
-}
-
-.lbl_pd {
-	padding-top: 3%
-}
-</style>
-<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#showjoin").hide()
@@ -52,6 +25,13 @@
 	}
 </script>
 </head>
+<% 
+String mno = (String)session.getAttribute("mno");
+	
+if (session.getAttribute("mno") != null){	
+	response.sendRedirect("main.jsp");	
+}
+%>
 <body class="center-block()">
 	<div class="container main_pd">
 		<div class="container col-md-5 col-md-offset-1">
@@ -63,7 +43,7 @@
 		<div class="container col-md-5">
 			<div class="row col-md-12" title="" id="showlogin"
 				style="padding-top: 18%">
-				<form class="form-signin" method="post" action="login">
+				<form class="form-signin" method="post" action="login	">
 					<h2 class="form-signin-heading text-center">로그인</h2>
 					<div class="col-md-12">
 						<label for="inputEmail" class="sr-only">Email address</label> <input
@@ -133,7 +113,7 @@
 
 						<div class="col-md-3 top_pd text-right">
 							<label class="" for="ss">일</label> <select id="ss" name="day"
-								class="form-control" style="font-size: 10px">
+								class="form-control" >
 								<c:forEach var="i" begin="1" end ="31" step="1">
 								<option>${i}</option>
 								</c:forEach>
@@ -163,6 +143,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<%@include file="bottom.jsp"%>
 </body>
 </html>
