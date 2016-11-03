@@ -65,18 +65,21 @@
 								<h4 class="panel-title">
 									<a class="accordion-toggle" data-toggle="collapse"
 										data-parent="#accordion" href="#collapseThree">
-										새로운 소원목록 작성하기  </a>
+										새로운 소원목록 작성하기</a>
 								</h4>
 							</div>
 							<div id="collapseThree" class="panel-collapse collapse">
 								<div class="panel-body">
 								
+								<form action="insertWishGroup" method="get">
 									<div class="input-group">
-										<input type="text" class="form-control" placeholder="새로운 소원목록명...">
+										<input type="text" name="wg_detail" class="form-control" placeholder="새로운 소원목록명...">
+										<input type="hidden" name="wg_mno" value="<%=session.getAttribute("mno") %>">
 										<span class="input-group-btn">
-										<button class="btn btn-default" type="button">추가</button>
+										<button class="btn btn-default" id="wishgroup_submit" type="button">추가</button>
 										</span>
 									</div><!-- /input-group -->
+								</form>
 								
 								</div>
 							</div>

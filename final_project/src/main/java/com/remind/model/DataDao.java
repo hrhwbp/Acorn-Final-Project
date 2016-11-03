@@ -253,9 +253,9 @@ public class DataDao implements DaoInter{
 	
 	
 	@Override
-	public boolean writeWishGroup(WishlistBean bean) throws DataAccessException {
+	public boolean insertWishGroup(WishlistBean bean) throws DataAccessException {
 		try {
-			annoInter.writeWishGroup(bean);
+			annoInter.insertWishGroup(bean);
 			return true;
 		} catch (Exception e) {
 			System.out.println("writewishlistgroup err");

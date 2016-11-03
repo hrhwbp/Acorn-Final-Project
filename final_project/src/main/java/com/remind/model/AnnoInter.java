@@ -89,7 +89,7 @@ public interface AnnoInter {
 	boolean updateReply(ReplyBean bean);
 
 	
-	// wishlist
+	//WishList
 	@Select("select * from wishlist where w_mno = #{w_mno}")
 	List<WishlistDto> showWishList(String w_mno);
 	
@@ -102,11 +102,13 @@ public interface AnnoInter {
 	@Update("update wishlist set w_pname=#{w_pname}, w_price=#{w_price}, w_image=#{w_image}, w_addr=#{w_addr}, w_detail=#{w_detail} where w_no = #{w_no}")
 	boolean updateWishlist(WishlistBean bean);
 
+	
+	//WishGroup
 	@Select("select * from wishgroup where wg_mno=#{wg_mno}")
 	List<WishlistDto> showWishGroup(String wg_mno);
 	
 	@Insert("insert into wishgroup (wg_mno, wg_detail) values(#{wg_mno},#{wg_detail})")
-	boolean writeWishGroup(WishlistBean bean);
+	boolean insertWishGroup(WishlistBean bean);
 	
 	@Delete("delete from wishgroup where wg_no = #{wg_no}")
 	boolean deleteWishGroup(String wg_no);
