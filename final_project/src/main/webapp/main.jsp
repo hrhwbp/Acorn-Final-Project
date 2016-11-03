@@ -69,12 +69,14 @@
 				var list = likeData.datas;
 				var count = likeData.likecount
 				str = "";
-				if(count >11){
+				if(count == 0){
+					str +="처음 좋아요의 주인공이 되세요";
+				}else if(count >11){
              	    str += count + "명이 좋아합니다";
                    }
                else if(count<=11){
             	   jQuery(list).each(function(index, objArr){
-                      str += objArr.l_name + ",";
+                      str += objArr.l_name + " ";
                      }) 
                      str += "님이 좋아합니다";
                    }
