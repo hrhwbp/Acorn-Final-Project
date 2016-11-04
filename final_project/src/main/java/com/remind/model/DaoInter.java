@@ -4,30 +4,32 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 
+import com.remind.controller.AnniversaryBean;
 import com.remind.controller.BoardBean;
 import com.remind.controller.FollowBean;
 import com.remind.controller.LikeBean;
 import com.remind.controller.MemberBean;
 import com.remind.controller.ReplyBean;
+import com.remind.controller.ScrollBean;
 import com.remind.controller.WishlistBean;
 
 public interface DaoInter {
 	//sns board
 	List<BoardDto> showBoard(String m_no) throws DataAccessException;
+	List<BoardDto> scrollBoard(ScrollBean bean) throws DataAccessException;
 	BoardDto showBoardDetail(String b_no1) throws DataAccessException;
 	boolean eraseBoard(String b_no1) throws DataAccessException;
 	boolean write(BoardBean bean) throws DataAccessException;
 	boolean updateBoard(BoardBean bean) throws DataAccessException;
 	
-	
 	//member
 	List<BoardDto> showMyMain(String b_mno);
 	MemberDto showMemberDetail(String m_no) throws DataAccessException;
+	MemberDto memberDetail(String m_name) throws DataAccessException;
 	boolean joinMember(MemberBean bean) throws DataAccessException;
 	boolean outMember(String m_no) throws DataAccessException;
 	boolean updateMember(MemberBean bean) throws DataAccessException;
 	MemberDto login(MemberBean bean);
-	
 	
 	//follow
 	List<FollowDto> showMyFollower(String m_no) throws DataAccessException;
@@ -65,5 +67,12 @@ public interface DaoInter {
 	LikeDto countLike(String b_no) throws DataAccessException;
 	boolean like(LikeBean bean) throws DataAccessException;
 	boolean likeCancel(LikeBean bean) throws DataAccessException;
+	
+	//Anniversary
+	List<AnniversaryDto> showAnniversary(String m_no) throws DataAccessException;
+	boolean insertAnniversary(AnniversaryBean bean) throws DataAccessException;
+	boolean deleteAnniversary(AnniversaryBean bean) throws DataAccessException;
+	boolean updateAnniversary(AnniversaryBean bean) throws DataAccessException;
+
 
 }
