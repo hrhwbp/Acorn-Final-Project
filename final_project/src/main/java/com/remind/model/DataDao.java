@@ -14,8 +14,6 @@ import com.remind.controller.ReplyBean;
 import com.remind.controller.ScrollBean;
 import com.remind.controller.WishlistBean;
 
-import ch.qos.logback.classic.net.SyslogAppender;
-
 @Repository
 public class DataDao implements DaoInter {
 	@Autowired
@@ -217,6 +215,11 @@ public class DataDao implements DaoInter {
 	@Override
 	public List<WishlistDto> showWishList(String w_mno) throws DataAccessException {
 		return annoInter.showWishList(w_mno);
+	}
+	
+	@Override
+	public List<WishlistDto> showEachWishList(String g_num) throws DataAccessException {
+		return annoInter.showEachWishList(g_num);
 	}
 
 	@Override
