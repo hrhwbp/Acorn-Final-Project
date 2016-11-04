@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.remind.model.AnniversaryDto;
 import com.remind.model.BoardDto;
 import com.remind.model.DaoInter;
 import com.remind.model.LikeDto;
@@ -39,6 +40,7 @@ public class BoardController {
 	public ModelAndView list(HttpSession session){
 		String m_no = (String) session.getAttribute("mno");
 		ModelAndView model = new ModelAndView();
+		List<AnniversaryDto> anniversary = daoInter.showAnniversary(m_no);
 		List<BoardDto> list = daoInter.showBoard(m_no);
 		for (int i = 0; i < list.size(); i++) {
 			List<ReplyDto> reply = daoInter.showReply(list.get(i).getB_no());
@@ -59,8 +61,34 @@ public class BoardController {
 			model.addObject("likeYN" + list.get(i).getB_no(), likeYN);	
 		}
 		model.addObject("list", list);
+		model.addObject("anniversary",anniversary);
 		model.setViewName("../../main");
 		return model;
+	}
+	@RequestMapping("scroll")
+	@ResponseBody
+	public Map<String, Object> scrolling(@RequestParam("last_bno")String last_bnoShouldMinus, HttpSession session){
+		String m_no = (String) session.getAttribute("mno");
+		
+		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
+		Map<String, String> data = null;
+		int last_bnoInt = Integer.parseInt(last_bnoShouldMinus);
+		String last_bno = Integer.toString(last_bnoInt -1);
+		System.out.println();
+		ScrollBean bean = new ScrollBean();
+		bean.setLast_b_no(last_bno);
+		bean.setM_no(m_no);
+		List<BoardDto> boardList = daoInter.scrollBoard(bean);
+		for(BoardDto s : boardList){
+			data = new HashMap<String,String>();
+			data.put("b_no",s.getB_no());
+			data.put("b_image", s.getB_image());
+			data.put("b_content", s.getB_content());
+			dataList.add(data);
+		}
+		Map<String, Object> scrollData = new HashMap<String, Object>();
+		
+		return scrollData;
 	}
 	/*@RequestMapping(value="snslist", method = RequestMethod.POST)
 	public Map<String, Object> listPOST(@RequestParam("b_no") String b_no){
@@ -87,8 +115,6 @@ public class BoardController {
 		data.put("likedata"+b_no, likeList);
 		
 		return data;
-		
-		
 		
 	}*/
 	@RequestMapping(value="showDetail", method=RequestMethod.GET)

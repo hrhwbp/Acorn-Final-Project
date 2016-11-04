@@ -39,8 +39,15 @@ public class MemberController {
 		
 		bean.setM_bdate(bean.getYear()+ "-" + bean.getMonth() + "-" + bean.getDay());
 		boolean b = daoInter.joinMember(bean);
-		if(b)
+		if(b){
+			MemberDto dto = daoInter.memberDetail(bean.getM_name());
+			AnniversaryBean bean2 = new AnniversaryBean();
+			bean2.setA_date(bean.getM_bdate());
+			bean2.setA_detail("생일");
+			bean2.setA_mno(dto.getM_no());
+			daoInter.insertAnniversary(bean2);
 			return "redirect:/index.jsp";
+		}
 		else return "redirect:/error.jsp";
 	}
 	@RequestMapping(value="out", method = RequestMethod.GET)

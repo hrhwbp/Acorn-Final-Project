@@ -13,36 +13,69 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
-	$(document).scroll(function() {
-	var maxHeight = $(document).height();
-	var currentScroll = $(window).scrollTop() + $(window).height();
-	if (maxHeight <= currentScroll + 100) {
-	$.ajax({
-	
-	})
+
+	$(window).bind("scroll",scrolling);  
+});
+
+function scrolling(){ 
+	var documentHeight  = $(document).height() * 2 - 1200;
+	var scrollHeight = $(window).scrollTop()+$(window).height();
+	console.log ("documentHeight : " + documentHeight) 
+	console.log ("scrollHeight : " + scrollHeight)
+
+	if(scrollHeight >= documentHeight) {
+		var lastbno = $(".thumbnail:last").attr("data-bno");
+		console.log("last_bno : " + lastbno)
+		$.ajax({
+			type:"get",
+			url:"scroll",
+			dataType:"json",
+			data:{"last_bno":lastbno},
+			success:function(scrollData){
+				console.log("scroll 이벤트 성공  ( 출력 준비 )")			
+			},
+			error:function(){
+				console.log("scroll 이벤트 실패")
+			}
+		});	
+
 	}
-	})
-	});
+}
+
 	function replySubmit(no){
-	$.ajax({
-		type:"post",
-		url:"insertReply",
-		data:$("#reply"+no).serialize(),
-		dataType:'json',
-		success:function(replyData){
-			var str = "<table class='table-condensed small' style='background-color: rgb(245, 245, 245); width: 100%'>"
-			var list = replyData.datas;
-			jQuery(list).each(function(index, objArr){
-				str += "<tr>";
-				str += "<td><a href='#'>" + objArr.r_name +"</a>"+ objArr.r_content + "</td>";
-				str += "</tr>";
-			})
-			str += "</table>";
-			jQuery("#showreply"+no).html(str);
-			jQuery("#r_content"+no).val("");
+
+		if($( "input[name$='r_content']" ).val() == ""){
+			alert("댓글에 내용을 써주세요");
+			return;
+		}else{
+		
+		$.ajax({
+			type:"post",
+			url:"insertReply",
+			data:$("#reply"+no).serialize(),
+			dataType:'json',
+			success:function(replyData){
+				var str = "<table class='table-condensed small' style='background-color: rgb(245, 245, 245); width: 100%'>"
+				var list = replyData.datas;
+				var count = replyData.count;
+				if(count>5){
+					str += '<tr><td> <a href="javascript:;" onclick= "showReplyMore('+no+')">show reply all</a></td></tr>'
+				}
+					jQuery(list).each(function(index, objArr){
+					str += "<tr>";
+					str += "<td><a href='#'>" + objArr.r_name +"</a>"+ objArr.r_content + "</td>";
+					str += "</tr>";
+				})
+				str += "</table>";
+				jQuery("#showreply"+no).html(str);
+				jQuery("#r_content"+no).val("");
+			}
+		
+		});
 		}
-	});
-	};
+	}
+		
+
 	function likesubmit(b_no){
 			jQuery.ajax({
 			type:"post",
@@ -115,6 +148,7 @@ $(document).ready(function () {
     		}
     	});
     }	
+    
 	
 </script>
 <style type="text/css">
@@ -147,7 +181,7 @@ $(document).ready(function () {
 	<c:forEach var="list" items="${list }">
    	  <div class="row">
          <div class="col-md-12">
-            <div class="thumbnail" >
+            <div class="thumbnail" data-bno="${list.b_no }" >
                <img alt="food" src="${list.b_image}" height="400px">
                <div class="caption">
                <div class="row">
@@ -198,7 +232,7 @@ $(document).ready(function () {
                </div>
                <div class="row top_pd">
                <form action = "insertReply" method="post" id = "reply${list.b_no}" name = "reply">
-                  <div class="col-md-9">
+                  <div class="col-md-12">
                   <div class="input-group">
                      <span class="input-group-addon " id="sizing-addon2">
                      <c:set var="likeYN" value="likeYN${list.b_no}" />
@@ -212,11 +246,16 @@ $(document).ready(function () {
                         <input type="text" class="form-control" placeholder="답글달기..." aria-describedby="sizing-addon2" name="r_content" id = "r_content${list.b_no}">
                         <input type="hidden" name="r_bno" value="${list. b_no}">
                         <input type="hidden" name="r_mno" value="${mno }">
+                        <!-- 답글 버튼 -->
+                        <span class="input-group-btn">
+        					<button class="btn btn-default" type="button" id="btn_reply" onclick="replySubmit(${list.b_no })">답글</button>
+     					</span>
+                        <!-- 답글 버튼 끝 -->
                   </div>
                   </div>
-                  <div class="col-md-3">
+                  <%-- <div class="col-md-3">
                   <a href="javascript:;" onclick= "replySubmit(${list.b_no })" class="btn btn-default col-md-12" role="button">답글</a>
-                  </div>
+                  </div> --%>
                   </form>
                </div>
                </div>
@@ -232,7 +271,11 @@ $(document).ready(function () {
             <div class="col-md-10 col-md-offset-2">
                <nav class="bs-docs-sidebar hidden-print hidden-xs affix">
                   <ul class="nav bs-docs-sidenav text-right">
-                     <li>${mno }현재 이벤트현재 이벤트현재 이벤트현재 이벤트</li>
+                 <%--  <c:forEach var="anni" items="${anniversary}">
+                  
+                     <li>${anni.a_date}는 <a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>님의 ${anni.a_detail }입니다.<n/></li>
+                     
+                   </c:forEach>   --%>
 				  </ul>
                </nav>
             </div>

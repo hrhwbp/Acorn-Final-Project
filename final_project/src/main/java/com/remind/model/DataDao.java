@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
+import com.remind.controller.AnniversaryBean;
 import com.remind.controller.BoardBean;
 import com.remind.controller.FollowBean;
 import com.remind.controller.LikeBean;
 import com.remind.controller.MemberBean;
 import com.remind.controller.ReplyBean;
+import com.remind.controller.ScrollBean;
 import com.remind.controller.WishlistBean;
-
-import ch.qos.logback.classic.net.SyslogAppender;
 
 @Repository
 public class DataDao implements DaoInter {
@@ -24,7 +24,11 @@ public class DataDao implements DaoInter {
 	public List<BoardDto> showBoard(String m_no) throws DataAccessException {
 		return annoInter.showBoard(m_no);
 	}
-
+	@Override
+	public List<BoardDto> scrollBoard(ScrollBean bean) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return annoInter.scrollingBoard(bean);
+	}
 	@Override
 	public BoardDto showBoardDetail(String b_no1) throws DataAccessException {
 		return annoInter.showBoardDetail(b_no1);
@@ -74,6 +78,11 @@ public class DataDao implements DaoInter {
 	@Override
 	public MemberDto showMemberDetail(String m_no) throws DataAccessException {
 		return annoInter.showMemberDetail(m_no);
+	}
+	@Override
+	public MemberDto memberDetail(String m_name) throws DataAccessException {
+		
+		return annoInter.memberDetail(m_name);
 	}
 
 	@Override
@@ -214,6 +223,11 @@ public class DataDao implements DaoInter {
 	public List<WishlistDto> showWishList(String w_mno) throws DataAccessException {
 		return annoInter.showWishList(w_mno);
 	}
+	
+	@Override
+	public List<WishlistDto> showEachWishList(String g_num) throws DataAccessException {
+		return annoInter.showEachWishList(g_num);
+	}
 
 	@Override
 	public boolean writeWishlist(WishlistBean bean) throws DataAccessException {
@@ -329,5 +343,39 @@ public class DataDao implements DaoInter {
 		}
 
 	}
-
+	//anniversary
+	@Override
+	public List<AnniversaryDto> showAnniversary(String m_no) throws DataAccessException {
+		return annoInter.showAnniversary(m_no);
+	}
+	@Override
+	public boolean deleteAnniversary(AnniversaryBean bean) throws DataAccessException {
+		try {
+			annoInter.deleteAnniversary(bean);
+			return true;
+		} catch (Exception e) {
+			System.out.println("Delete anniversary err");
+			return false;
+		}
+	}
+	@Override
+	public boolean insertAnniversary(AnniversaryBean bean) throws DataAccessException {
+		try {
+			annoInter.insertAnniversary(bean);
+			return true;
+		} catch (Exception e) {
+			System.out.println("insert anniversary err");
+			return false;
+		}
+	}
+	@Override
+	public boolean updateAnniversary(AnniversaryBean bean) throws DataAccessException {
+		try {
+			annoInter.updateAnniversary(bean);
+			return true;
+		} catch (Exception e) {
+			System.out.println("update anniversary err");
+			return false;
+		}
+	}
 }

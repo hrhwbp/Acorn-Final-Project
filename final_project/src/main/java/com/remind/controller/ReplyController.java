@@ -30,7 +30,7 @@ public class ReplyController {
 		List<ReplyDto> reply = daoInter.showReply(bean.getR_bno());
 		List<Map<String, String>> dataList = new ArrayList<Map<String, String>>();
 		Map<String, String> data = null;
-		
+		int count = daoInter.countReply(bean.getR_bno());
 		for(ReplyDto dto : reply){
 			data = new HashMap<String, String>();
 			data.put("r_name", dto.getR_name());
@@ -39,6 +39,7 @@ public class ReplyController {
 		}
 		Map<String, Object> replyData = new HashMap<String, Object>();
 		replyData.put("datas", dataList);
+		replyData.put("count", count);
 		return replyData;
 		
 	}
