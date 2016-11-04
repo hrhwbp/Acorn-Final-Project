@@ -11,6 +11,7 @@ import com.remind.controller.FollowBean;
 import com.remind.controller.LikeBean;
 import com.remind.controller.MemberBean;
 import com.remind.controller.ReplyBean;
+import com.remind.controller.ScrollBean;
 import com.remind.controller.WishlistBean;
 
 import ch.qos.logback.classic.net.SyslogAppender;
@@ -24,7 +25,11 @@ public class DataDao implements DaoInter {
 	public List<BoardDto> showBoard(String m_no) throws DataAccessException {
 		return annoInter.showBoard(m_no);
 	}
-
+	@Override
+	public List<BoardDto> scrollBoard(ScrollBean bean) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return annoInter.scrollingBoard(bean);
+	}
 	@Override
 	public BoardDto showBoardDetail(String b_no1) throws DataAccessException {
 		return annoInter.showBoardDetail(b_no1);

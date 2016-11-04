@@ -14,12 +14,17 @@ import com.remind.controller.FollowBean;
 import com.remind.controller.LikeBean;
 import com.remind.controller.MemberBean;
 import com.remind.controller.ReplyBean;
+import com.remind.controller.ScrollBean;
 import com.remind.controller.WishlistBean;
 
 public interface AnnoInter {
 	// sns board
-	@Select("select b_no, b_image, b_content, b_date, b_like, (select m_name from member where m_no = b_mno) b_mname from board where b_mno = (select f_mno from follow where f_sno=#{m_no}) or b_mno = #{m_no}")
+//	@Select("select b_no, b_image, b_content, b_date, b_like, (select m_name from member where m_no = b_mno) b_mname from board where b_mno = (select f_mno from follow where f_sno=#{m_no}) or b_mno = #{m_no}")
+//	List<BoardDto> showBoard(String m_no);
+	@Select("select b_no, b_image, b_content, b_date, b_like, (select m_name from member where m_no = b_mno) b_mname from board where b_mno = (select f_mno from follow where f_sno=#{m_no}) or b_mno = #{m_no} order by b_no desc limit 0,3;")
 	List<BoardDto> showBoard(String m_no);
+	@Select("select b_no, b_image, b_content, b_date, b_like, (select m_name from member where m_no = b_mno) b_mname from board where b_mno = (select f_mno from follow where f_sno=#{m_no}) or b_mno = #{m_no} and b_no <= #{last_b_no} order by b_no desc limit 0,3;")
+	List<BoardDto> scrollingBoard(ScrollBean bean);
 	
 	@Select("select * from board where b_no=#{b_no}")
 	BoardDto showBoardDetail(String b_no);

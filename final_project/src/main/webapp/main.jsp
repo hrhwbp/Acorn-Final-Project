@@ -13,16 +13,33 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
-	$(document).scroll(function() {
-	var maxHeight = $(document).height();
-	var currentScroll = $(window).scrollTop() + $(window).height();
-	if (maxHeight <= currentScroll + 100) {
-	$.ajax({
-	
-	})
+	$(window).bind("scroll",scrolling);  
+});
+
+function scrolling(){ 
+	var documentHeight  = $(document).height() * 2 - 1200;
+	var scrollHeight = $(window).scrollTop()+$(window).height();
+	console.log ("documentHeight : " + documentHeight) 
+	console.log ("scrollHeight : " + scrollHeight)
+
+	if(scrollHeight >= documentHeight) {
+		var lastbno = $(".thumbnail:last").attr("data-bno");
+		console.log("last_bno : " + lastbno)
+		$.ajax({
+			type:"get",
+			url:"scroll",
+			dataType:"json",
+			data:{"last_bno":lastbno},
+			success:function(scrollData){
+				console.log("scroll 이벤트 성공  ( 출력 준비 )")			
+			},
+			error:function(){
+				console.log("scroll 이벤트 실패")
+			}
+		});	
 	}
-	})
-	});
+}
+
 	function replySubmit(no){
 	$.ajax({
 		type:"post",
@@ -151,7 +168,7 @@ $(document).ready(function () {
 	<c:forEach var="list" items="${list }">
    	  <div class="row">
          <div class="col-md-12">
-            <div class="thumbnail" >
+            <div class="thumbnail" data-bno="${list.b_no }" >
                <img alt="food" src="${list.b_image}" height="400px">
                <div class="caption">
                <div class="row">

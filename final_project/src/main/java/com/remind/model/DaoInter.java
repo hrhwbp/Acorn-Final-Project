@@ -9,11 +9,13 @@ import com.remind.controller.FollowBean;
 import com.remind.controller.LikeBean;
 import com.remind.controller.MemberBean;
 import com.remind.controller.ReplyBean;
+import com.remind.controller.ScrollBean;
 import com.remind.controller.WishlistBean;
 
 public interface DaoInter {
 	//sns board
 	List<BoardDto> showBoard(String m_no) throws DataAccessException;
+	List<BoardDto> scrollBoard(ScrollBean bean) throws DataAccessException;
 	BoardDto showBoardDetail(String b_no1) throws DataAccessException;
 	boolean eraseBoard(String b_no1) throws DataAccessException;
 	boolean write(BoardBean bean) throws DataAccessException;

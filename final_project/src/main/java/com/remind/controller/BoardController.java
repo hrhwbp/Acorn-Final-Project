@@ -62,6 +62,31 @@ public class BoardController {
 		model.setViewName("../../main");
 		return model;
 	}
+	@RequestMapping("scroll")
+	@ResponseBody
+	public Map<String, Object> scrolling(@RequestParam("last_bno")String last_bnoShouldMinus, HttpSession session){
+		String m_no = (String) session.getAttribute("mno");
+		
+		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
+		Map<String, String> data = null;
+		int last_bnoInt = Integer.parseInt(last_bnoShouldMinus);
+		String last_bno = Integer.toString(last_bnoInt -1);
+		System.out.println();
+		ScrollBean bean = new ScrollBean();
+		bean.setLast_b_no(last_bno);
+		bean.setM_no(m_no);
+		List<BoardDto> boardList = daoInter.scrollBoard(bean);
+		for(BoardDto s : boardList){
+			data = new HashMap<String,String>();
+			data.put("b_no",s.getB_no());
+			data.put("b_image", s.getB_image());
+			data.put("b_content", s.getB_content());
+			dataList.add(data);
+		}
+		Map<String, Object> scrollData = new HashMap<String, Object>();
+		
+		return scrollData;
+	}
 	/*@RequestMapping(value="snslist", method = RequestMethod.POST)
 	public Map<String, Object> listPOST(@RequestParam("b_no") String b_no){
 		System.out.println("snslist test" + b_no);
