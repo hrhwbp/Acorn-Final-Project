@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.remind.model.AnniversaryDto;
 import com.remind.model.BoardDto;
 import com.remind.model.DaoInter;
 import com.remind.model.LikeDto;
@@ -39,6 +40,7 @@ public class BoardController {
 	public ModelAndView list(HttpSession session){
 		String m_no = (String) session.getAttribute("mno");
 		ModelAndView model = new ModelAndView();
+		List<AnniversaryDto> anniversary = daoInter.showAnniversary(m_no);
 		List<BoardDto> list = daoInter.showBoard(m_no);
 		for (int i = 0; i < list.size(); i++) {
 			List<ReplyDto> reply = daoInter.showReply(list.get(i).getB_no());
@@ -59,6 +61,7 @@ public class BoardController {
 			model.addObject("likeYN" + list.get(i).getB_no(), likeYN);	
 		}
 		model.addObject("list", list);
+		model.addObject("anniversary",anniversary);
 		model.setViewName("../../main");
 		return model;
 	}
@@ -87,8 +90,6 @@ public class BoardController {
 		data.put("likedata"+b_no, likeList);
 		
 		return data;
-		
-		
 		
 	}*/
 	@RequestMapping(value="showDetail", method=RequestMethod.GET)

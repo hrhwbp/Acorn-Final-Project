@@ -7,8 +7,9 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.dao.DataAccessException;
 
-
+import com.remind.controller.AnniversaryBean;
 import com.remind.controller.BoardBean;
 import com.remind.controller.FollowBean;
 import com.remind.controller.LikeBean;
@@ -40,6 +41,9 @@ public interface AnnoInter {
 	List<BoardDto> showMyMain(String b_mno);
 	@Select("select * from member where m_no=#{m_no}")
 	MemberDto showMemberDetail(String m_no);
+	
+	@Select("select * from member where m_name=#{m_name}")
+	MemberDto memberDetail(String m_name);
 	
 	@Insert("insert into member (m_name, m_bdate, m_email, m_gender, m_password) values (#{m_name}, #{m_bdate}, #{m_email}, #{m_gender}, #{m_password})")
 	boolean joinMember(MemberBean bean);
@@ -143,5 +147,13 @@ public interface AnnoInter {
 	
 	@Delete("delete from likeTable where l_bno = #{l_bno} and l_mno = #{l_mno} ")
 	boolean likeCancel(LikeBean bean);
-
-}
+	//Anniversary
+	@Select("SELECT a_no, a_mno, a_detail, a_date, (select m_name from member where m_no = a_mno) a_mname, case when date_format(a_date, '%m-%d')>=date_format(curdate(),'%m-%d') then 1 else 2 end as sort from anniversary where a_mno = (select f_mno from follow where f_sno=#{m_no}) or a_mno = #{m_no} order by sort , date_format(a_date, '%m-%d') asc")
+	List<AnniversaryDto> showAnniversary(String m_no) throws DataAccessException;
+	@Insert("insert into anniversary (a_mno, a_date, a_detail) values(#{a_mno}, #{a_date},#{a_detail})")
+	boolean insertAnniversary(AnniversaryBean bean) throws DataAccessException;
+	@Delete("delete from anniversary where a_bno = #{a_bno}")
+	boolean deleteAnniversary(AnniversaryBean bean) throws DataAccessException;
+	@Update("update anniversary set a_detail = #{a_detail}, a_date = #{a_date} where a_bno = #{a_bno}")
+	boolean updateAnniversary(AnniversaryBean bean) throws DataAccessException;
+}	
