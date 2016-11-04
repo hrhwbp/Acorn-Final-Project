@@ -18,7 +18,9 @@ public class WishListController {
 	public ModelAndView showWishList(@RequestParam("w_mno")String w_mno){
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("wishlist",daoInter.showWishList(w_mno));	
-		modelAndView.addObject("wishgroup",daoInter.showWishGroup(w_mno));		
+		modelAndView.addObject("wishgroup",daoInter.showWishGroup(w_mno));
+		System.out.println("test : " + daoInter.showWishList(w_mno));
+		
 		modelAndView.setViewName("../../wishlist");
 		return modelAndView;
 	}
@@ -44,7 +46,7 @@ public class WishListController {
 	public String updateWishListsubmit(WishlistBean bean){
 		boolean b = daoInter.updateWishlist(bean);
 		if(b)
-			return "showWishList?w_mno=" +bean.getW_mno();
+			return "showWishList?w_mno=" + bean.getW_mno();
 		else
 			return "redirect:/error.jsp";
 	}

@@ -110,6 +110,8 @@ public interface AnnoInter {
 	@Update("update wishlist set w_pname=#{w_pname}, w_price=#{w_price}, w_image=#{w_image}, w_addr=#{w_addr}, w_detail=#{w_detail} where w_no = #{w_no}")
 	boolean updateWishlist(WishlistBean bean);
 
+	@Select("select * from wishlist where g_num = #{g_num}")
+	List<WishlistDto> showEachWishList(String g_num);
 	
 	//WishGroup
 	@Select("select * from wishgroup where wg_mno=#{wg_mno}")

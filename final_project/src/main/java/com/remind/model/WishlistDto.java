@@ -2,7 +2,7 @@ package com.remind.model;
 
 public class WishlistDto {
 	
-String w_no, w_mno, w_pname, w_image, w_addr, w_detail, w_like, w_lock, wg_detail, wg_no, wg_mno;
+String w_no, w_mno, w_pname, w_image, w_addr, w_detail, w_like, w_lock, wg_detail, wg_no, wg_mno, g_num;
 int w_price;
 
 public String getW_no() {
@@ -76,6 +76,12 @@ public int getW_price() {
 }
 public void setW_price(int w_price) {
 	this.w_price = w_price;
+}
+public String getG_num() {
+	return g_num;
+}
+public void setG_num(String g_num) {
+	this.g_num = g_num;
 }
 
 }
