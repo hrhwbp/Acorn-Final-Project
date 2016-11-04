@@ -19,7 +19,6 @@ public interface DaoInter {
 	boolean write(BoardBean bean) throws DataAccessException;
 	boolean updateBoard(BoardBean bean) throws DataAccessException;
 	
-	
 	//member
 	List<BoardDto> showMyMain(String b_mno);
 	MemberDto showMemberDetail(String m_no) throws DataAccessException;
@@ -27,7 +26,6 @@ public interface DaoInter {
 	boolean outMember(String m_no) throws DataAccessException;
 	boolean updateMember(MemberBean bean) throws DataAccessException;
 	MemberDto login(MemberBean bean);
-	
 	
 	//follow
 	List<FollowDto> showMyFollower(String m_no) throws DataAccessException;

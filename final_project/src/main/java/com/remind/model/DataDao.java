@@ -64,6 +64,7 @@ public class DataDao implements DaoInter {
 		}
 	}
 
+	
 	@Override
 	public List<BoardDto> showMyMain(String b_mno) {
 

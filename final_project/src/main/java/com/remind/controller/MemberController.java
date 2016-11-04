@@ -1,5 +1,7 @@
 package com.remind.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.remind.model.BoardDto;
 import com.remind.model.DaoInter;
+import com.remind.model.FollowDto;
+import com.remind.model.LikeDto;
 import com.remind.model.MemberDto;
 
 @Controller
@@ -23,6 +28,7 @@ import com.remind.model.MemberDto;
 public class MemberController {
 	@Autowired
 	private DaoInter daoInter;
+	
 	@RequestMapping(value="showMyMain", method = RequestMethod.GET)
 	public ModelAndView showMyMain(@RequestParam("b_mno") String b_mno){
 		return new ModelAndView("myMain","myboard",daoInter.showMyMain(b_mno));
@@ -77,6 +83,21 @@ public class MemberController {
 	public String logoutConfirm(HttpSession session){		
 		session.removeAttribute("mno");		
 		return "../../index";
+	}
+	
+	@RequestMapping(value="myinfo", method = RequestMethod.POST)
+	public ModelAndView showMyinfo(@RequestParam("m_no")String m_no){
+		ModelAndView view = new ModelAndView();
+		MemberDto dto = daoInter.showMemberDetail(m_no);
+		view.addObject("myinfo", dto);
+		List<FollowDto> mylist = daoInter.showMyFollower(m_no);
+		view.addObject("mylist", mylist);
+		List<FollowDto> ilist = daoInter.showIFollow(m_no);
+		view.addObject("ilist", ilist);
+		List<BoardDto> list = daoInter.showBoard(m_no);
+		view.addObject("board",list);
+		view.setViewName("myinfo");
+		return view;
 	}
 	
 }

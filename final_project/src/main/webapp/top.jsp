@@ -30,6 +30,11 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+ <script type="text/javascript">
+ function myinfo() {
+	$("#info").submit();
+}
+ </script>
 </head>
 <body style="padding-top: 70px">
 
@@ -50,7 +55,7 @@
           <ul class="nav navbar-nav">
             <li><a href="index.jsp"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
             <li><a href="showWishList?w_mno=<%=session.getAttribute("mno")%>"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span></a></li>
-            <li><a href="myinfo.jsp"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
+            <li><a href="javascript:myinfo()"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -77,6 +82,9 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+    <form action="myinfo" method="post" id="info">
+    <input type="hidden" name="m_no" value="<%=session.getAttribute("mno")%>">
+    </form>
     <!-- Bootstrap core JavaScript
     ================================================== -->
 <!--     Placed at the end of the document so the pages load faster
