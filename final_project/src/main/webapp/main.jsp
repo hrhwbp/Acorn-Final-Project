@@ -32,6 +32,10 @@ $(document).ready(function () {
 		success:function(replyData){
 			var str = "<table class='table-condensed small' style='background-color: rgb(245, 245, 245); width: 100%'>"
 			var list = replyData.datas;
+			var count = replyData.count;
+			if(count>5){
+				str += '<tr><td> <a href="javascript:;" onclick= "showReplyMore('+no+')">show reply all</a></td></tr>'
+			}
 			jQuery(list).each(function(index, objArr){
 				str += "<tr>";
 				str += "<td><a href='#'>" + objArr.r_name +"</a>"+ objArr.r_content + "</td>";
