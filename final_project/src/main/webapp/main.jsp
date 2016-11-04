@@ -25,6 +25,7 @@ $(document).ready(function () {
 	})
 	});
 	function replySubmit(no){
+
 		if($( "input[name$='r_content']" ).val() == ""){
 			alert("댓글에 내용을 써주세요");
 			return;
@@ -38,7 +39,11 @@ $(document).ready(function () {
 			success:function(replyData){
 				var str = "<table class='table-condensed small' style='background-color: rgb(245, 245, 245); width: 100%'>"
 				var list = replyData.datas;
-				jQuery(list).each(function(index, objArr){
+				var count = replyData.count;
+				if(count>5){
+					str += '<tr><td> <a href="javascript:;" onclick= "showReplyMore('+no+')">show reply all</a></td></tr>'
+				}
+					jQuery(list).each(function(index, objArr){
 					str += "<tr>";
 					str += "<td><a href='#'>" + objArr.r_name +"</a>"+ objArr.r_content + "</td>";
 					str += "</tr>";
@@ -47,9 +52,12 @@ $(document).ready(function () {
 				jQuery("#showreply"+no).html(str);
 				jQuery("#r_content"+no).val("");
 			}
+		
 		});
 		}
-	};
+	}
+		
+
 	function likesubmit(b_no){
 			jQuery.ajax({
 			type:"post",
@@ -122,6 +130,7 @@ $(document).ready(function () {
     		}
     	});
     }	
+    
 	
 </script>
 <style type="text/css">
