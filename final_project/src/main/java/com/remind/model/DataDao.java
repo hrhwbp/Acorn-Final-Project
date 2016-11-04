@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
+import com.remind.controller.AnniversaryBean;
 import com.remind.controller.BoardBean;
 import com.remind.controller.FollowBean;
 import com.remind.controller.LikeBean;
@@ -76,6 +77,11 @@ public class DataDao implements DaoInter {
 	@Override
 	public MemberDto showMemberDetail(String m_no) throws DataAccessException {
 		return annoInter.showMemberDetail(m_no);
+	}
+	@Override
+	public MemberDto memberDetail(String m_name) throws DataAccessException {
+		
+		return annoInter.memberDetail(m_name);
 	}
 
 	@Override
@@ -336,5 +342,39 @@ public class DataDao implements DaoInter {
 		}
 
 	}
-
+	//anniversary
+	@Override
+	public List<AnniversaryDto> showAnniversary(String m_no) throws DataAccessException {
+		return annoInter.showAnniversary(m_no);
+	}
+	@Override
+	public boolean deleteAnniversary(AnniversaryBean bean) throws DataAccessException {
+		try {
+			annoInter.deleteAnniversary(bean);
+			return true;
+		} catch (Exception e) {
+			System.out.println("Delete anniversary err");
+			return false;
+		}
+	}
+	@Override
+	public boolean insertAnniversary(AnniversaryBean bean) throws DataAccessException {
+		try {
+			annoInter.insertAnniversary(bean);
+			return true;
+		} catch (Exception e) {
+			System.out.println("insert anniversary err");
+			return false;
+		}
+	}
+	@Override
+	public boolean updateAnniversary(AnniversaryBean bean) throws DataAccessException {
+		try {
+			annoInter.updateAnniversary(bean);
+			return true;
+		} catch (Exception e) {
+			System.out.println("update anniversary err");
+			return false;
+		}
+	}
 }
