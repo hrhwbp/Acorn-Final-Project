@@ -19,7 +19,8 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-
+		
+		
 		$("#btn_wishgroup_submit").click(function() {
 			//alert("hi");
 			if ($("#wg_detail").val() == "") {
@@ -31,6 +32,16 @@
 			}
 		});
 	});
+	
+	function groupEdit(wg_no){
+    	//alert("Edit");
+		
+    }
+	
+	//function groupDelete(wg_no){
+		//alert("Delete");
+	//}
+	
 </script>
 
 </head>
@@ -84,12 +95,12 @@
 						</div>
 						<!-- ----------------새로운 소원목록 작성 끝------------------------ -->
 
-						<!-- ---------------기존 등록된 소원목록 뽑기------------------------ -->
+						<!-- ---------------기존 등록된 소원목록 뽑기----------------------- -->
 						<c:forEach var="wgroup" items="${wishgroup }">
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title">
-										<table>
+										<table width="100%">
 											<tr>
 												<td width="86%"><a class="accordion-toggle"
 													data-toggle="collapse" data-parent="#accordion"
@@ -103,12 +114,13 @@
 										<div class="btn-group btn-group-margin-right" role="group"
 											aria-label="...">
 											<div class="btn-group" role="group">
-												<button type="button" id="btn_groupEdit" onclick="groupEdit(${wgroup.wg_no})" class="btn btn-default btn-sm">수정</button>
+												<button type="button" id="btn_groupEdit" onclick="groupEdit(${wgroup.wg_no})" data-toggle="modal" data-target="#myModal" class="btn btn-default btn-sm">수정</button>
 											</div>
 											<div class="btn-group" role="group">
 												<button type="button" id="btn_groupDelete" onclick="groupDelete(${wgroup.wg_no})" class="btn btn-default btn-sm">삭제</button>
 											</div>
-										</div> <!-- 버튼그룹 삽입 끝 -->
+										</div> 
+										<!-- 버튼그룹 삽입 끝 -->
 									</td>
 									</tr>
 									</table>
@@ -118,7 +130,7 @@
 								<div id="collapseTwo_${wgroup.wg_no}"
 									class="panel-collapse collapse">
 									<div class="panel-body">
-										<!-- ---------각 상품 내용일 들어갈 자리-----------  -->
+										<!-- ---------각 상품 내용이 들어갈 자리-----------  -->
 										<table border="1"  width="100%">
 											<c:set var="cnt" value="0" />
 											<c:forEach var="wlist" items="${wishlist }">
@@ -148,6 +160,31 @@
 							</div>
 						</c:forEach>
 						<!-- ---------------기존 등록된 소원목록 뽑기 끝------------------------ -->
+								
+						<!-- ----------Modal----------- -->
+					  <div class="modal fade" id="myModal" role="dialog">
+					    <div class="modal-dialog">
+					    
+					      <!-- Modal content-->
+					      <div class="modal-content">
+					        <div class="modal-header">
+					          <button type="button" class="close" data-dismiss="modal">&times;</button>
+					          <h4 class="modal-title">Modal Header</h4>
+					        </div>
+					        <div class="modal-body">
+					          <p>Some text in the modal.</p>
+					        </div>
+					        <div class="modal-footer">
+					          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					        </div>
+					      </div>
+					      
+					    </div>
+					  </div>
+						<!-- ----------Modal 끝----------- -->
+						
+						
+						
 					</div>
 				</div>
 			</div>
