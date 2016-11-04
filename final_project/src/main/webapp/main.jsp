@@ -12,7 +12,16 @@
 <title>ReMind : [RE:AD MIND]</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
-	$(document).ready(function(){
+$(document).ready(function () {
+	$(document).scroll(function() {
+	var maxHeight = $(document).height();
+	var currentScroll = $(window).scrollTop() + $(window).height();
+	if (maxHeight <= currentScroll + 100) {
+	$.ajax({
+	
+	})
+	}
+	})
 	});
 	function replySubmit(no){
 	$.ajax({
@@ -86,7 +95,26 @@
 			}
 		});
 	}
-    	
+    function showReplyMore(b_no){
+    	$.ajax({
+    		type:"post",
+    		url:"moreReply",
+    		data:{"b_no":b_no},
+    		dataType:'json',
+    		success:function(replyData){
+    			var str = "<table class='table-condensed small' style='background-color: rgb(245, 245, 245); width: 100%'>"
+    			var list = replyData.datas;
+    			jQuery(list).each(function(index, objArr){
+    				str += "<tr>";
+    				str += "<td><a href='#'>" + objArr.r_name +"</a>"+ objArr.r_content + "</td>";
+    				str += "</tr>";
+    			})
+    			str += "</table>";
+    			jQuery("#showreply"+b_no).html(str);
+    			jQuery("#r_content"+b_no).val("");
+    		}
+    	});
+    }	
 	
 </script>
 <style type="text/css">
@@ -116,11 +144,8 @@
 <body style="background-color: white">
 	<div style="padding-top: 2%">	<!--Top menubar와의 거리 2% -->
    <div class="container col-md-5 col-md-offset-0 " style="background-color: rgb(250, 250, 250); padding-top: 1%; padding-bottom:2%">
-
-   
-   	<c:forEach var="list" items="${list }">
-   	
-      <div class="row">
+	<c:forEach var="list" items="${list }">
+   	  <div class="row">
          <div class="col-md-12">
             <div class="thumbnail" >
                <img alt="food" src="${list.b_image}" height="400px">
@@ -134,14 +159,7 @@
                <div class="row">
                   <div class="col-md-12">
                      &nbsp;<span class="glyphicon glyphicon-heart" aria-hidden="true"  ></span>&nbsp;
-                     	<%-- <c:forEach var = "like" items="${like }">
-                     	<c:if test="${list.b_no	 == like.l_bno }">
-            			${like.l_mname },
-            			</c:if> 
-            			</c:forEach>
-            			님이  좋아합니다. --%>
-            			
-            			 <c:set var="like" value="like${list.b_no}" />
+                     	 <c:set var="like" value="like${list.b_no}" />
             			 <span id="showlike${list.b_no}">
                   <%List<LikeDto> like = (List<LikeDto>)request.getAttribute((String)pageContext.getAttribute("like")); %>
                   <%if(like.size() == 0){ %>
@@ -149,7 +167,6 @@
                   <%}else if(like.size() >11){
                 	  %>
                        <%=like.size() %>명이 좋아합니다
-                       
                      <%}
                   else if(like.size()<=11){
                 	  for(LikeDto dto:like){%>
@@ -164,13 +181,16 @@
                   <div class="col-md-12">
                   <div id="showreply${list.b_no}">
                   <c:set var="re" value="reply${list.b_no}" />
+                  <c:set var="recount" value="replycount${list.b_no}" />
                   <%List<ReplyDto> reply = (List<ReplyDto>)request.getAttribute((String)pageContext.getAttribute("re")); %>
                      <table class="table-condensed small" style="background-color: rgb(245, 245, 245); width: 100%">
-                    <%for(ReplyDto dto:reply){%>
+                     <%
+                     if((Integer)request.getAttribute((String)pageContext.getAttribute("recount"))>5){ %>
+                     <tr><td> <a href="javascript:;" onclick= "showReplyMore(${list.b_no })">show reply all</a></td></tr>
+                    <%}for(ReplyDto dto:reply){%>
                        <tr>
                            <td><a href="#"><%=dto.getR_name() %></a> <%=dto.getR_content() %></td>
                         </tr>
-                       
                      <%} %>
                      </table>
                      </div>
@@ -213,8 +233,7 @@
                <nav class="bs-docs-sidebar hidden-print hidden-xs affix">
                   <ul class="nav bs-docs-sidenav text-right">
                      <li>${mno }현재 이벤트현재 이벤트현재 이벤트현재 이벤트</li>
-					
-                  </ul>
+				  </ul>
                </nav>
             </div>
          </div>

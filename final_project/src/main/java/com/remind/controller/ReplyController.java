@@ -42,6 +42,24 @@ public class ReplyController {
 		return replyData;
 		
 	}
+	@RequestMapping(value="moreReply", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> moreReply(@RequestParam("b_no") String b_no){
+		 
+		List<ReplyDto> reply = daoInter.showReplyMore(b_no);
+		List<Map<String, String>> dataList = new ArrayList<Map<String, String>>();
+		Map<String, String> data = null;
+		for(ReplyDto dto : reply){
+			data = new HashMap<String, String>();
+			data.put("r_name", dto.getR_name());
+			data.put("r_content",dto.getR_content());
+			dataList.add(data);
+		}
+		Map<String, Object> replyData = new HashMap<String, Object>();
+		replyData.put("datas", dataList);
+		return replyData;
+		
+	}
 	@RequestMapping(value="deleteReply", method = RequestMethod.GET)
 	public String deleteReply(@RequestParam("r_no")String r_no){
 		boolean b = daoInter.deleteReply(r_no);
