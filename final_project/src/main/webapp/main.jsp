@@ -41,14 +41,7 @@ function scrolling(){
 		});	
 
 	}
-<<<<<<< HEAD
-	})
-	});
-	
-=======
-}
 
->>>>>>> f39bff055ece2a0acbb6f3a11f3ca158f3136e69
 	function replySubmit(no){
 
 		if($( "input[name$='r_content']" ).val() == ""){
@@ -155,6 +148,7 @@ function scrolling(){
     		}
     	});
     }	
+}
     
 	
 </script>
@@ -185,7 +179,7 @@ function scrolling(){
 <%@include file="sidebar.jsp"%>
 
 <body style="background-color: white">
-<<<<<<< HEAD
+
 	<div style="padding-top: 2%">
 		<!--Top menubar와의 거리 2% -->
 		<div class="container col-md-5 col-md-offset-0 "
@@ -207,19 +201,15 @@ function scrolling(){
 										&nbsp;<span class="glyphicon glyphicon-heart"
 											aria-hidden="true"></span>&nbsp;
 										<c:set var="like" value="like${list.b_no}" />
-										<span id="showlike${list.b_no}"> <%
- 	List<LikeDto> like = (List<LikeDto>) request.getAttribute((String) pageContext.getAttribute("like"));
- %>
-											<%
-												if (like.size() == 0) {
+										<span id="showlike${list.b_no}"> <%	List<LikeDto> like = (List<LikeDto>) request.getAttribute((String) pageContext.getAttribute("like")); %>
+											<% if (like.size() == 0) {
 											%> 처음 좋아요의 주인공이 되세요 <%
 												} else if (like.size() > 11) {
 											%> <%=like.size()%>명이 좋아합니다 <%
- 	} else if (like.size() <= 11) {
- 			for (LikeDto dto : like) {
- %> <%=dto.getL_mname()%>&nbsp;
-											<%
-												}
+											 	} else if (like.size() <= 11) {
+ 													for (LikeDto dto : like) {
+ 												%> <%=dto.getL_mname()%>&nbsp;
+											<% }
 											%>님이 좋아합니다<%
 												}
 											%>
@@ -264,15 +254,15 @@ function scrolling(){
 											<div class="input-group">
 												<span class="input-group-addon " id="sizing-addon2">
 													<c:set var="likeYN" value="likeYN${list.b_no}" /> <%
- 	int likeYN = (Integer) request.getAttribute((String) pageContext.getAttribute("likeYN"));
- %>
+ 													int likeYN = (Integer) request.getAttribute((String) pageContext.getAttribute("likeYN"));
+ 													%>
 													<%
 														if (likeYN >= 1) {
 													%> <span class="glyphicon glyphicon-heart"
 													onclick="likecancel(${list.b_no})" style="color: red"
 													id="likeYN${list.b_no }"></span> <%
- 	} else {
- %> <span
+ 													} else {
+ 													%> <span
 													class="glyphicon glyphicon-heart"
 													onclick="likesubmit(${list.b_no})" id="likeYN${list.b_no }"></span>
 													<%
@@ -317,7 +307,7 @@ function scrolling(){
 
 		</div>
 	</div>
-=======
+
 	<div style="padding-top: 2%">	<!--Top menubar와의 거리 2% -->
    <div class="container col-md-5 col-md-offset-0 " style="background-color: rgb(250, 250, 250); padding-top: 1%; padding-bottom:2%">
 	<c:forEach var="list" items="${list }">
@@ -422,7 +412,7 @@ function scrolling(){
                </nav>
             </div>
          </div>
->>>>>>> f39bff055ece2a0acbb6f3a11f3ca158f3136e69
+
 
 </body>
 <%@include file="bottom.jsp"%>

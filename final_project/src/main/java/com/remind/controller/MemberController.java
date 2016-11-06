@@ -29,11 +29,13 @@ public class MemberController {
 	@Autowired
 	private DaoInter daoInter;
 	
+	//내 메인페이지
 	@RequestMapping(value="showMyMain", method = RequestMethod.GET)
 	public ModelAndView showMyMain(@RequestParam("b_mno") String b_mno){
 		return new ModelAndView("myMain","myboard",daoInter.showMyMain(b_mno));
 	}
-	
+
+	//회원가입
 	@RequestMapping(value="join", method= RequestMethod.POST)
 	public String join(MemberBean bean){
 		
@@ -50,6 +52,8 @@ public class MemberController {
 		}
 		else return "redirect:/error.jsp";
 	}
+	
+	//회원탈퇴
 	@RequestMapping(value="out", method = RequestMethod.GET)
 	public ModelAndView outConfirm(@RequestParam("m_no") String m_no){
 		return new ModelAndView("deleteconfirm","m_no",m_no);
@@ -61,11 +65,12 @@ public class MemberController {
 			return "redirect:/index.jsp";
 		else return "redirect:/error.jsp";
 	}
+	//내 정보 업데이트
 	@RequestMapping(value="update", method=RequestMethod.GET)
 	public ModelAndView updateMember(@RequestParam("m_no") String m_no){
 		MemberDto dto = daoInter.showMemberDetail(m_no);
 		return new ModelAndView("updateform","dto",dto);
-	}
+	}	
 	@RequestMapping(value="update", method = RequestMethod.POST)
 	public String updateSubmit(MemberBean bean){
 		boolean b = daoInter.updateMember(bean);
@@ -73,6 +78,8 @@ public class MemberController {
 		else return "redirect:/error.jsp";
 			
 	}
+	
+	//로그인
 	@RequestMapping(value="login", method = RequestMethod.POST)
 	public String login(MemberBean bean, HttpSession session){
 		MemberDto dto = daoInter.login(bean);
@@ -86,12 +93,14 @@ public class MemberController {
 		}
 	}
 	
+	//로그아웃
 	@RequestMapping(value="logout", method = RequestMethod.GET)
 	public String logoutConfirm(HttpSession session){		
 		session.removeAttribute("mno");		
 		return "../../index";
 	}
 	
+	//내 정보 보기
 	@RequestMapping(value="myinfo", method = RequestMethod.POST)
 	public ModelAndView showMyinfo(@RequestParam("m_no")String m_no){
 		ModelAndView view = new ModelAndView();
