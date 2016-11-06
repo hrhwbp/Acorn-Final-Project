@@ -21,8 +21,8 @@ $(document).ready(function () {
 function scrolling(){ 
 	var documentHeight  = $(document).height() * 2 - 1200;
 	var scrollHeight = $(window).scrollTop()+$(window).height();
-	console.log ("documentHeight : " + documentHeight) 
-	console.log ("scrollHeight : " + scrollHeight)
+	//console.log ("documentHeight : " + documentHeight) 
+	//console.log ("scrollHeight : " + scrollHeight)
 
 	if(scrollHeight >= documentHeight) {
 		var lastbno = $(".thumbnail:last").attr("data-bno");
@@ -33,7 +33,29 @@ function scrolling(){
 			dataType:"json",
 			data:{"last_bno":lastbno},
 			success:function(scrollData){
-				console.log("scroll 이벤트 성공  ( 출력 준비 )")			
+				var str = "";
+				var list = scrollData.datas;
+				
+				$(list).each(function(index,objArr){
+					str += '<div class="row">';
+			        str += '<div class="col-md-12">';
+			        str += '	<div class="thumbnail" data-bno='+this.b_no+' >';
+			        str += '       <img alt="food" src='+objArr["b_image"]+' height="400px">';
+			        str += '       <div class="caption">';
+			        str += '       <div class="row">';
+			        str += '          <div class="col-md-12">';
+			        str += '          <h3>'+objArr["b_mname"]+'</h3>';
+			        str += '          <p>'+objArr["b_content"]+'</p>';
+			        str += '          </div>';
+			        str += '       </div>';
+			        str += '</div>';
+					str += '</div>';
+					str += '</div>';
+					str += '</div>';
+
+				});
+				$("#scrollingId").append(str)
+				
 			},
 			error:function(){
 				console.log("scroll 이벤트 실패")
@@ -185,7 +207,7 @@ function scrolling(){
 	<div style="padding-top: 2%">
 		<!--Top menubar와의 거리 2% -->
 		
-		<div class="container col-md-5 col-md-offset-0 "
+		<div class="container col-md-5 col-md-offset-0 " id="scrollingId"
 			style="background-color: rgb(250, 250, 250); padding-top: 1%; padding-bottom: 2%">
 			<c:forEach var="list" items="${list }">
 				<div class="row">

@@ -87,6 +87,7 @@ public class BoardController {
 			dataList.add(data);
 		}
 		Map<String, Object> scrollData = new HashMap<String, Object>();
+		scrollData.put("datas", dataList);
 		
 		return scrollData;
 	}
