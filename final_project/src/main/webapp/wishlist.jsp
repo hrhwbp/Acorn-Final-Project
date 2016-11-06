@@ -46,16 +46,85 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 		 
 	});
 	
-	function groupEdit(wg_no, wg_detail){
+	function groupEdit(wg_no){
     	//alert(wg_no);    	
-    	 $('#edit').modal(wg_no, wg_detail);
-		
+    	 $('#edit').modal(wg_no);
+    	 jQuery.ajax({
+ 			type:"post",
+ 			url:"ReadWishGroupList4Edit",
+ 			data:{"wg_no":wg_no, "wg_detail":wg_detail},
+ 			dataType:'json',
     }
 	
 	function groupDelete(wg_no){
 		//alert("Delete");
 		 $('#delete').modal();
 	}
+	
+	
+	/* 
+		function likecancel(b_no){
+			jQuery.ajax({
+			type:"post",
+			url:"cancelLike",
+			data:{"l_bno":b_no, "l_mno":"${mno}"},
+			dataType:'json',
+			success:function(likeData){
+				var list = likeData.datas;
+				var count = likeData.likecount
+				str = "";
+				if(count == 0){
+					str +="처음 좋아요의 주인공이 되세요";
+				}else if(count >11){
+             	    str += count + "명이 좋아합니다";
+                   }
+               else if(count<=11){
+            	   jQuery(list).each(function(index, objArr){
+                      str += objArr.l_name + " ";
+                     }) 
+                     str += "님이 좋아합니다";
+                   }
+				jQuery("#showlike"+b_no).html(str);
+				jQuery("#likeYN"+b_no).removeAttr("style");
+				jQuery("#likeYN"+b_no).attr({onclick:'likesubmit('+b_no+')'})
+			}
+		});
+	}
+	
+	function likesubmit(b_no){
+			jQuery.ajax({
+			type:"post",
+			url:"insertLike",
+			data:{"l_bno":b_no, "l_mno":"${mno}"},
+			dataType:'json',
+			success:function(likeData){
+				var list = likeData.datas;
+				var count = likeData.likecount
+				str = "";
+				if(count >11){
+             	    str += count + "명이 좋아합니다";
+                   }
+               else if(count<=11){
+            	   jQuery(list).each(function(index, objArr){
+                      str += objArr.l_name + "&nbsp&nbsp";
+                     }) 
+                     str += "님이 좋아합니다";
+                   }
+				jQuery("#showlike"+b_no).html(str);
+				jQuery("#likeYN"+b_no).attr({style:'color: red'});
+				jQuery("#likeYN"+b_no).attr({onclick:'likecancel('+b_no+')'})
+		}
+    })
+	}
+	
+	*/
+	
+	
+	
+	
+	
+	
+	
 	
 </script>
 
@@ -180,7 +249,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 	      		</div>
 	      		<div class="modal-body">
 					<div class="input-group">
-				      <input type="text" class="form-control" id="new_wg_detail" placeholder=${ wg_detail}>
+				      <input type="text" class="form-control" id="new_wg_detail" placeholder="변경할 목록이름">
 				      <input type="hidden" value="">
 				      <span class="input-group-btn">
 				        <button class="btn btn-success" type="button">변경</button>

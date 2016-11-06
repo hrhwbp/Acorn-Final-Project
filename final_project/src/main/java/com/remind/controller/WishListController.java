@@ -1,5 +1,10 @@
 package com.remind.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.remind.model.AnnoInter;
 import com.remind.model.DaoInter;
+import com.remind.model.WishlistDto;
 
 @Controller
 public class WishListController {
@@ -78,6 +85,26 @@ public class WishListController {
 		else
 			return	"redirect:/error.jsp";		
 	}
+	
+	@RequestMapping(value="ReadWishGroupList4Edit", method = RequestMethod.GET)
+	public Map<String, Object> ReadWishGroupList4Edit(@RequestParam("wg_no")String wg_no){
+		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
+		Map<String, String> data = null;
+		
+		List<WishlistDto> wishGroup = daoInter.ReadWishGroupList4Edit(wg_no);
+		
+		for(WishlistDto w:wishGroup){
+			data = new HashMap<String, String>();
+			data.put("wg_no", w.getWg_no());
+			data.put("wg_detail", w.getWg_detail());			
+			dataList.add(data);
+		}
+		Map<String, Object> wishGroupData = new HashMap<String, Object>();
+		wishGroupData.put("WishGroupData", dataList);
+		return wishGroupData;
+		
+		return null;
+	}
 /*	
 	//WishList Group 변경
 	@RequestMapping(value="updateWishGroup", method = RequestMethod.POST)
@@ -90,7 +117,32 @@ public class WishListController {
 			return ;
 		else
 			return	"redirect:/error.jsp";		
+	}
+	
+	//ajax
+	 * public Map<String, Object> sangpum(){
+		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
+		Map<String, String> data = null;
+		
+		List<SangpumDto> sangList = inter.list();
+		
+		for(SangpumDto s:sangList){
+			data = new HashMap<String, String>();
+			data.put("code", s.getCode());
+			data.put("sang", s.getSang());
+			data.put("su", s.getSu());
+			data.put("dan", s.getDan());
+			dataList.add(data);
+		}
+		Map<String, Object> sangpumData = new HashMap<String, Object>();
+		sangpumData.put("Datas", dataList);
+		return sangpumData;
 	}		
+			
+			
+			
+	
+	
 */
 	
 }
