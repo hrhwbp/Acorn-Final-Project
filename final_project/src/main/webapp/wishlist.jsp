@@ -46,11 +46,11 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 		 
 	});
 	
-	function groupEdit(){
+	function groupEdit(wg_no){
     	//alert(wg_no);    	
-    	<c:forEach var="wishgrp" items="${wishgroup}">
-    	 $('#edit').modal('${wishgrp.wg_no }','${wishgrp.wg_no }');
-    	</c:forEach>
+    	
+    	 $('#edit'+wg_no).modal();
+    	
     	
     	/*  jQuery.ajax({
  			type:"post",
@@ -193,7 +193,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 									<!-- 버튼그룹 삽입 -->
 										<div class="btn-group btn-group-margin-right" role="group" aria-label="...">
 											<div class="btn-group" role="group">
-												<button type="button" id="btn_groupEdit" onclick="groupEdit()" class="btn btn-warning btn-sm">수정</button>
+												<button type="button" id="btn_groupEdit" onclick="groupEdit(${wgroup.wg_no})" class="btn btn-warning btn-sm">수정</button>
 											</div>
 											<div class="btn-group" role="group">
 												<button type="button" id="btn_groupDelete" onclick="groupDelete(${wgroup.wg_no},'${wgroup.wg_detail}')" class="btn btn-danger btn-sm">삭제</button>
@@ -252,7 +252,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-					<h4 class="modal-title" id="myModalLabel">내 소망목록 수정</h4>
+					<h4 class="modal-title" id="myModalLabel">${wishgrp.wg_detail }</h4>
 	      		</div>
 	      		<div class="modal-body">
 					<div class="input-group">
