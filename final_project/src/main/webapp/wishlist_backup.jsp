@@ -83,23 +83,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 </script>
 <style type="text/css">
-.list-group li {
-    list-style: none;
-}
 
-.panel-body{
-
-}
-
-.panel-info, .panel-rating {
-    float: left;
-    margin: 0 10px;
-}
-
-.panel-more1 {
-    float: right;
-    margin: 0 10px;
-}
 
 </style>
 </head>
@@ -185,49 +169,21 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 									<c:forEach var="wlist" items="${wishlist }" varStatus="itemcnt">
 												<c:if test="${wgroup.wg_no eq wlist.g_num}">
 													<c:set var="cnt" value="${cnt += 1 }" />
-													<%-- <c:if test="${cnt == 1 }">
-													</c:if> --%>
-												
-												
-												
-<div class="container" >
-    <ul class="list-group">
-    <li>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="panel-info">
-                    <p ><strong>${wlist.w_pname}</strong></p>
-                    <p>${wlist.w_detail}</p><br>
-                    <p>${wlist.w_price}</p>
-                </div>
-                <div class="panel-rating">
-                    <span class="glyphicon glyphicon-star"></span>
-                    <span class="glyphicon glyphicon-star"></span>
-                    <span class="glyphicon glyphicon-star"></span>
-                    <span class="glyphicon glyphicon-star"></span>
-                    <span class="glyphicon glyphicon-star"></span>
-                    <p>Rate Yourself!</p>
-                </div>
-                <div class="panel-more1">
-                    <img src="${wlist.w_image}" width="50%"/>
-                    <br /><span>Caption</span>
-                </div>               
-            </div>
-        </div>
-    </li>    
-    </ul>
-    </div>
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
-												
+													<c:if test="${cnt == 1 }">
+														<tr class="success">
+															<td width="20%">상품사진</td>
+															<td width="20%">상품명</td>
+															<td width="15%">가격정보</td>
+															<td width="45%">상세정보</td>
+														</tr>
+													</c:if>
+													<tr>
+														<td><img alt="${wlist.w_pname}"
+															src="${wlist.w_image}" width="100%" /></td>
+														<td>${wlist.w_pname}</td>
+														<td>${wlist.w_price}</td>
+														<td>${wlist.w_detail}</td>
+													</tr>
 												</c:if>
 											</c:forEach>
 								</table>

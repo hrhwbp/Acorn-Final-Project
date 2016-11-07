@@ -26,6 +26,7 @@ function scrolling(){
 
 	if(scrollHeight >= documentHeight) {
 		var lastbno = $(".thumbnail:last").attr("data-bno");
+		
 		console.log("last_bno : " + lastbno)
 		$.ajax({
 			type:"get",
@@ -61,8 +62,8 @@ function scrolling(){
 				console.log("scroll 이벤트 실패")
 			}
 		});	
-
-	}
+}
+}
 
 	function replySubmit(no){
 
@@ -170,7 +171,7 @@ function scrolling(){
     		}
     	});
     }	
-}
+
     
 	
 </script>

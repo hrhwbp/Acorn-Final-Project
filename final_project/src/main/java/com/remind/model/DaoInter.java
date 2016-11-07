@@ -59,7 +59,7 @@ public interface DaoInter {
 	boolean insertWishGroup(WishlistBean bean) throws DataAccessException;
 	boolean deleteWishGroup(String wg_no) throws DataAccessException;
 	boolean updateWishGroup(WishlistBean bean) throws DataAccessException;
-	List<WishlistDto> ReadWishGroupList4Edit(String wg_no) throws DataAccessException;
+	WishlistDto showWishAGroup(String wg_no) throws DataAccessException;
 
 	
 	//like

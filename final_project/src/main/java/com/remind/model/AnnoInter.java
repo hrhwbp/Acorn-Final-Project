@@ -123,6 +123,9 @@ public interface AnnoInter {
 	@Select("select * from wishgroup where wg_mno=#{wg_mno}")
 	List<WishlistDto> showWishGroup(String wg_mno);
 	
+	@Select("select * from wishgroup where wg_no=#{wg_no}")
+	WishlistDto showWishAGroup(String wg_no);
+	
 	@Insert("insert into wishgroup (wg_mno, wg_detail) values(#{wg_mno},#{wg_detail})")
 	boolean insertWishGroup(WishlistBean bean);
 	

@@ -43,7 +43,7 @@ public class BoardController {
 		List<AnniversaryDto> anniversary = daoInter.showAnniversary(m_no);
 		List<BoardDto> list = daoInter.showBoard(m_no);
 		for (int i = 0; i < list.size(); i++) {
-			List<ReplyDto> reply = daoInter.showReply(list.get(i).getB_no());
+			List<ReplyDto> reply = daoInter.showReply(list.get(i).getB_no()); 
 			model.addObject("reply" + list.get(i).getB_no(), reply);
 			int count = daoInter.countReply(list.get(i).getB_no());
 			//System.out.println(count);
