@@ -13,8 +13,10 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
+var lastbno_save = null;
 $(document).ready(function () {
 	$(window).bind("scroll",scrolling);  
+	//console.log(dd)
 });
 
 function scrolling(){ 
@@ -25,7 +27,11 @@ function scrolling(){
 
 	if(scrollHeight >= documentHeight) {
 		var lastbno = $(".thumbnail:last").attr("data-bno");
-		console.log("last_bno : " + lastbno)
+		if(lastbno_save != lastbno){  // 동기화로 바꿈으로서 반드시 들어가야함 ( 안들어갈시 버벅거림 )  //  1.
+			
+		lastbno_save = lastbno;
+		//console.log("last_bno : " + lastbno)
+		//console.log(lastbno_save)
 		$.ajax({
 			type:"get",
 			url:"scroll",
@@ -36,7 +42,6 @@ function scrolling(){
 				
 				var str = "";
 				var list = scrollData.datas;
-				if(list.length != 0 ){
 				$(list).each(function(index,objArr){
 					str += '<div class="row">';
 			        str += '<div class="col-md-12">';
@@ -56,15 +61,13 @@ function scrolling(){
 
 				});
 				$("#scrollingId").append(str)
-				}else{
-					return;
-				}
 				
 			},
 			error:function(){
 				console.log("scroll 이벤트 실패")
 			}
 		});	
+		}  //  1.
 
 	}
 
