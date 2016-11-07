@@ -1,5 +1,7 @@
 package com.remind.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionAttributeStore;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.remind.model.BoardDto;
@@ -66,15 +69,39 @@ public class MemberController {
 		else return "redirect:/error.jsp";
 	}
 	//내 정보 업데이트
-	@RequestMapping(value="update", method=RequestMethod.GET)
+	@RequestMapping(value="updateInfo", method=RequestMethod.GET)
 	public ModelAndView updateMember(@RequestParam("m_no") String m_no){
 		MemberDto dto = daoInter.showMemberDetail(m_no);
 		return new ModelAndView("updateform","dto",dto);
 	}	
-	@RequestMapping(value="update", method = RequestMethod.POST)
+	@RequestMapping(value="updateInfo", method = RequestMethod.POST)
 	public String updateSubmit(MemberBean bean){
+		
+		MultipartFile uploadfile = bean.getFileUp();
+		System.out.println(uploadfile + " " + bean.getFileUp() + " " + bean.getM_name());
+		if (uploadfile != null) {
+            String fileName = uploadfile.getOriginalFilename();
+            System.out.println(fileName);
+            bean.setM_image(fileName);
+            try {
+                // 1. FileOutputStream 사용
+                // byte[] fileData = file.getBytes();
+                // FileOutputStream output = new FileOutputStream("C:/images/" + fileName);
+                // output.write(fileData);
+                 
+                // 2. File 사용
+                File file = new File("C:/work/sts-bundle/repository/final_project/src/main/webapp/resources/image/" + fileName);
+                
+                uploadfile.transferTo(file);
+            } catch (Exception e) {
+                System.out.println("파일 업로드 err : " + e);
+            } // try - catch
+        } // if
+        // 데이터 베이스 처리를 현재 위치에서 처리
+		bean.setM_bdate(bean.getYear()+ "-" + bean.getMonth() + "-" + bean.getDay());
 		boolean b = daoInter.updateMember(bean);
-		if(b){return "redirect:/snslist?m_no=" + bean.getM_no();}
+		
+		if(b){return "myinfo";}
 		else return "redirect:/error.jsp";
 			
 	}
