@@ -224,11 +224,6 @@ public class DataDao implements DaoInter {
 		return annoInter.showWishList(w_mno);
 	}
 	
-	@Override
-	public List<WishlistDto> ReadWishGroupList4Edit(String wg_no) throws DataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@Override
 	public List<WishlistDto> showEachWishList(String g_num) throws DataAccessException {
@@ -348,6 +343,11 @@ public class DataDao implements DaoInter {
 			return false;
 		}
 
+	}
+	@Override
+	public WishlistDto showWishAGroup(String wg_no) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return annoInter.showWishAGroup(wg_no);
 	}
 	//anniversary
 	@Override
