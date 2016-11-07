@@ -48,13 +48,17 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 	
 	function groupEdit(wg_no){
     	//alert(wg_no);    	
-    	 $('#edit').modal(wg_no);
-    	 jQuery.ajax({
+    	
+    	 $('#edit'+wg_no).modal();
+    	
+    	
+    	/*  jQuery.ajax({
  			type:"post",
  			url:"ReadWishGroupList4Edit",
  			data:{"wg_no":wg_no, "wg_detail":wg_detail},
- 			dataType:'json',
-    }
+ 			dataType:'json', 
+    	})*/
+	}
 	
 	function groupDelete(wg_no){
 		//alert("Delete");
@@ -189,7 +193,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 									<!-- 버튼그룹 삽입 -->
 										<div class="btn-group btn-group-margin-right" role="group" aria-label="...">
 											<div class="btn-group" role="group">
-												<button type="button" id="btn_groupEdit" onclick="groupEdit(${wgroup.wg_no},'${wgroup.wg_detail}')" class="btn btn-warning btn-sm">수정</button>
+												<button type="button" id="btn_groupEdit" onclick="groupEdit(${wgroup.wg_no})" class="btn btn-warning btn-sm">수정</button>
 											</div>
 											<div class="btn-group" role="group">
 												<button type="button" id="btn_groupDelete" onclick="groupDelete(${wgroup.wg_no},'${wgroup.wg_detail}')" class="btn btn-danger btn-sm">삭제</button>
@@ -240,12 +244,15 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 
 	<!-- --------수정 모달 팝업-------- -->
-	<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+	<c:forEach var="wishgrp" items="${wishgroup}">
+	
+	
+	<div class="modal fade" id="edit${wishgrp.wg_no }" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-					<h4 class="modal-title" id="myModalLabel">내 소망목록 수정</h4>
+					<h4 class="modal-title" id="myModalLabel">${wishgrp.wg_detail }</h4>
 	      		</div>
 	      		<div class="modal-body">
 					<div class="input-group">
@@ -263,6 +270,8 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 	    	</div>
 		</div>
 	</div>
+	
+	</c:forEach>
 	<!-- --------수정 모달 팝업 끝-------- -->
 	<!-- --------삭제 모달 팝업-------- -->
 	<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >

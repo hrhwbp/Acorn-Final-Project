@@ -181,5 +181,13 @@ public class BoardController {
 		else return "redirect:/error.jsp";
 	}
 	
-	
+	@RequestMapping(value="boardDetail", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> boardDetail(@RequestParam("b_no") String b_no){
+		System.out.println(b_no);
+		BoardDto dto = daoInter.showBoardDetail(b_no);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("detailDto", dto);
+		return map;
+	}
 }

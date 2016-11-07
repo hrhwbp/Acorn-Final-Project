@@ -11,7 +11,40 @@
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#updateSubmit').click(function() {
+		$('#boardUpdatefrm').submit()
+	});
+})
 
+function modalToggle(b_no) {
+	/* alert(b_no) 보드 번호 받기. */ 
+	 jQuery.ajax({
+         type:"post",
+         url:"boardDetail",
+         data: {"b_no":b_no},
+         dataType: "json",
+         success : function(data) {
+        	 /* alert(data.detailDto.b_no); */
+        	 var dto = data.detailDto;
+        	 /* alert(dto.b_image); */
+        	 /* modalContent modalLike modalDate */
+        	 /* document.getElementById("modalimg").src = dto.b_image;  */
+        	 $("#modalimg").attr('src', dto.b_image);
+        	 $('#modalContent').val(dto.b_content);
+        	 $('#modalLike').text('좋아요 ' + dto.b_like);
+        	 $('#modalDate').text(dto.b_date);
+        	 $('#hiddenNo').val(dto.b_no); 
+        	 $('#boardDetail').modal('show');
+         },
+         error : function(xhr, status, error) {
+               alert("에러발생 " + error);
+         }
+   });
+	
+}
+</script>
 </head>
 
 <%@ include file="../../top.jsp" %>
@@ -40,7 +73,7 @@
 		</div>
 		<div class="row">
 			
-			<button type="button" class="btn btn-link col-md-3" disabled="disabled">게시물 100개</button> 
+			<button type="button" class="btn btn-link col-md-3" disabled="disabled">게시물  ${fn:length(board)}개</button> 
 			<button type="button" class="btn btn-link col-md-3">팔로워 ${fn:length(mylist)}</button>
 			<button type="button" class="btn btn-link col-md-3">팔로우 ${fn:length(ilist)}</button>
 		
@@ -64,24 +97,12 @@
       <div class="caption">
         <h3>${board.b_content }</h3>
         <p>좋아요 ${board.b_like}개</p>
-        <p class="text-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">더 보기</button></p>
+        <p class="text-right"><button type="button" class="btn btn-link" onclick="modalToggle(${board.b_no})">더 보기</button></p>
       </div>
     </div>
   </div>
   </c:forEach>
-  
-  <div class="col-md-4">
-    <div class="thumbnail">
-    	<div class="row" style="height: 190px;">
-		   <img src="http://pix.iemoji.com/images/emoji/apple/ios-9/256/heavy-plus-sign.png" alt="Responsive image" class="img-responsive center-block" style="height: 100%">
-    	</div>
-      <div class="caption">
-        <h3>Thumbnail label</h3>
-        <p>...</p>
-        <p class="text-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">더 보기</button></p>
-      </div>
-    </div>
-  </div> 
+ 
 	
 	
 </div>	
@@ -95,7 +116,6 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-		
 			<div class="row">
 				<div class="col-md-4 col-md-offset-4 text-center">
 				<div style="color: buttontext; border: 0; cursor: pointer; height: 180px; padding: 0; width: 100%;">
@@ -178,27 +198,35 @@
 	  </div>
 	</div>
 	<!-- 모달 팝업 -->
-	
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-	  <div class="modal-dialog">
+
+	<div class="modal fade" id="boardDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+	  <div class="modal-dialog" style="margin: 180px auto">
 	    <div class="modal-content">
+	     <form id="boardUpdatefrm" action="updateBoard" method="post">
 	      <div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
 			<div class="row">
 				<div class="col-md-12">
-					<img alt="Responsive image" class="img-responsive" src="https://static.pexels.com/photos/5317/food-salad-restaurant-person.jpg">
+					<a  onclick="$('#boardFile').click();" style="cursor: pointer">
+					<img alt="Responsive image" id="modalimg" class="img-responsive center-block" src="">
+					</a>
+					<input name="b_image" type="file" id="boardFile" class="sr-only">
 				</div>
 			</div>
 	      </div>
 	      <div class="modal-body">
+	     
+	 
 	      <div class="row">	      
-			<h3 class="col-md-12">맛있는 식사</h3>
-			<p class="col-md-6">좋아요 138개</p><p class="text-right col-md-6">2016-10-31 20:29:55</p>
+			<h3 class="col-md-12"><input name="b_content" id="modalContent" type="text" class="form-control" value=""></h3>
+			<p class="col-md-6" id="modalLike"></p><p id="modalDate" class="text-right col-md-6"></p>
 	      </div>
 	      </div>
+	      <input type="hidden" value="" id="hiddenNo" name="b_no">
+	     </form>
 	      <div class="modal-footer">
-		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		<button type="button" class="btn btn-primary">Save changes</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button id="updateSubmit" type="button" class="btn btn-primary">Save changes</button>
 	      </div>
 	    </div>
 	  </div>
@@ -231,6 +259,18 @@ upload.onchange = function (e) {
     image.src = event.target.result;
   };
   reader.readAsDataURL(file);
+};
+
+var boardFile = document.getElementById('boardFile'),
+	modalimg = document.getElementById('modalimg');
+boardFile.onchange = function (e) {
+  e.preventDefault();
+  var file2 = boardFile.files[0],
+      reader2 = new FileReader();
+  reader2.onload = function (event) {
+	  modalimg.src = event.target.result;
+  };
+  reader2.readAsDataURL(file2);
 };
 </script>
 </body>
