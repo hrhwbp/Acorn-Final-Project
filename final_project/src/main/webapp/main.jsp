@@ -14,7 +14,6 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
-
 	$(window).bind("scroll",scrolling);  
 });
 
@@ -32,10 +31,12 @@ function scrolling(){
 			url:"scroll",
 			dataType:"json",
 			data:{"last_bno":lastbno},
+			async : false,
 			success:function(scrollData){
+				
 				var str = "";
 				var list = scrollData.datas;
-				
+				if(list.length != 0 ){
 				$(list).each(function(index,objArr){
 					str += '<div class="row">';
 			        str += '<div class="col-md-12">';
@@ -55,6 +56,9 @@ function scrolling(){
 
 				});
 				$("#scrollingId").append(str)
+				}else{
+					return;
+				}
 				
 			},
 			error:function(){
