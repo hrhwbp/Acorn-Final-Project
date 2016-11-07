@@ -102,8 +102,6 @@ public class WishListController {
 		Map<String, Object> wishGroupData = new HashMap<String, Object>();
 		wishGroupData.put("WishGroupData", dataList);
 		return wishGroupData;
-		
-		return null;
 	}
 /*	
 	//WishList Group 변경
