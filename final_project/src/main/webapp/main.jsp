@@ -326,7 +326,13 @@ function scrolling(){
 				<div class="col-md-10 col-md-offset-2">
 					<nav class="bs-docs-sidebar hidden-print hidden-xs affix">
 						<ul class="nav bs-docs-sidenav text-right">
-							<li>${mno }현재이벤트현재 이벤트현재 이벤트현재 이벤트</li>
+							
+							<c:forEach var="anni" items="${anniversary}">
+                  
+                     <li>${anni.a_date}는 <a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>님의 ${anni.a_detail }입니다.<n/></li>
+                     
+                   </c:forEach>
+							
 						</ul>
 					</nav>
 				</div>
