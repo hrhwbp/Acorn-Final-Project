@@ -19,6 +19,10 @@ $(document).ready(function () {
 	//console.log(dd)
 });
 
+function dd(num){
+	console.log("num : " + num);
+}
+
 function scrolling(){ 
 	var documentHeight  = $(document).height() * 2 - 1200;
 	var scrollHeight = $(window).scrollTop()+$(window).height();
@@ -43,6 +47,8 @@ function scrolling(){
 				var str = "";
 				var list = scrollData.datas;
 				$(list).each(function(index,objArr){
+					var num = this.b_no;
+					dd(num);
 					str += '<div class="row">';
 			        str += '<div class="col-md-12">';
 			        str += '	<div class="thumbnail" data-bno='+this.b_no+' >';
