@@ -22,10 +22,11 @@ public interface AnnoInter {
 	// sns board
 //	@Select("select b_no, b_image, b_content, b_date, b_like, (select m_name from member where m_no = b_mno) b_mname from board where b_mno = (select f_mno from follow where f_sno=#{m_no}) or b_mno = #{m_no}")
 //	List<BoardDto> showBoard(String m_no);
-	@Select("select distinct b_no, b_image, b_content, b_date, b_like, (select m_name from member where m_no = b_mno) b_mname from board left outer join follow on b_mno = f_mno where f_sno=#{m_no} or b_mno = #{m_no}  order by b_no desc limit 0,3")
+	@Select("select distinct b_no, b_image, b_content, b_date, b_like, (select m_name from member where m_no = b_mno) b_mname from board left outer join follow on b_mno = f_sno where f_mno=#{m_no} or b_mno = #{m_no}  order by b_no desc limit 0,3")
 	List<BoardDto> showBoard(String m_no);
-	@Select("select distinct b_no, b_image, b_content, b_date, b_like, (select m_name from member where m_no = b_mno) b_mname from board  left outer join follow on b_mno = f_mno where (f_sno=#{m_no} or b_mno = #{m_no} )and b_no < #{last_b_no} order by b_no desc limit 0,3")
+	@Select("select distinct b_no, b_image, b_content, b_date, b_like, (select m_name from member where m_no = b_mno) b_mname from board  left outer join follow on b_mno = f_sno where (f_mno=#{m_no} or b_mno = #{m_no} )and b_no < #{last_b_no} order by b_no desc limit 0,3")
 	List<BoardDto> scrollingBoard(ScrollBean bean);
+	
 	
 	@Select("select * from board where b_no=#{b_no}")
 	BoardDto showBoardDetail(String b_no);
@@ -57,7 +58,7 @@ public interface AnnoInter {
 	@Delete("delete from member where m_no = #{m_no}")
 	boolean outMember(String m_no);
 	
-	@Update("update member set m_name = #{m_name}, m_bdate = #{m_bdate}, m_email = #{m_emali}, m_gender=#{m_gender}, m_password=#{m_password} where m_no = #{m_no}")
+	@Update("update member set m_name = #{m_name}, m_bdate = #{m_bdate}, m_email = #{m_emali}, m_image = #{m_image} where m_no = #{m_no}")
 	boolean updateMember(MemberBean bean);
 	
 	@Select("select * from member where m_email = #{m_email} and m_password = #{m_password}")

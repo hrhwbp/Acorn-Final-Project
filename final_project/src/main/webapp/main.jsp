@@ -13,10 +13,15 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
+var lastbno_save = null;
 $(document).ready(function () {
-
 	$(window).bind("scroll",scrolling);  
+	//console.log(dd)
 });
+
+function dd(num){
+	console.log("num : " + num);
+}
 
 function scrolling(){ 
 	var documentHeight  = $(document).height() * 2 - 1200;
@@ -25,19 +30,28 @@ function scrolling(){
 	//console.log ("scrollHeight : " + scrollHeight)
 
 	if(scrollHeight >= documentHeight) {
-		var lastbno = $(".thumbnail:last").attr("data-bno");
-		
+		var lastbno = $(".thumbnail:last").attr("data-bno");	
 		console.log("last_bno : " + lastbno)
+
+		if(lastbno_save != lastbno){  // 동기화로 바꿈으로서 반드시 들어가야함 ( 안들어갈시 버벅거림 )  //  1.
+			
+		lastbno_save = lastbno;
+		//console.log("last_bno : " + lastbno)
+		//console.log(lastbno_save)
+
 		$.ajax({
 			type:"get",
 			url:"scroll",
 			dataType:"json",
 			data:{"last_bno":lastbno},
+			async : false,
 			success:function(scrollData){
+				
 				var str = "";
 				var list = scrollData.datas;
-				
 				$(list).each(function(index,objArr){
+					var num = this.b_no;
+					dd(num);
 					str += '<div class="row">';
 			        str += '<div class="col-md-12">';
 			        str += '	<div class="thumbnail" data-bno='+this.b_no+' >';
@@ -62,8 +76,11 @@ function scrolling(){
 				console.log("scroll 이벤트 실패")
 			}
 		});	
+
 }
 }
+
+	
 
 	function replySubmit(no){
 
@@ -323,7 +340,13 @@ function scrolling(){
 				<div class="col-md-10 col-md-offset-2">
 					<nav class="bs-docs-sidebar hidden-print hidden-xs affix">
 						<ul class="nav bs-docs-sidenav text-right">
-							<li>${mno }현재이벤트현재 이벤트현재 이벤트현재 이벤트</li>
+							
+							<c:forEach var="anni" items="${anniversary}">
+                  
+                     <li>${anni.a_date}는 <a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>님의 ${anni.a_detail }입니다.<n/></li>
+                     
+                   </c:forEach>
+							
 						</ul>
 					</nav>
 				</div>

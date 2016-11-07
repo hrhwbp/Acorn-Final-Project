@@ -67,13 +67,13 @@ public class BoardController {
 	}
 	@RequestMapping("scroll")
 	@ResponseBody
-	public Map<String, Object> scrolling(@RequestParam("last_bno")String last_bnoShouldMinus, HttpSession session){
+	public Map<String, Object> scrolling(@RequestParam("last_bno")String last_bno, HttpSession session){//last_bnoShouldMinus
 		String m_no = (String) session.getAttribute("mno");
 		
 		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
 		Map<String, String> data = null;
-		int last_bnoInt = Integer.parseInt(last_bnoShouldMinus);
-		String last_bno = Integer.toString(last_bnoInt -1);
+//		int last_bnoInt = Integer.parseInt(last_bnoShouldMinus);
+//		String last_bno = Integer.toString(last_bnoInt -1);
 		System.out.println();
 		ScrollBean bean = new ScrollBean();
 		bean.setLast_b_no(last_bno);
@@ -181,5 +181,13 @@ public class BoardController {
 		else return "redirect:/error.jsp";
 	}
 	
-	
+	@RequestMapping(value="boardDetail", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> boardDetail(@RequestParam("b_no") String b_no){
+		System.out.println(b_no);
+		BoardDto dto = daoInter.showBoardDetail(b_no);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("detailDto", dto);
+		return map;
+	}
 }
