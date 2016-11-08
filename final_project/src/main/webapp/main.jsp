@@ -5,6 +5,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE PUBLIC>
 <html>
 <head>
@@ -24,7 +25,7 @@ function scrolling(){
 	var scrollHeight = $(window).scrollTop()+$(window).height();
 	//console.log ("documentHeight : " + documentHeight) 
 	//console.log ("scrollHeight : " + scrollHeight)
-
+	
 	if(scrollHeight >= documentHeight) {
 		var lastbno = $(".thumbnail:last").attr("data-bno");	
 		console.log("last_bno : " + lastbno)
@@ -32,6 +33,7 @@ function scrolling(){
 		lastbno_save = lastbno;
 		//console.log("last_bno : " + lastbno)
 		//console.log(lastbno_save)
+
 		$.ajax({ // 스크롤링 기본 베이스 ( 댓글 , 라이크는 안에서 반복 function 으로 같이 출력)
 
 			type:"get",
@@ -42,6 +44,9 @@ function scrolling(){
 				var str = "";
 				var list = scrollData.datas;
 				$(list).each(function(index,objArr){
+					var num = this.b_no
+					
+					function likescrolling(num);
 					str += '<div class="row">';
 			        str += '<div class="col-md-12">';
 			        str += '	<div class="thumbnail" data-bno='+this.b_no+' >';
@@ -66,11 +71,15 @@ function scrolling(){
 			}
 		});	
 
-}
-}
+		}
+	}
 }
 
-	
+function likescrolling(num){
+	console.log("num : " + num);
+
+}
+
 
 	function replySubmit(no){
 
@@ -324,16 +333,24 @@ function scrolling(){
 			<div class="row">
 				<div class="col-md-10 col-md-offset-2">
 					<nav class="bs-docs-sidebar hidden-print hidden-xs affix">
-						<ul class="nav bs-docs-sidenav text-right">
-							
+						
+							<table>
+							<tr><th>생일</th></tr>
 							<c:forEach var="anni" items="${anniversary}">
-                  
-                     ${anni.a_date}는 <a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>님의 ${anni.a_detail }입니다.<n/><br/>
-                     
-                   </c:forEach>
+							<c:if test="${anni.a_detail eq '생일'}">
 							
-						</ul>
+							<tr><td>
+                  			  ${anni.a_date}는 <a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>님의 입니다.<br/>
+                  			  </td>
+                     		</tr>
+                     		</c:if>
+                   			</c:forEach>
+                   			</table>
+							
+						
+						
 					</nav>
+					
 				</div>
 			</div>
 
