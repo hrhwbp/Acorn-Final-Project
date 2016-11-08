@@ -1,5 +1,6 @@
 package com.remind.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.remind.model.AnniversaryDto;
@@ -150,15 +152,40 @@ public class BoardController {
 		return resultData;
 	}
 	
-	@RequestMapping(value="write",method = RequestMethod.GET)
-	public String write(){
+	@RequestMapping(value="insertBoard",method = RequestMethod.GET)
+	public String write(BoardBean bean){
+		MultipartFile uploadfile = bean.getFileUpload();
+		System.out.println(uploadfile);	
 		return "write";
 	}
 	
-	@RequestMapping(value="write", method=RequestMethod.POST)
+	@RequestMapping(value="insertBoard", method=RequestMethod.POST)
 	public String writeSubmit(BoardBean bean){
+		System.out.println("실행");
+		MultipartFile uploadfile = bean.getFileUpload();
+		System.out.println(uploadfile);
+		
+		if (uploadfile != null) {
+            String fileName = uploadfile.getOriginalFilename();
+            System.out.println(fileName);
+            bean.setB_image("http://wbp.synology.me/boardimg/" + fileName);
+            System.out.println(bean.getB_image());
+            try {
+                // 1. FileOutputStream 사용
+                // byte[] fileData = file.getBytes();
+                // FileOutputStream output = new FileOutputStream("C:/images/" + fileName);
+                // output.write(fileData);
+                 
+                // 2. File 사용
+                File file = new File("N:/web/boardimg/" + fileName);
+                
+                uploadfile.transferTo(file);
+            } catch (Exception e) {
+                System.out.println("보드 파일 업로드 err : " + e);
+            } // try - catch
+        } // if
 		boolean b = daoInter.write(bean);
-		if(b) return "snslist"+bean.getB_mno();
+		if(b) return "redirect:/myinfo";
 		else return "redirect:/error.jsp";
 	}
 	@RequestMapping(value="updateBoard", method=RequestMethod.GET)

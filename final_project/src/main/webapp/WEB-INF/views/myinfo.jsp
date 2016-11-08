@@ -28,11 +28,16 @@ $(document).ready(function() {
 		$('#boardInsertImg').hide();
 	});
 	$('#boardInsertSubmit').click(function() {
-		alert($('boardInsertFile').val(0).val());
-		/* if($('boardInsertFile').val() == null){
-			alert('없음')	
-		} */
-		/* $('boardInsertfrm').submit() */
+		/* alert(boardInsertFile.files[0]); */
+		/* if(boardInsertFile.files[0] == undefined){
+			$('#boardInsertErr').modal('show');
+			return;
+		}else */ if($('#modalInsertContent').val() == ''){
+			$('#modalInsertContent').attr('placeholder','내용을 입력 해주세요!!');
+			$('#modalInsertContent').focus();
+			return;
+		}
+		$('#boardInsertfrm').submit();
 	})
 })
 
@@ -230,7 +235,7 @@ function modalToggle(b_no) {
 	<div class="modal fade" id="boardDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	  <div class="modal-dialog" style="margin: 180px auto">
 	    <div class="modal-content">
-	     <form id="boardUpdatefrm" action="updateBoard" method="post">
+	     <form id="boardUpdatefrm" action="updateBoard" method="post" enctype="multipart/form-data">
 	      <div class="modal-header">
 			
 			<div class="row">
@@ -238,7 +243,7 @@ function modalToggle(b_no) {
 					<a  onclick="$('#boardFile').click();" style="cursor: pointer">
 					<img alt="Responsive image" id="modalimg" class="img-responsive center-block" src="">
 					</a>
-					<input name="b_image" type="file" id="boardFile" class="sr-only" >
+					<input type="file" name="b_image"  id="boardFile" class="sr-only" >
 				</div>
 			</div>
 	      </div>
@@ -266,15 +271,16 @@ function modalToggle(b_no) {
 	<div class="modal fade" id="boardInsert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	  <div class="modal-dialog" style="margin: 180px auto">
 	    <div class="modal-content">
-	     <form id="boardInsertfrm" action="insertBoard" method="post">
+	     <form id="boardInsertfrm" action="insertBoard" method="post" enctype="multipart/form-data">
 	      <div class="modal-header">
 			
 			<div class="row">
-				<div class="col-md-12 text-center">
-					<a  onclick="$('#boardInsertFile').click();" style="cursor: pointer" id="insertAtag">클릭해서 이미지 추가
-					<img alt="Responsive image" id="boardInsertImg" class="img-responsive center-block" src="">
+				<div class="col-md-12 text-center" style="">
+					<a  onclick="$('#boardInsertFile').click();" style="cursor: pointer; padding-top: 40%" >
+					<b id="insertBtag">클릭해서 이미지 추가</b>
+					<img alt="Responsive image" id="boardInsertImg" class="img-responsive center-block" src="" style="">
 					</a>
-					<input name="b_image" type="file" id="boardInsertFile" class="" required>
+					<input type="file" name="fileUpload" id="boardInsertFile" class="">
 				</div>
 			</div>
 	      </div>
@@ -282,15 +288,14 @@ function modalToggle(b_no) {
 	     
 	 
 	      <div class="row">	      
-			<h3 class="col-md-12"><input name="b_content" id="modalContent" type="text" class="form-control" value=""></h3>
-			<p class="col-md-6" id="modalLike"></p><p id="modalDate" class="text-right col-md-6"></p>
+			<h3 class="col-md-12"><input name="b_content" id="modalInsertContent" type="text" class="form-control" placeholder="게시글 내용은 제목으로 보여 집니다."></h3>
+			<input type="hidden" value="${myinfo.m_no}" name="b_mno">
 	      </div>
 	      </div>
-	      <input type="hidden" value="" id="hiddenNo" name="b_no">
 	     </form>
 	      <div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			<button id="boardInsertSubmit" type="button" class="btn btn-primary">Save changes</button>
+			<button id="boardInsertSubmit" type="button" class="btn btn-primary" >Save changes</button>
 	      </div>
 	      
 	    </div>
@@ -304,6 +309,17 @@ function modalToggle(b_no) {
 	    <div class="modal-content">
 	      <div class="row text-center">
 	      	비밀번호가 틀립니다.
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- 새 게시글 이미지 없음 -->
+	<div class="modal fade bs-example-modal-sm" id="boardInsertErr" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+	  <div class="modal-dialog modal-sm" style="margin: 260px auto;">
+	    <div class="modal-content">
+	      <div class="row text-center">
+	      	이미지를 선택해주세요.
 	      </div>
 	    </div>
 	  </div>
@@ -347,8 +363,8 @@ boardInsertFile.onchange = function (e) {
 	  boardInsertImg.src = event.target.result;
   };
   reader3.readAsDataURL(file3);
+  /* $('#insertBtag').text(''); */
   $('#boardInsertImg').show();
-  $('#insertAtag').val('');
 };
 </script>
 </body>

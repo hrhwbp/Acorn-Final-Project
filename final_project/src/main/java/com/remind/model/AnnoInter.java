@@ -27,6 +27,8 @@ public interface AnnoInter {
 	@Select("select distinct b_no, b_image, b_content, b_date, b_like, (select m_name from member where m_no = b_mno) b_mname from board  left outer join follow on b_mno = f_sno where (f_mno=#{m_no} or b_mno = #{m_no} )and b_no < #{last_b_no} order by b_no desc limit 0,3")
 	List<BoardDto> scrollingBoard(ScrollBean bean);
 	
+	@Select("select max(b_no)+1 from board")
+	String selectMaxNo();
 	
 	@Select("select * from board where b_no=#{b_no}")
 	BoardDto showBoardDetail(String b_no);
@@ -34,7 +36,7 @@ public interface AnnoInter {
 	@Delete("delete from board whre b_no=#{b_no}")
 	boolean eraseBoard(String b_no);
 
-	@Insert("insert into board (b_mno, b_image, b_content, b_like) values (#{b_mno}, #{b_image}, #{b_content}, #{b_like})")
+	@Insert("insert into board (b_mno, b_image, b_content, b_like) values (#{b_mno}, #{b_image}, #{b_content}, 0)")
 	boolean write(BoardBean bean);
 	
 	@Update("update board set b_content=#{b_content} where b_no=#{b_no}")

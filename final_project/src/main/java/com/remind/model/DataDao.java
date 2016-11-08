@@ -49,6 +49,8 @@ public class DataDao implements DaoInter {
 	@Override
 	public boolean write(BoardBean bean) throws DataAccessException {
 		try {
+			String b_no = annoInter.selectMaxNo();
+			bean.setB_no(b_no);
 			annoInter.write(bean);
 			return true;
 		} catch (Exception e) {
