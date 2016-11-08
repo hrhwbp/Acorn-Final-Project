@@ -162,7 +162,7 @@ public interface AnnoInter {
 	@Delete("delete from likeTable where l_bno = #{l_bno} and l_mno = #{l_mno} ")
 	boolean likeCancel(LikeBean bean);
 	//Anniversary
-	@Select("SELECT distinct f_mno, a_no, a_mno, a_detail, a_date, (select m_name from member where m_no = a_mno) a_mname,case when date_format(a_date, '%m-%d')>=date_format(curdate(),'%m-%d') then 1 else 2 end as sort from anniversary left outer join follow on a_mno = f_mno where f_sno = #{m_no} or f_mno = #{m_no} order by sort , date_format(a_date, '%m-%d') asc")
+	@Select("SELECT distinct f_mno, a_no, a_mno, a_detail, a_date, (select m_name from member where m_no = a_mno) a_mname,case when date_format(a_date, '%m-%d')>=date_format(curdate(),'%m-%d') then 1 else 2 end as sort, case when date_format(a_date, '%m-%d')>=date_format(curdate(),'%m-%d') then to_days(concat('16-',date_format(a_date, '%m-%d')))-to_days(now()) else to_days(concat('17-',date_format(a_date, '%m-%d')))-to_days(now()) end as a_dday from anniversary left outer join follow on a_mno = f_mno where f_sno = #{m_no} or a_mno = #{m_no} order by sort , date_format(a_date, '%m-%d') asc")
 	List<AnniversaryDto> showAnniversary(String m_no) throws DataAccessException;
 	@Insert("insert into anniversary (a_mno, a_date, a_detail) values(#{a_mno}, #{a_date},#{a_detail})")
 	boolean insertAnniversary(AnniversaryBean bean) throws DataAccessException;
