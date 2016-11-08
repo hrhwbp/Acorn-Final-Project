@@ -19,10 +19,6 @@ $(document).ready(function () {
 	//console.log(dd)
 });
 
-function dd(num){
-	console.log("num : " + num);
-}
-
 function scrolling(){ 
 	var documentHeight  = $(document).height() * 2 - 1200;
 	var scrollHeight = $(window).scrollTop()+$(window).height();
@@ -38,7 +34,7 @@ function scrolling(){
 		//console.log("last_bno : " + lastbno)
 		//console.log(lastbno_save)
 
-		$.ajax({
+		$.ajax({ // 스크롤링 기본 베이스 ( 댓글 , 라이크는 안에서 반복 function 으로 같이 출력)
 			type:"get",
 			url:"scroll",
 			dataType:"json",
