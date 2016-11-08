@@ -58,7 +58,7 @@ public interface AnnoInter {
 	@Delete("delete from member where m_no = #{m_no}")
 	boolean outMember(String m_no);
 	
-	@Update("update member set m_name = #{m_name}, m_bdate = #{m_bdate}, m_email = #{m_emali}, m_image = #{m_image} where m_no = #{m_no}")
+	@Update("update member set m_name = #{m_name}, m_bdate = #{m_bdate}, m_image = #{m_image} where m_no = #{m_no}")
 	boolean updateMember(MemberBean bean);
 	
 	@Select("select * from member where m_email = #{m_email} and m_password = #{m_password}")
@@ -123,6 +123,9 @@ public interface AnnoInter {
 	//WishGroup
 	@Select("select * from wishgroup where wg_mno=#{wg_mno}")
 	List<WishlistDto> showWishGroup(String wg_mno);
+	
+	@Select("select * from wishgroup where wg_no=#{wg_no}")
+	WishlistDto showWishAGroup(String wg_no);
 	
 	@Insert("insert into wishgroup (wg_mno, wg_detail) values(#{wg_mno},#{wg_detail})")
 	boolean insertWishGroup(WishlistBean bean);

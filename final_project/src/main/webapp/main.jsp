@@ -19,10 +19,6 @@ $(document).ready(function () {
 	//console.log(dd)
 });
 
-function dd(num){
-	console.log("num : " + num);
-}
-
 function scrolling(){ 
 	var documentHeight  = $(document).height() * 2 - 1200;
 	var scrollHeight = $(window).scrollTop()+$(window).height();
@@ -30,25 +26,22 @@ function scrolling(){
 	//console.log ("scrollHeight : " + scrollHeight)
 
 	if(scrollHeight >= documentHeight) {
-		var lastbno = $(".thumbnail:last").attr("data-bno");
+		var lastbno = $(".thumbnail:last").attr("data-bno");	
+		console.log("last_bno : " + lastbno)
 		if(lastbno_save != lastbno){  // 동기화로 바꿈으로서 반드시 들어가야함 ( 안들어갈시 버벅거림 )  //  1.
-			
 		lastbno_save = lastbno;
 		//console.log("last_bno : " + lastbno)
 		//console.log(lastbno_save)
-		$.ajax({
+		$.ajax({ // 스크롤링 기본 베이스 ( 댓글 , 라이크는 안에서 반복 function 으로 같이 출력)
+
 			type:"get",
 			url:"scroll",
 			dataType:"json",
 			data:{"last_bno":lastbno},
-			async : false,
 			success:function(scrollData){
-				
 				var str = "";
 				var list = scrollData.datas;
 				$(list).each(function(index,objArr){
-					var num = this.b_no;
-					dd(num);
 					str += '<div class="row">';
 			        str += '<div class="col-md-12">';
 			        str += '	<div class="thumbnail" data-bno='+this.b_no+' >';
@@ -64,7 +57,6 @@ function scrolling(){
 					str += '</div>';
 					str += '</div>';
 					str += '</div>';
-
 				});
 				$("#scrollingId").append(str)
 				
@@ -73,9 +65,12 @@ function scrolling(){
 				console.log("scroll 이벤트 실패")
 			}
 		});	
-		}  //  1.
 
-	}
+}
+}
+}
+
+	
 
 	function replySubmit(no){
 
@@ -183,7 +178,7 @@ function scrolling(){
     		}
     	});
     }	
-}
+
     
 	
 </script>
@@ -266,8 +261,7 @@ function scrolling(){
 													if ((Integer) request.getAttribute((String) pageContext.getAttribute("recount")) > 5) {
 												%>
 												<tr>
-													<td><a href="javascript:;"
-														onclick="showReplyMore(${list.b_no })">show reply all</a></td>
+													<td><a href="javascript:;" onclick="showReplyMore(${list.b_no })">show reply all</a></td>
 												</tr>
 												<%
 													}
@@ -294,13 +288,9 @@ function scrolling(){
  													%>
 													<%
 														if (likeYN >= 1) {
-													%> <span class="glyphicon glyphicon-heart"
-													onclick="likecancel(${list.b_no})" style="color: red"
-													id="likeYN${list.b_no }"></span> <%
+													%> <span class="glyphicon glyphicon-heart" onclick="likecancel(${list.b_no})" style="color: red" id="likeYN${list.b_no }"></span> <%
  													} else {
- 													%> <span
-													class="glyphicon glyphicon-heart"
-													onclick="likesubmit(${list.b_no})" id="likeYN${list.b_no }"></span>
+ 													%> <span class="glyphicon glyphicon-heart" onclick="likesubmit(${list.b_no})" id="likeYN${list.b_no }"></span>
 													<%
 														}
 													%>
@@ -338,7 +328,7 @@ function scrolling(){
 							
 							<c:forEach var="anni" items="${anniversary}">
                   
-                     <li>${anni.a_date}는 <a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>님의 ${anni.a_detail }입니다.<n/></li>
+                     ${anni.a_date}는 <a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>님의 ${anni.a_detail }입니다.<n/><br/>
                      
                    </c:forEach>
 							

@@ -5,11 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.remind.model.AnnoInter;
@@ -86,7 +89,37 @@ public class WishListController {
 			return	"redirect:/error.jsp";		
 	}
 	
-	@RequestMapping(value="ReadWishGroupList4Edit", method = RequestMethod.GET)
+	//Wishlist Group 업데이트
+	@RequestMapping(value="updateWishGroup", method= RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> updateWishGroup(@RequestParam("wg_no")String wg_no, @RequestParam("wg_detail")String wg_detail){
+		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
+		Map<String, String> data = null;
+		
+		WishlistBean bean = new WishlistBean();
+		bean.setWg_no(wg_no);
+		bean.setWg_detail(wg_detail);		
+		boolean b = daoInter.updateWishGroup(bean);
+		if (b)		System.out.println(wg_no + wg_detail);
+		else System.out.println("에러");
+		
+		//DB 변경작업 끝
+		
+		WishlistDto wishGroup = daoInter.showWishAGroup(wg_no);
+			data = new HashMap<String, String>();
+			data.put("wg_no", wishGroup.getWg_no());
+			data.put("wg_detail", wishGroup.getWg_detail());			
+			dataList.add(data);
+		
+		Map<String, Object> wishGroupData = new HashMap<String, Object>();
+		wishGroupData.put("WishGroupList", dataList);
+		
+		return wishGroupData;
+	}
+	
+	
+	
+	/*@RequestMapping(value="ReadWishGroupList4Edit", method = RequestMethod.GET)
 	public Map<String, Object> ReadWishGroupList4Edit(@RequestParam("wg_no")String wg_no){
 		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
 		Map<String, String> data = null;
@@ -103,7 +136,7 @@ public class WishListController {
 		wishGroupData.put("WishGroupData", dataList);
 		return wishGroupData;
 	}
-/*	
+	
 	//WishList Group 변경
 	@RequestMapping(value="updateWishGroup", method = RequestMethod.POST)
 	public ModelAndView updateWishGroup(@RequestParam("w_mno")String w_mno, WishlistBean bean){	

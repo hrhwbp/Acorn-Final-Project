@@ -43,7 +43,7 @@ public class BoardController {
 		List<AnniversaryDto> anniversary = daoInter.showAnniversary(m_no);
 		List<BoardDto> list = daoInter.showBoard(m_no);
 		for (int i = 0; i < list.size(); i++) {
-			List<ReplyDto> reply = daoInter.showReply(list.get(i).getB_no());
+			List<ReplyDto> reply = daoInter.showReply(list.get(i).getB_no()); 
 			model.addObject("reply" + list.get(i).getB_no(), reply);
 			int count = daoInter.countReply(list.get(i).getB_no());
 			//System.out.println(count);
@@ -65,7 +65,7 @@ public class BoardController {
 		model.setViewName("../../main");
 		return model;
 	}
-	@RequestMapping("scroll")
+	@RequestMapping("scroll") // 스크롤링 기본 베이스  ( 댓글 , 라이크 뽑을려면 있어야됨 )
 	@ResponseBody
 	public Map<String, Object> scrolling(@RequestParam("last_bno")String last_bno, HttpSession session){//last_bnoShouldMinus
 		String m_no = (String) session.getAttribute("mno");
