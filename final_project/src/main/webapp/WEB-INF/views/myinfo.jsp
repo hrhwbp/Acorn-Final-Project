@@ -9,6 +9,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>MyInfo</title>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<style type="text/css">
+.img_sss {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: 100%;
+    height: auto;
+}
+.rowimg {
+    position: relative;
+    padding-top: 75%;  /* 1:1 ratio */
+    
+    overflow: hidden;
+}
+</style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">
@@ -29,10 +46,10 @@ $(document).ready(function() {
 	});
 	$('#boardInsertSubmit').click(function() {
 		/* alert(boardInsertFile.files[0]); */
-		/* if(boardInsertFile.files[0] == undefined){
+		if(boardInsertFile.files[0] == undefined){
 			$('#boardInsertErr').modal('show');
 			return;
-		}else */ if($('#modalInsertContent').val() == ''){
+		}else if($('#modalInsertContent').val() == ''){
 			$('#modalInsertContent').attr('placeholder','내용을 입력 해주세요!!');
 			$('#modalInsertContent').focus();
 			return;
@@ -59,6 +76,7 @@ function modalToggle(b_no) {
         	 $('#modalLike').text('좋아요 ' + dto.b_like);
         	 $('#modalDate').text(dto.b_date);
         	 $('#hiddenNo').val(dto.b_no); 
+        	 $('#hiddenImage').val(dto.b_image); 
         	 $('#boardDetail').modal('show');
          },
          error : function(xhr, status, error) {
@@ -66,6 +84,32 @@ function modalToggle(b_no) {
          }
    });
 	
+}
+
+function follow1(m_no) {
+	$('#followHead').text('팔로워');
+	 jQuery.ajax({
+         type:"post",
+         url:"showMyFollower",
+         data: {"m_no":m_no},
+         dataType: "json",
+         success : function(data) {
+        	 /* alert(data.detailDto.b_no); */
+        	 var dto = data.detailDto;
+        	 /* alert(dto.b_image); */
+        	 /* modalContent modalLike modalDate */
+        	 /* document.getElementById("modalimg").src = dto.b_image;  */
+        	 $('#myFollow').modal('show');
+         },
+         error : function(xhr, status, error) {
+               alert("에러발생 " + error);
+         }
+   });
+}
+
+function follow2(m_no) {
+	$('#followHead').text('팔로우');
+	$('#myFollow').modal('show');
 }
 </script>
 </head>
@@ -98,8 +142,8 @@ function modalToggle(b_no) {
 		<div class="row">
 			
 			<button type="button" class="btn btn-link col-md-3" disabled="disabled">게시물  ${fn:length(board)}개</button> 
-			<button type="button" class="btn btn-link col-md-3">팔로워 ${fn:length(mylist)}</button>
-			<button type="button" class="btn btn-link col-md-3">팔로우 ${fn:length(ilist)}</button>
+			<button type="button" class="btn btn-link col-md-3" onclick="follow1(${myinfo.m_no})">팔로워 ${fn:length(mylist)}</button>
+			<button type="button" class="btn btn-link col-md-3" onclick="follow2(${myinfo.m_no})">팔로우 ${fn:length(ilist)}</button>
 		
 		</div>
 	</div>
@@ -115,8 +159,8 @@ function modalToggle(b_no) {
   <c:forEach var="board" items="${board}">  
   <div class="col-md-4">
     <div class="thumbnail">
-    	<div class="row" style="height: 190px;">
-		   <img src="${board.b_image }" alt="Responsive image" class="img-responsive center-block" style="height: 100%">
+    	<div class="row rowimg" >
+		   <img src="${board.b_image }" alt="Responsive image" class="img-responsive center-block img_sss">
     	</div>
       <div class="caption">
         <h3>${board.b_content }</h3>
@@ -243,7 +287,7 @@ function modalToggle(b_no) {
 					<a  onclick="$('#boardFile').click();" style="cursor: pointer">
 					<img alt="Responsive image" id="modalimg" class="img-responsive center-block" src="">
 					</a>
-					<input type="file" name="b_image"  id="boardFile" class="sr-only" >
+					<input type="file" name="fileUpload"  id="boardFile" class="sr-only" >
 				</div>
 			</div>
 	      </div>
@@ -256,6 +300,7 @@ function modalToggle(b_no) {
 	      </div>
 	      </div>
 	      <input type="hidden" value="" id="hiddenNo" name="b_no">
+	      <input type="hidden" value="" id="hiddenImage" name="b_image">
 	     </form>
 	      <div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -266,7 +311,7 @@ function modalToggle(b_no) {
 	  </div>
 	</div>
 
-		<!-- 새게시물 모달 -->
+		<!-- 새 게시물 모달 -->
 
 	<div class="modal fade" id="boardInsert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	  <div class="modal-dialog" style="margin: 180px auto">
@@ -280,7 +325,7 @@ function modalToggle(b_no) {
 					<b id="insertBtag">클릭해서 이미지 추가</b>
 					<img alt="Responsive image" id="boardInsertImg" class="img-responsive center-block" src="" style="">
 					</a>
-					<input type="file" name="fileUpload" id="boardInsertFile" class="">
+					<input type="file" name="fileUpload" id="boardInsertFile" class="sr-only">
 				</div>
 			</div>
 	      </div>
@@ -297,6 +342,45 @@ function modalToggle(b_no) {
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			<button id="boardInsertSubmit" type="button" class="btn btn-primary" >Save changes</button>
 	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
+
+			<!-- 팔로우 모달 -->
+
+	<div class="modal" id="myFollow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+	  <div class="modal-dialog" style="margin: 180px auto">
+	    <div class="modal-content">
+	     <form id="boardInsertfrm" action="insertBoard" method="post" enctype="multipart/form-data">
+	      <div class="modal-header">
+			<div class="row">
+				<div class="col-md-12 text-center" id="followHead">
+					<h3 id="followHead"></h3>
+				</div>
+			</div>
+	      </div>
+	      <div class="modal-body">
+		      <div class="row" style="padding-top: 2%">	      
+				<div class="col-md-10">
+				<a href="#">fdsafdsafdsafdsafdsafsdafsda</a>
+				</div>
+				<button type="button" class="btn btn-default">팔로우</button>
+		      </div>
+		      <div class="row" style="padding-top: 2%">	      
+				<div class="col-md-10">
+				<a href="#">fdsafdsafdsafdsafdsafsdafsda</a>
+				</div>
+				<button type="button" class="btn btn-default">팔로우</button>
+		      </div>
+		      <div class="row" style="padding-top: 2%">	      
+				<div class="col-md-10">
+				<a href="#">fdsafdsafdsafdsafdsafsdafsda</a>
+				</div>
+				<button type="button" class="btn btn-default">팔로우</button>
+		      </div>
+	      </div>
+	     </form>
 	      
 	    </div>
 	  </div>

@@ -39,13 +39,13 @@ public interface AnnoInter {
 	@Insert("insert into board (b_mno, b_image, b_content, b_like) values (#{b_mno}, #{b_image}, #{b_content}, 0)")
 	boolean write(BoardBean bean);
 	
-	@Update("update board set b_content=#{b_content} where b_no=#{b_no}")
+	@Update("update board set b_content=#{b_content},b_image=#{b_image} where b_no=#{b_no}")
 	boolean updateBoard(BoardBean bean);
 
 	
 	
 	// member
-	@Select("select * from board where b_mno = #{b_mno}")
+	@Select("select * from board where b_mno = #{b_mno} order by b_no desc")
 	List<BoardDto> showMyMain(String b_mno);
 	
 	@Select("select * from member where m_no=#{m_no}")
