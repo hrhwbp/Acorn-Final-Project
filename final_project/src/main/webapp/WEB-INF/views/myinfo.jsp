@@ -23,6 +23,17 @@ $(document).ready(function() {
 			$('#passwordErr').modal('show');
 		}
 	});
+	$('#boardInsertBtn').click(function() {
+		$('#boardInsert').modal('show');
+		$('#boardInsertImg').hide();
+	});
+	$('#boardInsertSubmit').click(function() {
+		alert($('boardInsertFile').val(0).val());
+		/* if($('boardInsertFile').val() == null){
+			alert('없음')	
+		} */
+		/* $('boardInsertfrm').submit() */
+	})
 })
 
 function modalToggle(b_no) {
@@ -59,9 +70,9 @@ function modalToggle(b_no) {
 <div class="container">
 <div class="container"  style="padding-top: 2%; padding-bottom: 5%">
 <div class="row" style="background-color: rgb(253,253,253); padding-top: 30px; padding-bottom: 30px">
-	<div class="col-md-2 col-md-offset-2" style="height: 180px">
+	<div class="col-md-2 col-md-offset-2" style="height: 170px">
 		<a style="color: buttontext; border: 0; cursor: pointer; height: 100%; padding: 0; width: 100%;" data-toggle="modal" data-target="#updateInfo">
-		<img src="resources/image/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
+		<img src="http://wbp.synology.me/profileimg/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
 		
 		</a>
 	</div>
@@ -90,7 +101,7 @@ function modalToggle(b_no) {
 </div>
 <div class="row" style="padding-bottom: 2%">
 	<div class="col-md-10 col-md-offset-1">
-		<button type="button" class="btn btn-link col-md-12" style="background-color: rgb(255,230,231);"><h4><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;게시물 추가하기</h4></button>
+		<button type="button" id="boardInsertBtn" class="btn btn-link col-md-12" style="background-color: rgb(255,230,231);"><h4><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;게시물 추가하기</h4></button>
 	</div>
 </div>
 
@@ -132,7 +143,7 @@ function modalToggle(b_no) {
 				<div class="col-md-4 col-md-offset-4 text-center">
 				<div style="color: buttontext; border: 0; cursor: pointer; height: 180px; padding: 0; width: 100%;">
 					<a  onclick="$('#file').click();">
-					<img id="image" src="resources/image/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
+					<img id="image" src="http://wbp.synology.me/profileimg/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
 					</a>
 	      			<input type="file" id="file"  name="fileUp" class="sr-only">
 				</div>
@@ -214,20 +225,20 @@ function modalToggle(b_no) {
 	  </div>
 	  	
 	</div>
-	<!-- 모달 팝업 -->
+	<!-- 게시물 수정 모달 -->
 
 	<div class="modal fade" id="boardDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	  <div class="modal-dialog" style="margin: 180px auto">
 	    <div class="modal-content">
 	     <form id="boardUpdatefrm" action="updateBoard" method="post">
 	      <div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+			
 			<div class="row">
 				<div class="col-md-12">
 					<a  onclick="$('#boardFile').click();" style="cursor: pointer">
 					<img alt="Responsive image" id="modalimg" class="img-responsive center-block" src="">
 					</a>
-					<input name="b_image" type="file" id="boardFile" class="sr-only">
+					<input name="b_image" type="file" id="boardFile" class="sr-only" >
 				</div>
 			</div>
 	      </div>
@@ -250,8 +261,44 @@ function modalToggle(b_no) {
 	  </div>
 	</div>
 
+		<!-- 새게시물 모달 -->
 
-	<!-- 모달 팝업 -->
+	<div class="modal fade" id="boardInsert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+	  <div class="modal-dialog" style="margin: 180px auto">
+	    <div class="modal-content">
+	     <form id="boardInsertfrm" action="insertBoard" method="post">
+	      <div class="modal-header">
+			
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<a  onclick="$('#boardInsertFile').click();" style="cursor: pointer" id="insertAtag">클릭해서 이미지 추가
+					<img alt="Responsive image" id="boardInsertImg" class="img-responsive center-block" src="">
+					</a>
+					<input name="b_image" type="file" id="boardInsertFile" class="" required>
+				</div>
+			</div>
+	      </div>
+	      <div class="modal-body">
+	     
+	 
+	      <div class="row">	      
+			<h3 class="col-md-12"><input name="b_content" id="modalContent" type="text" class="form-control" value=""></h3>
+			<p class="col-md-6" id="modalLike"></p><p id="modalDate" class="text-right col-md-6"></p>
+	      </div>
+	      </div>
+	      <input type="hidden" value="" id="hiddenNo" name="b_no">
+	     </form>
+	      <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button id="boardInsertSubmit" type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
+	
+
+	<!-- 비밀번호 모달 팝업 -->
 	<div class="modal fade bs-example-modal-sm" id="passwordErr" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
 	  <div class="modal-dialog modal-sm" style="margin: 350px auto;">
 	    <div class="modal-content">
@@ -265,6 +312,7 @@ function modalToggle(b_no) {
 	
 </div> <!-- container -->
 <script>
+/* 프로필 수정 이미지 미리보기 */
 var upload = document.getElementById('file'),
  	image = document.getElementById('image');
 upload.onchange = function (e) {
@@ -276,7 +324,7 @@ upload.onchange = function (e) {
   };
   reader.readAsDataURL(file);
 };
-
+/* 게시물 수정 이미지 미리보기 */
 var boardFile = document.getElementById('boardFile'),
 	modalimg = document.getElementById('modalimg');
 boardFile.onchange = function (e) {
@@ -287,6 +335,20 @@ boardFile.onchange = function (e) {
 	  modalimg.src = event.target.result;
   };
   reader2.readAsDataURL(file2);
+};
+/* 게시물 쓰기 이미지 미리보기 */
+var boardInsertFile = document.getElementById('boardInsertFile'),
+	boardInsertImg = document.getElementById('boardInsertImg');
+boardInsertFile.onchange = function (e) {
+  e.preventDefault();
+  var file3 = boardInsertFile.files[0],
+      reader3 = new FileReader();
+  reader3.onload = function (event) {
+	  boardInsertImg.src = event.target.result;
+  };
+  reader3.readAsDataURL(file3);
+  $('#boardInsertImg').show();
+  $('#insertAtag').val('');
 };
 </script>
 </body>
