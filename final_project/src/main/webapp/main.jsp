@@ -25,7 +25,7 @@ function scrolling(){
 	var scrollHeight = $(window).scrollTop()+$(window).height();
 	//console.log ("documentHeight : " + documentHeight) 
 	//console.log ("scrollHeight : " + scrollHeight)
-
+	
 	if(scrollHeight >= documentHeight) {
 		var lastbno = $(".thumbnail:last").attr("data-bno");	
 		console.log("last_bno : " + lastbno)
@@ -33,6 +33,7 @@ function scrolling(){
 		lastbno_save = lastbno;
 		//console.log("last_bno : " + lastbno)
 		//console.log(lastbno_save)
+
 		$.ajax({ // 스크롤링 기본 베이스 ( 댓글 , 라이크는 안에서 반복 function 으로 같이 출력)
 
 			type:"get",
@@ -43,6 +44,9 @@ function scrolling(){
 				var str = "";
 				var list = scrollData.datas;
 				$(list).each(function(index,objArr){
+					var num = this.b_no
+					
+					function likescrolling(num);
 					str += '<div class="row">';
 			        str += '<div class="col-md-12">';
 			        str += '	<div class="thumbnail" data-bno='+this.b_no+' >';
@@ -67,11 +71,15 @@ function scrolling(){
 			}
 		});	
 
-}
-}
+		}
+	}
 }
 
-	
+function likescrolling(num){
+	console.log("num : " + num);
+
+}
+
 
 	function replySubmit(no){
 
