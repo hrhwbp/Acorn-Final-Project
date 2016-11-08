@@ -90,7 +90,7 @@ public class MemberController {
                 // output.write(fileData);
                  
                 // 2. File 사용
-                File file = new File("C:/work/sts-bundle/repository/final_project/src/main/webapp/resources/image/" + fileName);
+                File file = new File("C:/Users/kitcoop/Desktop/final project/final_project/src/main/webapp/resources/image/" + fileName);
                 
                 uploadfile.transferTo(file);
             } catch (Exception e) {
@@ -101,7 +101,7 @@ public class MemberController {
 		bean.setM_bdate(bean.getYear()+ "-" + bean.getMonth() + "-" + bean.getDay());
 		boolean b = daoInter.updateMember(bean);
 		
-		if(b){return "myinfo";}
+		if(b){return "redirect:/myinfo";}
 		else return "redirect:/error.jsp";
 			
 	}
@@ -130,6 +130,21 @@ public class MemberController {
 	//내 정보 보기
 	@RequestMapping(value="myinfo", method = RequestMethod.POST)
 	public ModelAndView showMyinfo(@RequestParam("m_no")String m_no){
+		ModelAndView view = new ModelAndView();
+		MemberDto dto = daoInter.showMemberDetail(m_no);
+		view.addObject("myinfo", dto);
+		List<FollowDto> mylist = daoInter.showMyFollower(m_no);
+		view.addObject("mylist", mylist);
+		List<FollowDto> ilist = daoInter.showIFollow(m_no);
+		view.addObject("ilist", ilist);
+		List<BoardDto> list = daoInter.showBoard(m_no);
+		view.addObject("board",list);
+		view.setViewName("myinfo");
+		return view;
+	}
+	@RequestMapping(value="myinfo", method = RequestMethod.GET)
+	public ModelAndView showMyinfo2(HttpSession session){
+		String m_no = (String)session.getAttribute("mno"); 
 		ModelAndView view = new ModelAndView();
 		MemberDto dto = daoInter.showMemberDetail(m_no);
 		view.addObject("myinfo", dto);

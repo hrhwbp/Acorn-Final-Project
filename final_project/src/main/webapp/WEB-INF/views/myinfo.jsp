@@ -59,9 +59,10 @@ function modalToggle(b_no) {
 <div class="container">
 <div class="container"  style="padding-top: 2%; padding-bottom: 5%">
 <div class="row" style="background-color: rgb(253,253,253); padding-top: 30px; padding-bottom: 30px">
-	<div class="col-md-2 col-md-offset-2">
+	<div class="col-md-2 col-md-offset-2" style="height: 180px">
 		<a style="color: buttontext; border: 0; cursor: pointer; height: 100%; padding: 0; width: 100%;" data-toggle="modal" data-target="#updateInfo">
-		<img src="resources/image/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="width: 100%">
+		<img src="resources/image/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
+		
 		</a>
 	</div>
 	<div class="col-md-6">
@@ -118,25 +119,28 @@ function modalToggle(b_no) {
 
 
 	<!-- 프로필 수정 모달 -->
+	
 	<div class="modal fade" id="updateInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	  <div class="modal-dialog" style="margin: 150px auto;">
 	    <div class="modal-content">
+	     <form action="updateInfo" id="infofrm" method="post" enctype="multipart/form-data">
 	      <div class="modal-header">
+	      
+	     
 		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
 			<div class="row">
 				<div class="col-md-4 col-md-offset-4 text-center">
 				<div style="color: buttontext; border: 0; cursor: pointer; height: 180px; padding: 0; width: 100%;">
 					<a  onclick="$('#file').click();">
-					<img id="image" src="resources/image/image-h.jpg" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
+					<img id="image" src="resources/image/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
 					</a>
-	      			<input type="file" id="file"  name="fileUp">
+	      			<input type="file" id="file"  name="fileUp" class="sr-only">
 				</div>
 				</div>
-				
 			</div>
 	     </div>
 	      	<div class="modal-body">
-			<form action="updateInfo" id="infofrm" method="post" enctype="multipart/form-data">
+			
 				<input type="hidden" name="m_no" value="${myinfo.m_no}">
 				<div class="row">
 					<div class="col-md-12">
@@ -196,15 +200,19 @@ function modalToggle(b_no) {
 							</select>
 						</div>
 					</div>
-			</form>
+		
 	      	</div>
 	    	<div class="modal-footer">
 	    	<button class="btn btn-primary" id="infoSubmit" type="button">Save changes</button>
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
-		
+			
+				
+			</form>
 	    </div>
+	    
 	  </div>
+	  	
 	</div>
 	<!-- 모달 팝업 -->
 
@@ -237,6 +245,7 @@ function modalToggle(b_no) {
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			<button id="updateSubmit" type="button" class="btn btn-primary">Save changes</button>
 	      </div>
+	      
 	    </div>
 	  </div>
 	</div>

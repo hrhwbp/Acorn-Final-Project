@@ -58,7 +58,7 @@ public interface AnnoInter {
 	@Delete("delete from member where m_no = #{m_no}")
 	boolean outMember(String m_no);
 	
-	@Update("update member set m_name = #{m_name}, m_bdate = #{m_bdate}, m_email = #{m_emali}, m_image = #{m_image} where m_no = #{m_no}")
+	@Update("update member set m_name = #{m_name}, m_bdate = #{m_bdate}, m_image = #{m_image} where m_no = #{m_no}")
 	boolean updateMember(MemberBean bean);
 	
 	@Select("select * from member where m_email = #{m_email} and m_password = #{m_password}")
