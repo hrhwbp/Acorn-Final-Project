@@ -110,6 +110,12 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>maven-taglib</groupId>
+			<artifactId>maven-taglib-plugin</artifactId>
+			<version>1.4.2</version>
+		</dependency>
 		<!-- dbms : MariaDb Driver -->
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
