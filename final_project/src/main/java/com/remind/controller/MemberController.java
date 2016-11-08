@@ -78,7 +78,6 @@ public class MemberController {
 	public String updateSubmit(MemberBean bean){
 		
 		MultipartFile uploadfile = bean.getFileUp();
-		System.out.println(uploadfile + " " + bean.getFileUp() + " " + bean.getM_name());
 		if (uploadfile != null) {
             String fileName = uploadfile.getOriginalFilename();
             System.out.println(fileName);
@@ -90,7 +89,7 @@ public class MemberController {
                 // output.write(fileData);
                  
                 // 2. File 사용
-                File file = new File("C:/Users/kitcoop/Desktop/final project/final_project/src/main/webapp/resources/image/" + fileName);
+                File file = new File("N:/web/profileimg/" + fileName);
                 
                 uploadfile.transferTo(file);
             } catch (Exception e) {
