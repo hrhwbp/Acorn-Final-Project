@@ -113,7 +113,7 @@ public class DataDao implements DaoInter {
 			annoInter.updateMember(bean);
 			return true;
 		} catch (Exception e) {
-			System.out.println("eraseboard err");
+			System.out.println("updatemember error" + e);
 			return false;
 		}
 	}

@@ -32,21 +32,16 @@ function scrolling(){
 	if(scrollHeight >= documentHeight) {
 		var lastbno = $(".thumbnail:last").attr("data-bno");	
 		console.log("last_bno : " + lastbno)
-
 		if(lastbno_save != lastbno){  // 동기화로 바꿈으로서 반드시 들어가야함 ( 안들어갈시 버벅거림 )  //  1.
-			
 		lastbno_save = lastbno;
 		//console.log("last_bno : " + lastbno)
 		//console.log(lastbno_save)
-
 		$.ajax({
 			type:"get",
 			url:"scroll",
 			dataType:"json",
 			data:{"last_bno":lastbno},
-			async : false,
 			success:function(scrollData){
-				
 				var str = "";
 				var list = scrollData.datas;
 				$(list).each(function(index,objArr){
@@ -67,7 +62,6 @@ function scrolling(){
 					str += '</div>';
 					str += '</div>';
 					str += '</div>';
-
 				});
 				$("#scrollingId").append(str)
 				
@@ -77,6 +71,7 @@ function scrolling(){
 			}
 		});	
 
+}
 }
 }
 
@@ -271,8 +266,8 @@ function scrolling(){
 													if ((Integer) request.getAttribute((String) pageContext.getAttribute("recount")) > 5) {
 												%>
 												<tr>
-													<td><a href="javascript:;"
-														onclick="showReplyMore(${list.b_no })">show reply all</a></td>
+													<td><a href="javascript:;"														
+													onclick="showReplyMore(${list.b_no })">show reply all</a></td>
 												</tr>
 												<%
 													}
@@ -299,9 +294,7 @@ function scrolling(){
  													%>
 													<%
 														if (likeYN >= 1) {
-													%> <span class="glyphicon glyphicon-heart"
-													onclick="likecancel(${list.b_no})" style="color: red"
-													id="likeYN${list.b_no }"></span> <%
+													%> <span class="glyphicon glyphicon-heart"	onclick="likecancel(${list.b_no})" style="color: red" id="likeYN${list.b_no }"></span> <%
  													} else {
  													%> <span
 													class="glyphicon glyphicon-heart"
@@ -343,7 +336,7 @@ function scrolling(){
 							
 							<c:forEach var="anni" items="${anniversary}">
                   
-                     <li>${anni.a_date}는 <a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>님의 ${anni.a_detail }입니다.<n/></li>
+                     ${anni.a_date}는 <a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>님의 ${anni.a_detail }입니다.<n/><br/>
                      
                    </c:forEach>
 							
