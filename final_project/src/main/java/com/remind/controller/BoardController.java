@@ -65,7 +65,7 @@ public class BoardController {
 		model.setViewName("../../main");
 		return model;
 	}
-	@RequestMapping("scroll")
+	@RequestMapping("scroll") // 스크롤링 기본 베이스  ( 댓글 , 라이크 뽑을려면 있어야됨 )
 	@ResponseBody
 	public Map<String, Object> scrolling(@RequestParam("last_bno")String last_bno, HttpSession session){//last_bnoShouldMinus
 		String m_no = (String) session.getAttribute("mno");

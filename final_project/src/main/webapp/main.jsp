@@ -19,10 +19,6 @@ $(document).ready(function () {
 	//console.log(dd)
 });
 
-function dd(num){
-	console.log("num : " + num);
-}
-
 function scrolling(){ 
 	var documentHeight  = $(document).height() * 2 - 1200;
 	var scrollHeight = $(window).scrollTop()+$(window).height();
@@ -36,7 +32,8 @@ function scrolling(){
 		lastbno_save = lastbno;
 		//console.log("last_bno : " + lastbno)
 		//console.log(lastbno_save)
-		$.ajax({
+		$.ajax({ // 스크롤링 기본 베이스 ( 댓글 , 라이크는 안에서 반복 function 으로 같이 출력)
+
 			type:"get",
 			url:"scroll",
 			dataType:"json",
@@ -45,8 +42,6 @@ function scrolling(){
 				var str = "";
 				var list = scrollData.datas;
 				$(list).each(function(index,objArr){
-					var num = this.b_no;
-					dd(num);
 					str += '<div class="row">';
 			        str += '<div class="col-md-12">';
 			        str += '	<div class="thumbnail" data-bno='+this.b_no+' >';
@@ -266,8 +261,7 @@ function scrolling(){
 													if ((Integer) request.getAttribute((String) pageContext.getAttribute("recount")) > 5) {
 												%>
 												<tr>
-													<td><a href="javascript:;"														
-													onclick="showReplyMore(${list.b_no })">show reply all</a></td>
+													<td><a href="javascript:;" onclick="showReplyMore(${list.b_no })">show reply all</a></td>
 												</tr>
 												<%
 													}
@@ -294,11 +288,9 @@ function scrolling(){
  													%>
 													<%
 														if (likeYN >= 1) {
-													%> <span class="glyphicon glyphicon-heart"	onclick="likecancel(${list.b_no})" style="color: red" id="likeYN${list.b_no }"></span> <%
+													%> <span class="glyphicon glyphicon-heart" onclick="likecancel(${list.b_no})" style="color: red" id="likeYN${list.b_no }"></span> <%
  													} else {
- 													%> <span
-													class="glyphicon glyphicon-heart"
-													onclick="likesubmit(${list.b_no})" id="likeYN${list.b_no }"></span>
+ 													%> <span class="glyphicon glyphicon-heart" onclick="likesubmit(${list.b_no})" id="likeYN${list.b_no }"></span>
 													<%
 														}
 													%>
