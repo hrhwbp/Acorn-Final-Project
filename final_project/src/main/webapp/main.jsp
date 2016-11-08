@@ -5,7 +5,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE PUBLIC>
 <html>
 <head>
@@ -46,7 +46,6 @@ function scrolling(){
 				$(list).each(function(index,objArr){
 					var num = this.b_no
 					
-					function likescrolling(num);
 					str += '<div class="row">';
 			        str += '<div class="col-md-12">';
 			        str += '	<div class="thumbnail" data-bno='+this.b_no+' >';
@@ -337,15 +336,33 @@ function likescrolling(num){
 							<table>
 							<tr><th>생일</th></tr>
 							<c:forEach var="anni" items="${anniversary}">
-							<c:if test="${anni.a_detail eq '생일'}">
 							
+							<c:if test="${anni.a_detail eq '생일'}">
 							<tr><td>
-                  			  ${anni.a_date}는 <a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>님의 입니다.<br/>
+                  			  D-${anni.a_dday }<a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a><br/>
                   			  </td>
                      		</tr>
                      		</c:if>
-                   			</c:forEach>
-                   			</table>
+                     		</c:forEach>
+                     		<tr><th>다른날</th></tr>
+                     		<jsp:useBean id="now" class="java.util.Date" />
+                     		<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" var="today" />
+                     		  
+                     		<c:forEach var="anni" items="${anniversary}">
+                     		<fmt:parseDate var="date" value="${anni.a_date}" pattern="yyyy-MM-dd" />
+                     		<fmt:formatDate value="${date }" pattern="yyyy-MM-dd" var="day" />
+							<c:if test="${anni.a_detail ne '생일'}">
+							<c:if test="${day >= today}">
+							<tr><td>
+							
+                  			  D-${anni.a_dday }<a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>의 ${anni.a_detail}<br/>
+                  			 
+                  			</td>
+                     		</tr>
+                     		</c:if>
+                     		</c:if>
+                     		</c:forEach>
+                     		</table>
 							
 						
 						

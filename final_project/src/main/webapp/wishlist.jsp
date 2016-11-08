@@ -206,11 +206,11 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
                     <span class="glyphicon glyphicon-star"></span>
                     <span class="glyphicon glyphicon-star"></span>
                     <span class="glyphicon glyphicon-star"></span>
-                    <p>Rate Yourself!</p>
+                    <p>평가해주세요!</p>
                 </div>
                 <div class="panel-more1">
-                    <img src="${wlist.w_image}" width="50%"/>
-                    <br /><span>Caption</span>
+                    <img src="${wlist.w_image}" width="30%"/>
+                    <br /><span>상세정보</span>
                 </div>               
             </div>
         </div>
