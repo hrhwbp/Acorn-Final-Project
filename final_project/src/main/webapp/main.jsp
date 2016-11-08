@@ -30,12 +30,14 @@ function scrolling(){
 	//console.log ("scrollHeight : " + scrollHeight)
 
 	if(scrollHeight >= documentHeight) {
-		var lastbno = $(".thumbnail:last").attr("data-bno");
-		if(lastbno_save != lastbno){  // 동기화로 바꿈으로서 반드시 들어가야함 ( 안들어갈시 버벅거림 )  //  1.
-			
-		lastbno_save = lastbno;
+		var lastbno = $(".thumbnail:last").attr("data-bno");	
 		console.log("last_bno : " + lastbno)
-		console.log(lastbno_save)
+
+		if(lastbno_save != lastbno){  // 동기화로 바꿈으로서 반드시 들어가야함 ( 안들어갈시 버벅거림 )  //  1.
+		lastbno_save = lastbno;
+		//console.log("last_bno : " + lastbno)
+		//console.log(lastbno_save)
+
 		$.ajax({
 			type:"get",
 			url:"scroll",
@@ -71,9 +73,11 @@ function scrolling(){
 				console.log("scroll 이벤트 실패")
 			}
 		});	
-		}  //  1.
 
-	}
+}
+}
+
+	
 
 	function replySubmit(no){
 
@@ -181,7 +185,7 @@ function scrolling(){
     		}
     	});
     }	
-}
+
     
 	
 </script>

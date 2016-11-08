@@ -1,7 +1,10 @@
 package com.remind.controller;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class MemberBean {
-String m_no, m_name, m_bdate, m_email, m_gender, m_password, year, month, day, gender;
+String m_no, m_name, m_bdate, m_email, m_gender, m_password, year, month, day, gender, m_image;
+MultipartFile fileUp;
 
 public String getYear() {
 	return year;
@@ -73,6 +76,22 @@ public String getM_password() {
 
 public void setM_password(String m_password) {
 	this.m_password = m_password;
+}
+
+public MultipartFile getFileUp() {
+	return fileUp;
+}
+
+public void setFileUp(MultipartFile fileUp) {
+	this.fileUp = fileUp;
+}
+
+public String getM_image() {
+	return m_image;
+}
+
+public void setM_image(String m_image) {
+	this.m_image = m_image;
 }
 
 }
