@@ -34,8 +34,8 @@ function scrolling(){
 		if(lastbno_save != lastbno){  // 동기화로 바꿈으로서 반드시 들어가야함 ( 안들어갈시 버벅거림 )  //  1.
 			
 		lastbno_save = lastbno;
-		//console.log("last_bno : " + lastbno)
-		//console.log(lastbno_save)
+		console.log("last_bno : " + lastbno)
+		console.log(lastbno_save)
 		$.ajax({
 			type:"get",
 			url:"scroll",
@@ -47,8 +47,6 @@ function scrolling(){
 				var str = "";
 				var list = scrollData.datas;
 				$(list).each(function(index,objArr){
-					var num = this.b_no;
-					dd(num);
 					str += '<div class="row">';
 			        str += '<div class="col-md-12">';
 			        str += '	<div class="thumbnail" data-bno='+this.b_no+' >';
