@@ -110,7 +110,7 @@ public interface AnnoInter {
 /*	@Select("select * from wishlist where w_mno = #{w_mno}")
 	List<WishlistDto> showWishList(String w_mno);
 	
-	@Insert("insert into wishlist (w_mno, w_pname, w_price, w_image, w_addr, w_detail, w_lock) values(#{w_mno}, #{w_pname}, #{w_price}, #{w_image}, #{w_addr}, #{w_detail}, #{w_lock})")
+	@Insert("insert into wishlist (w_mno, w_pname, w_price, w_image, w_addr, w_detail, w_lock) values(#{w_mno}, #{w_pname}, #{w_price}, #{w_image}, #{w_addr}, #{w_detail}, #{w_lock}")
 	boolean writeWishlist(WishlistBean bean);
 	
 	@Delete("delete from wishlist where w_no = #{w_no}")
@@ -124,13 +124,13 @@ public interface AnnoInter {
 	@Select("select * from wishlist where w_mno = #{w_mno}")
 	List<WishlistDto> showWishList(String w_mno);
 	
-	@Select("select * from wishlist where w_pname = #{w_pname}")
-	List<WishlistDto> showInsertedList(String w_pname);
+	@Select("select * from wishlist where w_no = #{w_no}")
+	List<WishlistDto> showInsertedList(String w_no);
 	
 	@Insert("insert into wishlist (w_mno, w_pname, w_price, w_image, w_addr, w_detail, w_lock) values(#{w_mno}, #{w_pname}, #{w_price}, #{w_image}, #{w_addr}, #{w_detail}, #{w_lock})")
 	boolean writeWishlist(WishlistBean bean);
 	
-	@Delete("delete from wishlist where w_pname = #{w_pname}")
+	@Delete("delete from wishlist where w_no = #{w_no}")
 	boolean deleteWishlist(String w_pname);
 	
 	@Update("update wishlist set w_pname=#{w_pname}, w_price=#{w_price}, w_detail=#{w_detail} where w_no = #{w_no}")
