@@ -68,10 +68,12 @@ public interface AnnoInter {
 
 	
 	// follow
-	@Select("select * from follow where f_sno = #{m_no}")
+	// 나를 팔로우 한사람. 
+	@Select("select f_no,f_mno,f_sno,m_name,m_image,m_email from follow left outer join member on f_sno = m_no where f_mno = #{m_no}")
 	List<FollowDto> showMyFollower(String m_no);
 	
-	@Select("select * from follow where f_mno = #{m_no}")
+	// 내가 팔로우 하고있는사람
+	@Select("select f_no,f_mno,f_sno,m_name,m_image,m_email from follow left outer join member on f_mno = m_no where f_sno = #{m_no}")
 	List<FollowDto> showIFollow(String m_no);
 	
 	@Insert("insert into follow (f_sno,f_mno) values(#{f_sno},#{f_mno})")

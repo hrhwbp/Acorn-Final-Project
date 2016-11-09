@@ -94,6 +94,7 @@ function follow1(m_no) {
          data: {"m_no":m_no},
          dataType: "json",
          success : function(data) {
+        	 alert('실행완료');
         	 /* alert(data.detailDto.b_no); */
         	 var dto = data.detailDto;
         	 /* alert(dto.b_image); */
