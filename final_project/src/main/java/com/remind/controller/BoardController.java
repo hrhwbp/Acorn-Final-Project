@@ -161,9 +161,9 @@ public class BoardController {
 	
 	@RequestMapping(value="insertBoard", method=RequestMethod.POST)
 	public String writeSubmit(BoardBean bean){
-		System.out.println("실행");
+		
 		MultipartFile uploadfile = bean.getFileUpload();
-		System.out.println(uploadfile);
+	
 		
 		if (uploadfile != null) {
             String fileName = uploadfile.getOriginalFilename();
@@ -195,8 +195,28 @@ public class BoardController {
 	}
 	@RequestMapping(value="updateBoard", method = RequestMethod.POST)
 	public String updateSubmit(BoardBean bean){
+		MultipartFile uploadfile = bean.getFileUpload();
+		if (uploadfile != null) {
+            String fileName = uploadfile.getOriginalFilename();
+            System.out.println(fileName);
+            bean.setB_image("http://wbp.synology.me/boardimg/" + fileName);
+            System.out.println(bean.getB_image());
+            try {
+                // 1. FileOutputStream 사용
+                // byte[] fileData = file.getBytes();
+                // FileOutputStream output = new FileOutputStream("C:/images/" + fileName);
+                // output.write(fileData);
+                 
+                // 2. File 사용
+                File file = new File("N:/web/boardimg/" + fileName);
+                
+                uploadfile.transferTo(file);
+            } catch (Exception e) {
+                System.out.println("보드 파일 업로드 err : " + e);
+            } // try - catch
+        } // if
 		boolean b = daoInter.updateBoard(bean);
-		if(b){return "snslist?m_no=" + bean.getB_mno();}
+		if(b) return "redirect:/myinfo";
 		else return "redirect:/error.jsp";
 	}
 	
@@ -211,7 +231,6 @@ public class BoardController {
 	@RequestMapping(value="boardDetail", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> boardDetail(@RequestParam("b_no") String b_no){
-		System.out.println(b_no);
 		BoardDto dto = daoInter.showBoardDetail(b_no);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("detailDto", dto);

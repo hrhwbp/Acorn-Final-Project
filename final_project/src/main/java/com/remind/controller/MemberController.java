@@ -151,7 +151,7 @@ public class MemberController {
 		view.addObject("mylist", mylist);
 		List<FollowDto> ilist = daoInter.showIFollow(m_no);
 		view.addObject("ilist", ilist);
-		List<BoardDto> list = daoInter.showBoard(m_no);
+		List<BoardDto> list = daoInter.showMyMain(m_no);
 		view.addObject("board",list);
 		view.setViewName("myinfo");
 		return view;

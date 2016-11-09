@@ -227,7 +227,7 @@ function likescrolling(num){
 				<div class="row">
 					<div class="col-md-12">
 						<div class="thumbnail" data-bno="${list.b_no }">
-							<img alt="food" src="${list.b_image}" height="400px">
+							<img alt="Responsive image" src="${list.b_image}" class="img-responsive">
 							<div class="caption">
 								<div class="row">
 									<div class="col-md-12">

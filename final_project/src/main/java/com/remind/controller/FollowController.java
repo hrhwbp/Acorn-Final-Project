@@ -1,10 +1,14 @@
 package com.remind.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.remind.model.DaoInter;
@@ -15,8 +19,11 @@ public class FollowController {
 	private DaoInter daoInter;
 	
 	@RequestMapping(value="showMyFollower", method = RequestMethod.GET)
-	public ModelAndView showMyFollower(@RequestParam("m_no")String m_no){
-		return new ModelAndView("showFollow", "wishlist",daoInter.showMyFollower(m_no));
+	@ResponseBody
+	public Map<String, Object> showMyFollower(@RequestParam("m_no")String m_no){
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		return map;
 	}
 	@RequestMapping(value="showIFollow", method = RequestMethod.GET)
 	public ModelAndView showIFollow(@RequestParam("m_no")String m_no){
