@@ -38,15 +38,11 @@ public class FollowController {
 		map.put("m_no", m_no);
 		return map;
 	}
-<<<<<<< HEAD
-	@RequestMapping(value="follow", method = RequestMethod.POST)
-	
-=======
 	
 	
 	@RequestMapping(value="insertFollow", method = RequestMethod.POST)
 	@ResponseBody
->>>>>>> c2394ce8130c205fc1b79ddafd957b4c934eb4f5
+
 	public void follow(FollowBean bean){
 		FollowDto dto = daoInter.selectFollower(bean);
 		System.out.println(dto.getF_ms());

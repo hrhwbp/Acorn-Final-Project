@@ -198,6 +198,26 @@ function upFollow(m_no,f_sno) {
         }
 	}); 
 }
+function up2Follow(m_no,f_sno) {
+	/* alert(m_no + " " + f_sno); */
+	
+	$("#follow").attr('onclick','cancleFollow('+ m_no + ',' + f_sno +')');
+	$("#follow").attr('style','background-color: #70c050; color: white;');
+	$("#follow").attr('value','팔로잉');
+	var array = {"f_mno":m_no,"f_sno":f_sno};
+	
+	jQuery.ajax({
+        type:"post",
+        url:"insertFollow",
+        data: array,
+        success : function() {
+       		alert('성공');
+        },
+        error : function(xhr, status, error) {
+              alert("에러발생 " + error);
+        }
+	}); 
+}
 
 function cancleFollow(m_no,f_mno) {
 	$("#followBtn"+f_mno).attr('onclick','upFollow('+ m_no + ',' + f_mno +')');
@@ -231,11 +251,8 @@ function cancleFollow(m_no,f_mno) {
 				<button type="button" class="btn btn-default col-md-12" data-toggle="modal" data-target="#updateInfo">프로필 변경</button>
 				</c:when>
 				<c:otherwise>
-				<form action="follow" method="post">
-				<input type="hidden" name="f_mno" value="${mno }">
-				<input type="hidden" name="f_sno" value="${myinfo.m_no }">
-				<button type="submit" class="btn btn-default col-md-12" >팔로우</button>
-				</form>
+				<button type="button" id="follow" class="btn btn-default col-md-12" onclick="up2Follow(${mno},${myinfo.m_no })">팔로우</button>
+				
 				</c:otherwise>
 				</c:choose>
 				
@@ -252,12 +269,13 @@ function cancleFollow(m_no,f_mno) {
 		</div>
 	</div>
 </div>
+<c:if test="${mno == myinfo.m_no }">
 <div class="row" style="padding-bottom: 2%">
 	<div class="col-md-10 col-md-offset-1">
-		<button type="button" id="boardInsertBtn" class="btn btn-link col-md-12" style="background-color: rgb(255,230,231);"><h4><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;게시물 추가하기</h4></button>
+			<button type="button" id="boardInsertBtn" class="btn btn-link col-md-12" style="background-color: rgb(255,230,231);"><h4><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;게시물 추가하기</h4></button>
 	</div>
 </div>
-
+</c:if>
 <div class="row" style="background-color: rgb(253,253,253);"><!-- row  -->
 <div class="col-md-10 col-md-offset-1">
   <c:forEach var="board" items="${board}">  
@@ -367,7 +385,9 @@ function cancleFollow(m_no,f_mno) {
 		
 	      	</div>
 	    	<div class="modal-footer">
+	    	
 	    	<button class="btn btn-primary" id="infoSubmit" type="button">Save changes</button>
+	    	
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 			
@@ -388,9 +408,18 @@ function cancleFollow(m_no,f_mno) {
 			
 			<div class="row">
 				<div class="col-md-12">
+				<c:choose>
+					
+					<c:when test="${mno == myinfo.m_no }">
 					<a  onclick="$('#boardFile').click();" style="cursor: pointer">
 					<img alt="Responsive image" id="modalimg" class="img-responsive center-block" src="">
 					</a>
+					</c:when>
+					<c:otherwise>
+					<img alt="Responsive image" id="modalimg" class="img-responsive center-block" src="">
+					</c:otherwise>
+					
+					</c:choose>
 					<input type="file" name="fileUpload"  id="boardFile" class="sr-only" >
 				</div>
 			</div>
@@ -399,7 +428,17 @@ function cancleFollow(m_no,f_mno) {
 	     
 	 
 	      <div class="row">	      
-			<h3 class="col-md-12"><input name="b_content" id="modalContent" type="text" class="form-control" value=""></h3>
+			<h3 class="col-md-12">
+			<c:choose>
+			<c:when test="${mno == myinfo.m_no }">
+			<input name="b_content" id="modalContent" type="text" class="form-control" value="">
+			</c:when>
+			<c:otherwise>
+			<input name="b_content" id="modalContent" type="text" class="form-control" value="" readonly="readonly">
+			</c:otherwise>
+			</c:choose>
+			</h3>
+			
 			<p class="col-md-6" id="modalLike"></p><p id="modalDate" class="text-right col-md-6"></p>
 	      </div>
 	      </div>
@@ -408,7 +447,9 @@ function cancleFollow(m_no,f_mno) {
 	     </form>
 	      <div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<c:if test="${mno == myinfo.m_no }">
 			<button id="updateSubmit" type="button" class="btn btn-primary">Save changes</button>
+			</c:if>
 	      </div>
 	      
 	    </div>
