@@ -257,8 +257,8 @@ public class DataDao implements DaoInter {
 	}
 
 	@Override
-	public List<WishlistDto> showInsertedList(String w_pname) throws DataAccessException {
-		return annoInter.showInsertedList(w_pname);
+	public List<WishlistDto> showInsertedList(String w_no) throws DataAccessException {
+		return annoInter.showInsertedList(w_no);
 	}
 
 	@Override
@@ -267,7 +267,7 @@ public class DataDao implements DaoInter {
 			annoInter.writeWishlist(bean);
 			return true;
 		} catch (Exception e) {
-			System.out.println("writewishlist err");
+			System.out.println("writewishlist err" + e);
 			return false;
 		}
 	}

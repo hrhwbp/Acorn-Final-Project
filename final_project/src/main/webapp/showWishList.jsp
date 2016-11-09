@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="ssibal" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href='resources/css/bootstrap.css' rel='stylesheet' />
-<link href='resources/css/rotating-card.css' rel='stylesheet' />
+<link href="resources/css/bootstrap.css" rel="stylesheet" />
+<link href="resources/css/rotating-card.css" rel="stylesheet" />
 
 <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 <link href="http://netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
@@ -47,38 +47,10 @@
 	ga('send', 'pageview');
 	
 	
-	$(document).ready(function(){			//Parsing 정보 추가창에 입력
-		$("#btnfetch").click(function(){
-			$.ajax({
-				type:"post",
-				url:"urltest",
-				data: {"url":$("#w_addr").val()},
-				dataType: "json",
-				success: function(productData){
-					var w_pname, w_price, w_image, insimg, url ;
-					
-					var list = productData.productlist;
-					$(list).each(function(index, objArr){
-						w_pname  = objArr["name"];
-						w_price = objArr["price"];
-						w_image= objArr["image"];
-						url = objArr["url"];
-					});
-					
-					$("#w_pname").val(w_pname);
-					$("#w_price").val(w_price);
-					$("#w_image").attr("src", w_image);
-					
-				},
-				error: function(){
-					alert("에러 발생");
-				}
-			});
-		});
-	});
+	
 		
 		$(document).ready(function(){									//insert후 카드 나열	
-			$("#iteminsert").click(function(){
+			/* $("#iteminsert").click(function(){
 				//$("#iteminfo").submit();
 				var w_addr, w_mno, w_pname, w_price, w_image, w_detail;
 				w_mno = $("#w_mno").val();
@@ -100,13 +72,6 @@
 						var str;
 						var list = insertedData.insertedList;
 						$(list).each(function(index, objArr){
-							/*
-							+ objArr["w_image"] +
-							+ objArr["w_pname"] +
-							+ objArr["w_pname"] +
-							+ objArr["w_detail"] +
-							+ objArr["w_price"] +
-							*/
 							
 							str += "<div class='col-md-4 col-sm-6'>";
 							str += "	<div class='card'>";
@@ -140,22 +105,15 @@
 							str += "	<a href='javascript:void(0)' onclick='update('${s.w_pname}')'><i class='glyphicon glyphicon-edit'></i></a>";
 							str += "	<a href='javascript:void(0)' onclick='del('${s.w_pname}', '${s.w_mno }')'><i class='glyphicon glyphicon-trash'></i></a>";
 							str += "</div></div></div></div></div></div>";
-
 						});
-						
 						$("#cardlist").append(str);
 					},
 					error:function(request,status,error){
-				        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				       }
-				     /*
-					error: function(){
 						alert("에러 발생");
-					}
-				       */
+				        //alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				    }
 				});
-			});
-		
+			}); */
 		
 			$("#reset").click(function(){				//insert card reset시키기
 				$("#w_mno").val("");
@@ -166,22 +124,57 @@
 				$("#w_detail").val("");
 			});
 			
-			
-			
 		});
 		
-		function del(pname, mno){
-			alert(pname, mno);
+		//Insert부분 BEGINNING--------------------------------
+		$(document).ready(function(){							//Parsing 정보 추가창에 입력
+			$("#btnfetch").click(function(){
+				$.ajax({
+					type:"post",
+					url:"urltest",
+					data: {"url":$("#itemUrl").val()},
+					dataType: "json",
+					success: function(productData){
+						var w_pname, w_price, w_image, insimg, url ;
+						
+						var list = productData.productlist;
+						$(list).each(function(index, objArr){
+							w_pname  = objArr["name"];
+							w_price = objArr["price"];
+							w_image= objArr["image"];
+							url = objArr["url"];
+						});
+						
+						$("#insertModal #itemName").val(w_pname);
+						$("#insertModal #itemPrice").val(w_price);
+						$("#insertModal #itemImage").attr("src", w_image);
+						$("#insertModal #submitImage").val(w_image);
+					},
+					error: function(){
+						alert("에러 발생");
+					}
+				});
+			});
+		});
+		
+		function insert(mno){
+			$("#insertModal #itemMno").val(mno);
+			$("#insertModal").modal();
+			
+		}
+		//Insert부분 END--------------------------------
+		
+		function del(mno, no){
+			$("#deleteModal #itemNo").val(no);
 			$("#deleteModal #itemMno").val(mno);
-			$("#deleteModal #itemName").val(pname);
 			$("#deleteModal").modal();
 		}
 		
-		function update(pname){
+		function update(no){
 			 $.ajax({
 				type:"post",
 				url:"showInsertedList",
-				data:  {"w_pname":pname},
+				data:  {"w_no":no},
 				dataType: "json",
 				success: function(insertedData){
 					//var w_addr, w_pname, w_price, w_image, w_detail;
@@ -196,11 +189,11 @@
 						w_price = objArr["w_price"];
 						w_mno = objArr["w_mno"];
 					});
-					$("#itemNo").val(w_no);
-					$("#itemName").val(pname);
-					$("#itemDetail").val(w_detail);
-					$("#itemPrice").val(w_price);
-					$("#itemMno").val(w_mno);
+					$("#updateModal #itemNo").val(w_no);
+					$("#updateModal #itemName").val(w_pname);
+					$("#updateModal #itemDetail").val(w_detail);
+					$("#updateModal #itemPrice").val(w_price);
+					$("#updateModal #itemMno").val(w_mno);
 					$("#updateModal").modal();
 				},
 				error: function(){
@@ -208,10 +201,6 @@
 				}
 			}); 
 		}
-		
-		
-	
-	
 </script>
 <style type="text/css">
 .sss {
@@ -258,15 +247,6 @@
 <%@include file="common.jsp"%>
 <%@include file="top.jsp"%>
 <body>
-
-
-
-	
-	
-
-
-
-
 
 <a href="showWishList?w_mno=3" >aaa</a>
 
@@ -328,26 +308,27 @@
 									<div class="footer" >
 										<button class="btn btn-simple" rel="tooltip" title="Flip Card" onclick="rotateCard(this)"><i class="fa fa-reply"></i> Back</button>
 										<div class="social-links text-center" >
-											<a href="javascript:void(0)" onclick="update('${s.w_pname}')"><i class="glyphicon glyphicon-edit"></i></a>
-											<a href="javascript:void(0)" onclick="del('${s.w_pname}', '${s.w_mno }')"><i class="glyphicon glyphicon-trash"></i></a>
+											<a href="javascript:void(0)" onclick="update('${s.w_no}')"><i class="glyphicon glyphicon-edit"></i></a>
+											<a href="javascript:void(0)" onclick="del('${s.w_mno}', '${s.w_no}')"><i class="glyphicon glyphicon-trash"></i></a>
 										</div>
 									</div>
 								</div><!-- end back panel -->
 							</div><!-- end card -->
 					</div><!-- end card-container -->
 				</div><!-- end col-sm-3 -->
+				<ssibal:set var="mno" value="${s.w_mno}"/>
 				</ssibal:forEach>
 				
 				
 
 
 				<div class="col-md-4 col-sm-6">
-					<div class="card-container">
+					<div class="card-container manual-flip">
 						
 							<div class="card">
 								<div class="front">
 									<div class="cover" align="center">
-										<img  src="resources/cardimg/add-icon.png" />
+										<a href="javascript:void(0);" id="iteminsert" name="iteminsert" onclick="insert('${mno}')"><img src="resources/image/add-icon.png"/></a>
 									</div>
 									<!-- <div class="user">
 										<img class="img-circle" src="resources/cardimg/add-icon.png" />
@@ -359,14 +340,18 @@
 											<p class="text-center">URL을 붙여넣으면 자동으로 정보가 입력됩니다</p>
 										</div>
 										<div class="footer">
-											<div class="rating">
-												<i class="fa fa-mail-forward"></i> 자동 Rotation
+											<!-- <div class="rating"> -->
+												<!-- <i class="fa fa-mail-forward"></i> 자동 Rotation -->
+											<div class="social-links text-center">
+												<a href="javascript:void(0);" id="iteminsert" name="iteminsert" ><i class="glyphicon glyphicon-ok-circle"></i></a>
+												<a href="javascript:void(0);" id="reset" name="reset"><i class="glyphicon glyphicon-repeat"></i></a>
 											</div>
+											<!-- </div> -->
 										</div>
 									</div>
 								</div><!-- end front panel -->
 
-								<div class="back">
+								<!-- <div class="back">
 									<div class="header">
 										<label>URL</label>
 										<div class="form-group sss">
@@ -377,14 +362,14 @@
 									<div class="content">
 										<div class="main">
 											<label for="exampleInputName2">ITEM 정보</label>
-											<form class="has-success" ><!--id="iteminfo" name="iteminfo" action="insertWishList" method="post"  -->
+											<form class="has-success" >
 												<div class="row">
 													<div class="col-md-7">
 														<div class="form-group">
-															<input type="text" id="w_pname" name="w_pname" class="form-control" aira-describedby="helpBlock2" placeholder="Item Name" >
+															<input type="text" id="w_pname" name="w_pname" class="form-control" aira-describedby="helpBlock2" placeholder="Item Name">
 															<span id="helpBlock2" class="help-block"></span>  
-															<input type="text" id="w_price" name="w_price" class="form-control"  placeholder="price" >
-															<!--<input type="hidden" class="form-control" id="w_addr" name="w_addr">-->
+															<input type="text" id="w_price" name="w_price" class="form-control" placeholder="price" >
+															
 															<input type="hidden" id="w_mno" name="w_mno" value="${mno}">
 														</div>
 													</div>
@@ -409,17 +394,69 @@
 											<a href="javascript:void(0);" id="reset" name="reset"><i class="glyphicon glyphicon-repeat"></i></a>
 										</div>
 									</div>
-								</div><!-- end back panel -->
-							</div><!-- end card -->
+								</div>
+							</div> -->
 							
 					</div><!-- end card-container -->
 				</div><!-- end col-sm-3 -->
-
-
 			</div><!-- end col-sm-10 -->
+			
 		</div><!-- end row -->
+		</div>
 		<div class="space-200"></div>
 	</div>
+
+<!-- Insert 모달 팝업 BEGINNING-->
+<div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true" >
+		<div class="modal-dialog" role="document" >
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="insertModalLabel">수정</h4>
+				</div>
+				<div class="modal-body">
+					<form action="insertWishList" method="post">
+						<label class="form-control-label">URL:</label>
+						<div class="form-group sss">
+							<input type="text" class="form-control" placeholder="URL" id="itemUrl" name="w_addr" style="width: 480px">
+							<input type="button" value="Fetch" class="form-control" id="btnfetch" style="width: 60px">
+						</div>
+						<div class="row">
+							<div class="col-md-7">
+								<div class="form-group">
+									<label class="form-control-label">Item Name:</label>
+									<input type="text" class="form-control" placeholder="Item Name" id="itemName" name="w_pname">
+								</div>
+								<div class="form-group">
+									<label class="form-control-label">Item Price:</label>
+									<input type="text" class="form-control" placeholder="price" id="itemPrice" name="w_price">
+								</div>
+							</div>
+							<div class="col-md-5">
+								<div class="form-group ">
+									<img id="itemImage" class="img-responsive" alt="Responsive image">
+									<input type="hidden" id="submitImage" name="w_image">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="message-text" class="form-control-label">Write Your Item Detail:</label>
+							<textarea class="form-control" id="itemDetail" name="w_detail"></textarea>
+							<input type="hidden" id="itemMno" name="w_mno">
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary" id="insertconfirm">Insert</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- Insert 모달 팝업 END-->
+
 
 <!-- 수정모달 팝업 BEGINNING-->
 <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true" >
@@ -471,8 +508,8 @@
 				<div class="modal-body">
 					<form action="deleteWishList" method="get">
 						<div class="form-group">
+							<input type="hidden" id="itemNo" name="w_no">
 							<input type="hidden" id="itemMno" name="w_mno">
-							<input type="hidden" id="itemName" name="w_pname">
 						</div>
 						<button type="submit" class="btn btn-primary" id="deleteconfirm">Confirm</button>
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -483,10 +520,6 @@
 	</div>
 <!-- 삭제 모달 팝업 END -->
 
-
-
 </body>
-
 <%@include file="bottom.jsp"%>
- 
 </html>
