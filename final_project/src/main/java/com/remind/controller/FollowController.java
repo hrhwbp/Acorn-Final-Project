@@ -33,6 +33,7 @@ public class FollowController {
 		return new ModelAndView("showFollow", "wishlist" , daoInter.showIFollow(m_no));
 	}
 	@RequestMapping(value="follow", method = RequestMethod.POST)
+	
 	public void follow(FollowBean bean){
 		daoInter.follow(bean);
 		

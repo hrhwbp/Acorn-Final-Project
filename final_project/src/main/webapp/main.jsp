@@ -187,7 +187,11 @@ function likescrolling(num){
     	});
     }	
 
-    
+    function gofriend(b_no){
+    	jQuery("#friend"+b_no).submit();
+    	
+    	
+    }
 	
 </script>
 <style type="text/css">
@@ -231,7 +235,10 @@ function likescrolling(num){
 							<div class="caption">
 								<div class="row">
 									<div class="col-md-12">
-										<h3>${list.b_mname}</h3>
+										<form action="friendinfo" id="friend${list.b_no }" method="post">
+										<input type="hidden" name="m_no" value="${list.b_mno }">
+										<h3><a href="javascript:;"  onclick="gofriend(${list.b_no })">${list.b_mname}</a></h3>
+										</form>
 										<p>${list.b_content}</p>
 									</div>
 								</div>
@@ -344,6 +351,7 @@ function likescrolling(num){
                      		</tr>
                      		</c:if>
                      		</c:forEach>
+                     		<tr><td>&nbsp;</td></tr>
                      		<tr><th>다른날</th></tr>
                      		<jsp:useBean id="now" class="java.util.Date" />
                      		<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" var="today" />

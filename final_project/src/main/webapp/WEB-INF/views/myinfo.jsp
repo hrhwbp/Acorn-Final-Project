@@ -135,7 +135,19 @@ function follow2(m_no) {
 				</blockquote>
 			</div>
 			<div class="col-md-3 col-md-offset-1 top_pd">
+				<c:choose>
+				<c:when test="${mno == myinfo.m_no }">
 				<button type="button" class="btn btn-default col-md-12" data-toggle="modal" data-target="#updateInfo">프로필 변경</button>
+				</c:when>
+				<c:otherwise>
+				<form action="follow" method="post">
+				<input type="hidden" name="f_mno" value="${mno }">
+				<input type="hidden" name="f_sno" value="${myinfo.m_no }">
+				<button type="submit" class="btn btn-default col-md-12" >팔로우</button>
+				</form>
+				</c:otherwise>
+				</c:choose>
+				
 			</div>		
 		
 		</div>
