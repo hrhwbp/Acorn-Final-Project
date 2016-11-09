@@ -86,18 +86,45 @@ function modalToggle(b_no) {
 	
 }
 
-function follow1(m_no) {
+function follower(m_no) {
 	$('#followHead').text('팔로워');
+	$('#followDiv').text('');
 	 jQuery.ajax({
          type:"post",
          url:"showMyFollower",
          data: {"m_no":m_no},
          dataType: "json",
          success : function(data) {
-        	 alert('실행완료');
-        	 /* alert(data.detailDto.b_no); */
-        	 var dto = data.detailDto;
-        	 /* alert(dto.b_image); */
+        	 var list = data.Mylist;
+        	 var m_no = data.m_no;
+        	 var str = "";
+        	 $.each(list,function(i,ss){
+        		 /* alert(ss.m_email); */
+        		 str += "<div class='row' style='padding-bottom: 1%;'>" +
+        		 		"<div class='col-md-12'>" +
+        		 		"<div class='col-md-2' style='height: 50px'>" +
+        		 		"<img src='http://wbp.synology.me/profileimg/" + ss.m_image + "' alt='Responsive image' class='img-circle img-responsive' style='height: 100%; width: 100%'>" +
+        		 		"</div>" +
+        		 		"<div class='col-md-8'>" +
+ 						"<div class='row' style='cursor: default;'>" +
+ 						"" + ss.m_name + "" +
+        		 		"</div>" +
+ 						"<div class='row'>" +
+ 						"<a href='#'>" + ss.m_email + "</a>" +
+ 						"</div>" +
+ 						"</div>" +
+ 						"<div class='col-md-2' style='padding-top: 1%;'>";
+ 				if(ss.f_ms == '1'){
+	 				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + m_no + "," + ss.f_sno + ")'>팔로우</button>"; 						 					
+ 				}else{
+ 					str +=	"<button type='button' class='btn btn-default' style='background-color: #70c050; color: white; ' onclick='func()'>팔로잉</button>" ;
+ 				}
+ 				str += "</div>" +
+ 						"</div>" +
+ 		      			"</div>";
+        		 
+        	 })        	
+        	 $('#followDiv').append(str);
         	 /* modalContent modalLike modalDate */
         	 /* document.getElementById("modalimg").src = dto.b_image;  */
         	 $('#myFollow').modal('show');
@@ -108,9 +135,73 @@ function follow1(m_no) {
    });
 }
 
-function follow2(m_no) {
-	$('#followHead').text('팔로우');
-	$('#myFollow').modal('show');
+function follow(m_no) {
+	$('#followHead').text('팔로잉');
+	$('#followDiv').text('');
+	 jQuery.ajax({
+        type:"post",
+        url:"showIFollow",
+        data: {"m_no":m_no},
+        dataType: "json",
+        success : function(data) {
+       	 var list = data.Mylist;
+       	 var str = "";
+       	 $.each(list,function(i,ss){
+       		 /* alert(ss.m_email); */
+       		 str += "<div class='row' style='padding-bottom: 1%;'>" +
+       		 		"<div class='col-md-12'>" +
+       		 		"<div class='col-md-2' style='height: 50px'>" +
+       		 		"<img src='http://wbp.synology.me/profileimg/" + ss.m_image + "' alt='Responsive image' class='img-circle img-responsive' style='height: 100%; width: 100%'>" +
+       		 		"</div>" +
+       		 		"<div class='col-md-8'>" +
+					"<div class='row' style='cursor: default;'>" +
+					"" + ss.m_name + "" +
+       		 		"</div>" +
+					"<div class='row'>" +
+					"<a href='#'>" + ss.m_email + "</a>" +
+					"</div>" +
+					"</div>" +
+					"<div class='col-md-2' style='padding-top: 1%;'>";
+			str +=	"<button type='button' class='btn btn-default' style='background-color: #70c050; color: white; ' onclick=''>팔로잉</button>" + 						
+					"</div>" +
+					"</div>" +
+	      			"</div>";
+       		 /* rgb(168,133,239) */
+       	 })        	
+       	 $('#followDiv').append(str);
+       	 /* modalContent modalLike modalDate */
+       	 /* document.getElementById("modalimg").src = dto.b_image;  */
+       	 $('#myFollow').modal('show');
+        },
+        error : function(xhr, status, error) {
+              alert("에러발생 " + error);
+        }
+  });
+}
+
+function upFollow(m_no,f_sno) {
+	/* alert(m_no + " " + f_sno); */
+	
+	$("#followBtn"+f_sno).attr('onclick','cancleFollow('+ m_no + ',' + f_sno +')');
+	$("#followBtn"+f_sno).attr('style','background-color: #70c050; color: white;');
+	var array = {"f_mno":m_no,"f_sno":f_sno};
+	
+	jQuery.ajax({
+        type:"post",
+        url:"insertFollow",
+        data: array,
+        success : function() {
+       		alert('성공');
+        },
+        error : function(xhr, status, error) {
+              alert("에러발생 " + error);
+        }
+	}); 
+}
+
+function cancleFollow(m_no,f_mno) {
+	$("#followBtn"+f_mno).attr('onclick','upFollow('+ m_no + ',' + f_mno +')');
+	$("#followBtn"+f_mno).attr('style','background-color: white; color: black;');
 }
 </script>
 </head>
@@ -118,8 +209,8 @@ function follow2(m_no) {
 <%@ include file="../../top.jsp" %>
 <body style="">
 <div class="container">
-<div class="container"  style="padding-top: 2%; padding-bottom: 5%">
-<div class="row" style="background-color: rgb(253,253,253); padding-top: 30px; padding-bottom: 30px">
+<div class="container"  style="padding-top: 2%; padding-bottom: 5%;">
+<div class="row" style="background-color: rgb(253,253,253); padding-top: 30px; padding-bottom: 30px; ">
 	<div class="col-md-2 col-md-offset-2" style="height: 170px">
 		<a style="color: buttontext; border: 0; cursor: pointer; height: 100%; padding: 0; width: 100%;" data-toggle="modal" data-target="#updateInfo">
 		<img src="http://wbp.synology.me/profileimg/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
@@ -155,8 +246,8 @@ function follow2(m_no) {
 		<div class="row">
 			
 			<button type="button" class="btn btn-link col-md-3" disabled="disabled">게시물  ${fn:length(board)}개</button> 
-			<button type="button" class="btn btn-link col-md-3" onclick="follow1(${myinfo.m_no})">팔로워 ${fn:length(mylist)}</button>
-			<button type="button" class="btn btn-link col-md-3" onclick="follow2(${myinfo.m_no})">팔로우 ${fn:length(ilist)}</button>
+			<button type="button" class="btn btn-link col-md-3" onclick="follower(${myinfo.m_no})">팔로워 ${fn:length(mylist)}</button>
+			<button type="button" class="btn btn-link col-md-3" onclick="follow(${myinfo.m_no})">팔로우 ${fn:length(ilist)}</button>
 		
 		</div>
 	</div>
@@ -373,25 +464,8 @@ function follow2(m_no) {
 				</div>
 			</div>
 	      </div>
-	      <div class="modal-body">
-		      <div class="row" style="padding-top: 2%">	      
-				<div class="col-md-10">
-				<a href="#">fdsafdsafdsafdsafdsafsdafsda</a>
-				</div>
-				<button type="button" class="btn btn-default">팔로우</button>
-		      </div>
-		      <div class="row" style="padding-top: 2%">	      
-				<div class="col-md-10">
-				<a href="#">fdsafdsafdsafdsafdsafsdafsda</a>
-				</div>
-				<button type="button" class="btn btn-default">팔로우</button>
-		      </div>
-		      <div class="row" style="padding-top: 2%">	      
-				<div class="col-md-10">
-				<a href="#">fdsafdsafdsafdsafdsafsdafsda</a>
-				</div>
-				<button type="button" class="btn btn-default">팔로우</button>
-		      </div>
+	      <div class="modal-body" id="followDiv" style="max-height: 400px">
+		      
 	      </div>
 	     </form>
 	      

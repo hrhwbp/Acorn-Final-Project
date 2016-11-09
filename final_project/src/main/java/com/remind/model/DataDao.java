@@ -135,7 +135,17 @@ public class DataDao implements DaoInter {
 	public List<FollowDto> showIFollow(String m_no) throws DataAccessException {
 		return annoInter.showIFollow(m_no);
 	}
-
+	
+	@Override //내가 팔로우하는 사람 확인하기 f_ms 수정용
+	public FollowDto selectFollower(FollowBean bean) throws DataAccessException {
+		return annoInter.selectFollwer(bean);
+	}
+	
+	@Override //f_ms 업데이트용
+	public boolean followUpdate(String f_no) throws DataAccessException {
+		return annoInter.followUpdate(f_no);
+	}
+	
 	@Override
 	public boolean follow(FollowBean bean) throws DataAccessException {
 		try {
