@@ -87,6 +87,9 @@ public interface AnnoInter {
 	
 	@Update("update follow set f_ms = 2 where f_no = #{f_no}")
 	boolean followUpdate(String f_no);
+
+	@Update("update follow set f_ms = 1 where f_no = #{f_no}")
+	boolean followUpdate2(String f_no);
 	
 	// reply
 	@Select("select r_no, r_bno, r_content, r_date, (select m_name from member where m_no = r_mno) r_name from reply where r_bno = #{b_no} limit ${limit},5")

@@ -37,7 +37,7 @@ public interface DaoInter {
 	boolean follow(FollowBean bean) throws DataAccessException;
 	boolean followCancel(FollowBean bean) throws DataAccessException;
 	FollowDto selectFollower(FollowBean bean) throws DataAccessException;
-	boolean followUpdate(String f_no) throws DataAccessException;
+	boolean followUpdate(String f_no,String bb) throws DataAccessException;
 	
 	//reply
 	List<ReplyDto> showReply(String b_no1) throws DataAccessException;

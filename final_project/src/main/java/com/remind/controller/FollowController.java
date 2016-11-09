@@ -44,27 +44,44 @@ public class FollowController {
 	@ResponseBody
 	public void follow(FollowBean bean){
 		FollowDto dto = daoInter.selectFollower(bean);
-		System.out.println(dto.getF_ms());
-		if(dto.getF_ms().equals("1")){
-			boolean b = daoInter.followUpdate(dto.getF_no());
+		if(dto.getF_ms() != null){
+			boolean b = daoInter.followUpdate(dto.getF_no(),"insert");
 			if(b){
 				bean.setF_sno(dto.getF_mno());
 				bean.setF_mno(dto.getF_sno());
 				bean.setF_ms("2");
-				
 				daoInter.follow(bean);
 			}
 			/*System.out.println("sno인 사람 f_ms업데이트 필요" + dto.getF_no());*/
 		}else{
-			System.out.println("내가 먼저 팔로우 하는경우");
+			String imsi = bean.getF_mno();
+			bean.setF_mno(bean.getF_sno());
+			bean.setF_sno(imsi);
+			daoInter.follow(bean);
+			/*System.out.println("내가 먼저 팔로우 하는경우");*/
 		}
 	}
 	
 	
 	@RequestMapping(value="followCancel", method = RequestMethod.POST)
+	@ResponseBody
 	public void followCancel(FollowBean bean){
-		daoInter.followCancel(bean);
-		
+		FollowDto dto = daoInter.selectFollower(bean);
+		if(dto != null){
+			boolean b = daoInter.followUpdate(dto.getF_no(),"delete");
+			if(b){
+				bean.setF_sno(dto.getF_mno());
+				bean.setF_mno(dto.getF_sno());
+				daoInter.followCancel(bean);
+			}
+		}else{
+			System.out.println("안옴 ?");
+			String imsi = bean.getF_mno();
+			bean.setF_mno(bean.getF_sno());
+			bean.setF_sno(imsi);
+			System.out.println(bean.getF_mno() + " 1 " + bean.getF_sno());
+			daoInter.followCancel(bean);
+		}
 	}
 	
 }

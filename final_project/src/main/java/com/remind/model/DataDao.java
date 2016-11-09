@@ -142,9 +142,16 @@ public class DataDao implements DaoInter {
 	}
 	
 	@Override //f_ms 업데이트용
-	public boolean followUpdate(String f_no) throws DataAccessException {
-		return annoInter.followUpdate(f_no);
+	public boolean followUpdate(String f_no,String bb) throws DataAccessException {
+		boolean b = false;
+		if(bb.equals("insert")){
+			b = annoInter.followUpdate(f_no);			
+		}else{
+			b = annoInter.followUpdate2(f_no);
+		}
+		return b;
 	}
+	
 	
 	@Override
 	public boolean follow(FollowBean bean) throws DataAccessException {

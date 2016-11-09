@@ -115,9 +115,9 @@ function follower(m_no) {
  						"</div>" +
  						"<div class='col-md-2' style='padding-top: 1%;'>";
  				if(ss.f_ms == '1'){
-	 				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + m_no + "," + ss.f_sno + ")'>팔로우</button>"; 						 					
+	 				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + ss.f_mno + "," + ss.f_sno + ")'>팔로우</button>"; 						 					
  				}else{
- 					str +=	"<button type='button' class='btn btn-default' style='background-color: #70c050; color: white; ' onclick='func()'>팔로잉</button>" ;
+ 					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_sno + "," + ss.f_mno +")'>팔로잉</button>";
  				}
  				str += "</div>" +
  						"</div>" +
@@ -162,8 +162,12 @@ function follow(m_no) {
 					"</div>" +
 					"</div>" +
 					"<div class='col-md-2' style='padding-top: 1%;'>";
-			str +=	"<button type='button' class='btn btn-default' style='background-color: #70c050; color: white; ' onclick=''>팔로잉</button>" + 						
-					"</div>" +
+			if(ss.f_ms == '2'){
+				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_mno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_mno + "," + ss.f_sno +")'>팔로잉</button>";
+			}else{
+				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_mno + "' onclick='upFollow(" + ss.f_sno + "," + ss.f_mno + ")'>팔로우</button>";
+			}	
+			str +=	"</div>" +
 					"</div>" +
 	      			"</div>";
        		 /* rgb(168,133,239) */
@@ -179,19 +183,16 @@ function follow(m_no) {
   });
 }
 
-function upFollow(m_no,f_sno) {
+function upFollow(f_mno,f_sno) {
 	/* alert(m_no + " " + f_sno); */
-	
-	$("#followBtn"+f_sno).attr('onclick','cancleFollow('+ m_no + ',' + f_sno +')');
-	$("#followBtn"+f_sno).attr('style','background-color: #70c050; color: white;');
-	var array = {"f_mno":m_no,"f_sno":f_sno};
-	
+	var array = {"f_mno":f_mno,"f_sno":f_sno};
 	jQuery.ajax({
         type:"post",
         url:"insertFollow",
         data: array,
         success : function() {
-       		alert('성공');
+        	$("#followBtn"+f_sno).attr('onclick','cancleFollow('+ f_sno + ',' + f_mno +')');
+        	$("#followBtn"+f_sno).attr('style','background-color: #70c050; color: white;');
         },
         error : function(xhr, status, error) {
               alert("에러발생 " + error);
@@ -199,9 +200,23 @@ function upFollow(m_no,f_sno) {
 	}); 
 }
 
-function cancleFollow(m_no,f_mno) {
-	$("#followBtn"+f_mno).attr('onclick','upFollow('+ m_no + ',' + f_mno +')');
-	$("#followBtn"+f_mno).attr('style','background-color: white; color: black;');
+function cancelFollow(f_mno,f_sno) {
+	/* alert(f_mno + " " + f_sno); */
+	var array = {"f_mno":f_sno,"f_sno":f_mno};
+	jQuery.ajax({
+        type:"post",
+        url:"followCancel",
+        data: array,
+        success : function() {
+        	$("#followBtn"+f_mno).attr('onclick','upFollow('+ f_sno + ',' + f_mno +')');
+        	$("#followBtn"+f_mno).attr('style','background-color: white; color: black;');
+        },
+        error : function(xhr, status, error) {
+              alert("에러발생 " + error);
+        }
+	}); 
+	/* $("#followBtn"+f_mno).attr('onclick','upFollow('+ m_no + ',' + f_mno +')');
+	$("#followBtn"+f_mno).attr('style','background-color: white; color: black;'); */
 }
 </script>
 </head>
