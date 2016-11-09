@@ -42,6 +42,7 @@ public class FollowController {
 	
 	@RequestMapping(value="insertFollow", method = RequestMethod.POST)
 	@ResponseBody
+
 	public void follow(FollowBean bean){
 		FollowDto dto = daoInter.selectFollower(bean);
 		if(dto.getF_ms() != null){

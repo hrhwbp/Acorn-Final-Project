@@ -127,6 +127,21 @@ public class MemberController {
 	}
 	
 	//내 정보 보기
+	@RequestMapping(value="friendinfo", method = RequestMethod.POST)
+	public ModelAndView showFriendinfo(@RequestParam("m_no")String m_no){
+		System.out.println(m_no);
+		ModelAndView view = new ModelAndView();
+		MemberDto dto = daoInter.showMemberDetail(m_no);
+		view.addObject("myinfo", dto);
+		List<FollowDto> mylist = daoInter.showMyFollower(m_no);
+		view.addObject("mylist", mylist);
+		List<FollowDto> ilist = daoInter.showIFollow(m_no);
+		view.addObject("ilist", ilist);
+		List<BoardDto> list = daoInter.showMyMain(m_no);
+		view.addObject("board",list);
+		view.setViewName("myinfo");
+		return view;
+	}
 	@RequestMapping(value="myinfo", method = RequestMethod.POST)
 	public ModelAndView showMyinfo(@RequestParam("m_no")String m_no){
 		ModelAndView view = new ModelAndView();
