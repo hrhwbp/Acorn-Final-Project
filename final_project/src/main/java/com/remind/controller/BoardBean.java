@@ -1,7 +1,10 @@
 package com.remind.controller;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class BoardBean {
 String b_no, b_mno, b_image, b_content, b_date, b_like, b_mname, r_no, r_bno, r_content, r_date, r_name;
+MultipartFile fileUpload;
 
 public String getB_mno() {
 	return b_mno;
@@ -98,5 +101,14 @@ public String getR_name() {
 public void setR_name(String r_name) {
 	this.r_name = r_name;
 }
+
+public MultipartFile getFileUpload() {
+	return fileUpload;
+}
+
+public void setFileUpload(MultipartFile fileUpload) {
+	this.fileUpload = fileUpload;
+}
+
 
 }

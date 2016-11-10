@@ -24,11 +24,13 @@ public class DataDao implements DaoInter {
 	public List<BoardDto> showBoard(String m_no) throws DataAccessException {
 		return annoInter.showBoard(m_no);
 	}
+
 	@Override
 	public List<BoardDto> scrollBoard(ScrollBean bean) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return annoInter.scrollingBoard(bean);
 	}
+
 	@Override
 	public BoardDto showBoardDetail(String b_no1) throws DataAccessException {
 		return annoInter.showBoardDetail(b_no1);
@@ -49,6 +51,8 @@ public class DataDao implements DaoInter {
 	@Override
 	public boolean write(BoardBean bean) throws DataAccessException {
 		try {
+			String b_no = annoInter.selectMaxNo();
+			bean.setB_no(b_no);
 			annoInter.write(bean);
 			return true;
 		} catch (Exception e) {
@@ -68,10 +72,8 @@ public class DataDao implements DaoInter {
 		}
 	}
 
-	
 	@Override
 	public List<BoardDto> showMyMain(String b_mno) {
-
 		return annoInter.showMyMain(b_mno);
 	}
 
@@ -79,9 +81,10 @@ public class DataDao implements DaoInter {
 	public MemberDto showMemberDetail(String m_no) throws DataAccessException {
 		return annoInter.showMemberDetail(m_no);
 	}
+
 	@Override
 	public MemberDto memberDetail(String m_name) throws DataAccessException {
-		
+
 		return annoInter.memberDetail(m_name);
 	}
 
@@ -132,7 +135,26 @@ public class DataDao implements DaoInter {
 	public List<FollowDto> showIFollow(String m_no) throws DataAccessException {
 		return annoInter.showIFollow(m_no);
 	}
-
+	
+	@Override //내가 팔로우하는 사람 확인하기 f_ms 수정용
+	public FollowDto selectFollower(FollowBean bean) throws DataAccessException {
+		FollowDto dto = annoInter.selectFollwer(bean);
+				
+		return annoInter.selectFollwer(bean);
+	}
+	
+	@Override //f_ms 업데이트용
+	public boolean followUpdate(String f_no,String bb) throws DataAccessException {
+		boolean b = false;
+		if(bb.equals("insert")){
+			b = annoInter.followUpdate(f_no);			
+		}else{
+			b = annoInter.followUpdate2(f_no);
+		}
+		return b;
+	}
+	
+	
 	@Override
 	public boolean follow(FollowBean bean) throws DataAccessException {
 		try {
@@ -163,23 +185,24 @@ public class DataDao implements DaoInter {
 			return annoInter.showReply(b_no1, annoInter.countreply(b_no1) - 5);
 		}
 	}
-	
 
 	@Override
 	public int countReply(String b_no) throws DataAccessException {
-		
+
 		return annoInter.countreply(b_no);
 	}
+
 	@Override
 	public List<ReplyDto> showReplyMore(String b_no) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return annoInter.showReplyMore(b_no);
 	}
+
 	@Override
 	public List<ReplyDto> showReplyall(String b_no) throws DataAccessException {
 		return annoInter.showReplyall(b_no);
 	}
-	
+
 	@Override
 	public ReplyDto showReplyDetail(String r_no) throws DataAccessException {
 
@@ -218,16 +241,43 @@ public class DataDao implements DaoInter {
 			return false;
 		}
 	}
-
-	@Override
-	public List<WishlistDto> showWishList(String w_mno) throws DataAccessException {
-		return annoInter.showWishList(w_mno);
-	}
-	
-	
 	@Override
 	public List<WishlistDto> showEachWishList(String g_num) throws DataAccessException {
-		return annoInter.showEachWishList(g_num);
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * @Override public List<WishlistDto> showWishList(String w_mno) throws
+	 * DataAccessException { return annoInter.showWishList(w_mno); }
+	 * 
+	 * 
+	 * @Override public List<WishlistDto> showEachWishList(String g_num) throws
+	 * DataAccessException { return annoInter.showEachWishList(g_num); }
+	 * 
+	 * @Override public boolean writeWishlist(WishlistBean bean) throws
+	 * DataAccessException { try { annoInter.writeWishlist(bean); return true; }
+	 * catch (Exception e) { System.out.println("writewishlist err"); return
+	 * false; } }
+	 * 
+	 * @Override public boolean deleteWishlist(String w_no) throws
+	 * DataAccessException { try { annoInter.deleteWishlist(w_no); return true;
+	 * } catch (Exception e) { System.out.println("deletewishlist err"); return
+	 * false; } }
+	 * 
+	 * @Override public boolean updateWishlist(WishlistBean bean) throws
+	 * DataAccessException { try { annoInter.updateWishlist(bean); return true;
+	 * } catch (Exception e) { System.out.println("Delete Wishlist err"); return
+	 * false; } }
+	 */ @Override
+	public List<WishlistDto> showWishList(String w_mno) throws DataAccessException {
+		// System.out.println(annoInter.showWishList(w_mno).get(2).getW_pname()+"!!!!");
+		return annoInter.showWishList(w_mno);
+	}
+
+	@Override
+	public List<WishlistDto> showInsertedList(String w_no) throws DataAccessException {
+		return annoInter.showInsertedList(w_no);
 	}
 
 	@Override
@@ -236,15 +286,15 @@ public class DataDao implements DaoInter {
 			annoInter.writeWishlist(bean);
 			return true;
 		} catch (Exception e) {
-			System.out.println("writewishlist err");
+			System.out.println("writewishlist err" + e);
 			return false;
 		}
 	}
 
 	@Override
-	public boolean deleteWishlist(String w_no) throws DataAccessException {
+	public boolean deleteWishlist(String w_pname) throws DataAccessException {
 		try {
-			annoInter.deleteWishlist(w_no);
+			annoInter.deleteWishlist(w_pname);
 			return true;
 		} catch (Exception e) {
 			System.out.println("deletewishlist err");
@@ -258,7 +308,19 @@ public class DataDao implements DaoInter {
 			annoInter.updateWishlist(bean);
 			return true;
 		} catch (Exception e) {
-			System.out.println("Delete Wishlist err");
+			System.out.println("eraseboard err");
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean updateLockStatus(WishlistBean bean) throws DataAccessException {
+		System.out.println(bean.getW_lock() + " !!! " + bean.getW_no());
+		try {
+			annoInter.updateLock(bean);
+			return true;
+		} catch (Exception e) {
+			System.out.println("eraseboard err");
 			return false;
 		}
 	}
@@ -266,7 +328,6 @@ public class DataDao implements DaoInter {
 	// like
 	@Override
 	public List<LikeDto> showLike(String b_no) throws DataAccessException {
-
 		return annoInter.showLike(b_no);
 	}
 
@@ -344,16 +405,19 @@ public class DataDao implements DaoInter {
 		}
 
 	}
+
 	@Override
 	public WishlistDto showWishAGroup(String wg_no) throws DataAccessException {
 		// TODO Auto-generated method stub
 		return annoInter.showWishAGroup(wg_no);
 	}
-	//anniversary
+
+	// anniversary
 	@Override
 	public List<AnniversaryDto> showAnniversary(String m_no) throws DataAccessException {
 		return annoInter.showAnniversary(m_no);
 	}
+
 	@Override
 	public boolean deleteAnniversary(AnniversaryBean bean) throws DataAccessException {
 		try {
@@ -364,6 +428,7 @@ public class DataDao implements DaoInter {
 			return false;
 		}
 	}
+
 	@Override
 	public boolean insertAnniversary(AnniversaryBean bean) throws DataAccessException {
 		try {
@@ -374,6 +439,7 @@ public class DataDao implements DaoInter {
 			return false;
 		}
 	}
+
 	@Override
 	public boolean updateAnniversary(AnniversaryBean bean) throws DataAccessException {
 		try {

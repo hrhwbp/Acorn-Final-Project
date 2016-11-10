@@ -5,6 +5,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE PUBLIC>
 <html>
 <head>
@@ -244,7 +245,11 @@ function likescrolling(num){ //33 -2
     	});
     }	
 
-    
+    function gofriend(b_no){
+    	jQuery("#friend"+b_no).submit();
+    	
+    	
+    }
 	
 </script>
 <style type="text/css">
@@ -284,11 +289,14 @@ function likescrolling(num){ //33 -2
 				<div class="row">
 					<div class="col-md-12">
 						<div class="thumbnail" data-bno="${list.b_no }">
-							<img alt="food" src="${list.b_image}" height="400px">
+							<img alt="Responsive image" src="${list.b_image}" class="img-responsive">
 							<div class="caption">
 								<div class="row">
 									<div class="col-md-12">
-										<h3>${list.b_mname}</h3>
+										<form action="friendinfo" id="friend${list.b_no }" method="post">
+										<input type="hidden" name="m_no" value="${list.b_mno }">
+										<h3><a href="javascript:;"  onclick="gofriend(${list.b_no })">${list.b_mname}</a></h3>
+										</form>
 										<p>${list.b_content}</p>
 									</div>
 								</div>
@@ -389,16 +397,43 @@ function likescrolling(num){ //33 -2
 			<div class="row">
 				<div class="col-md-10 col-md-offset-2">
 					<nav class="bs-docs-sidebar hidden-print hidden-xs affix">
-						<ul class="nav bs-docs-sidenav text-right">
-							
+						
+							<table>
+							<tr><th>생일</th></tr>
 							<c:forEach var="anni" items="${anniversary}">
-                  
-                     ${anni.a_date}는 <a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>님의 ${anni.a_detail }입니다.<n/><br/>
-                     
-                   </c:forEach>
 							
-						</ul>
+							<c:if test="${anni.a_detail eq '생일'}">
+							<tr><td>
+                  			  D-${anni.a_dday }<a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a><br/>
+                  			  </td>
+                     		</tr>
+                     		</c:if>
+                     		</c:forEach>
+                     		<tr><td>&nbsp;</td></tr>
+                     		<tr><th>다른날</th></tr>
+                     		<jsp:useBean id="now" class="java.util.Date" />
+                     		<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" var="today" />
+                     		  
+                     		<c:forEach var="anni" items="${anniversary}">
+                     		<fmt:parseDate var="date" value="${anni.a_date}" pattern="yyyy-MM-dd" />
+                     		<fmt:formatDate value="${date }" pattern="yyyy-MM-dd" var="day" />
+							<c:if test="${anni.a_detail ne '생일'}">
+							<c:if test="${day >= today}">
+							<tr><td>
+							
+                  			  D-${anni.a_dday }<a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>의 ${anni.a_detail}<br/>
+                  			 
+                  			</td>
+                     		</tr>
+                     		</c:if>
+                     		</c:if>
+                     		</c:forEach>
+                     		</table>
+							
+						
+						
 					</nav>
+					
 				</div>
 			</div>
 

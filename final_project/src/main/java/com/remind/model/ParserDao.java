@@ -55,9 +55,13 @@ public class ParserDao implements ParserDaoInter {
 			
 			Elements titleelem = doc.select("title");
 			Elements priceelem = doc.select("[itemprop*=price]");
-			Elements priceelem2 = doc.select("[class*=price]"); // span[id*=price]
+
+			Elements priceelem2 = doc.select("[class*=price]"); // span[id*=price]    codi_01n.jpg  
+
+			Elements imageelem3 = doc.select("[class*=Img] [src$=jpg]");
 			Elements imageelem = doc.select("[id*=Image] [src$=jpg]");// [src$=jpg]
 			Elements imageelem2 = doc.select("[id*=img] [src$=jpg]");
+			
 			
 			//System.out.println(imageelem.text() + "@@@@@@@ ");
 			//System.out.println(imageelem2.text() + "@@@@@@@ ");
@@ -115,14 +119,32 @@ public class ParserDao implements ParserDaoInter {
 			
 			
 			//상품 이미지 주소 Parsing
-			if(imageelem.size() > 0){
+			if(imageelem3.size() > 0){
+				for (int i = 0; i < imageelem3.size(); i++) {
+					if( !imageelem3.get(i).attr("id").toString().equals(null) ||
+							!imageelem3.get(i).equals(null)){
+						System.out.println(imageelem3.get(i).text() + "~~~!~");
+						
+						
+						//imageelem.get(i).attr("src").toString();
+						image = imageelem3.get(i);
+						System.out.println(imageelem3.get(i).attr("src").toString() + "~~~!~!~!");
+						
+						if(dto.getImage()==null){
+							System.out.println("이미지 없음");
+							System.out.println(image.text());
+							dto.setImage(imageelem3.get(i).attr("src").toString());
+						}else{
+							System.out.println("이미지 있음");
+						}
+					}
+				}
+				
+			}else if(imageelem.size() > 0) {
 				for (int i = 0; i < imageelem.size(); i++) {
 					if( !imageelem.get(i).attr("id").toString().equals(null) ||
-							!imageelem.get(i).equals(null)
-							){
+							!imageelem.get(i).equals(null)){
 						System.out.println(imageelem.get(i).text() + "~~~!~");
-						
-						
 						//imageelem.get(i).attr("src").toString();
 						image = imageelem.get(i);
 						System.out.println(imageelem.get(i).attr("src").toString() + "~~~!~!~!");
@@ -136,12 +158,10 @@ public class ParserDao implements ParserDaoInter {
 						}
 					}
 				}
-				
-			}else{
+			}else if(imageelem2.size() > 0) {
 				for (int i = 0; i < imageelem2.size(); i++) {
 					if( !imageelem2.get(i).attr("id").toString().equals(null) ||
-							!imageelem2.get(i).equals(null)
-							){
+							!imageelem2.get(i).equals(null)){
 						System.out.println(imageelem2.get(i).text() + "~~~!~");
 						//imageelem.get(i).attr("src").toString();
 						image = imageelem2.get(i);
@@ -157,7 +177,6 @@ public class ParserDao implements ParserDaoInter {
 					}
 				}
 			}
-			
 			list.add(dto);
 			System.out.println(dto.getName() + "~~~~" + dto.getPrice() + " " + dto.getImage());
 

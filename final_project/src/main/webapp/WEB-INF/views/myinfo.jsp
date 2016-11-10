@@ -9,6 +9,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>MyInfo</title>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<style type="text/css">
+.img_sss {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: 100%;
+    height: auto;
+}
+.rowimg {
+    position: relative;
+    padding-top: 75%;  /* 1:1 ratio */
+    
+    overflow: hidden;
+}
+</style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">
@@ -23,6 +40,22 @@ $(document).ready(function() {
 			$('#passwordErr').modal('show');
 		}
 	});
+	$('#boardInsertBtn').click(function() {
+		$('#boardInsert').modal('show');
+		$('#boardInsertImg').hide();
+	});
+	$('#boardInsertSubmit').click(function() {
+		/* alert(boardInsertFile.files[0]); */
+		if(boardInsertFile.files[0] == undefined){
+			$('#boardInsertErr').modal('show');
+			return;
+		}else if($('#modalInsertContent').val() == ''){
+			$('#modalInsertContent').attr('placeholder','내용을 입력 해주세요!!');
+			$('#modalInsertContent').focus();
+			return;
+		}
+		$('#boardInsertfrm').submit();
+	})
 })
 
 function modalToggle(b_no) {
@@ -43,6 +76,7 @@ function modalToggle(b_no) {
         	 $('#modalLike').text('좋아요 ' + dto.b_like);
         	 $('#modalDate').text(dto.b_date);
         	 $('#hiddenNo').val(dto.b_no); 
+        	 $('#hiddenImage').val(dto.b_image); 
         	 $('#boardDetail').modal('show');
          },
          error : function(xhr, status, error) {
@@ -51,17 +85,175 @@ function modalToggle(b_no) {
    });
 	
 }
+
+function follower(m_no) {
+	$('#followHead').text('팔로워');
+	$('#followDiv').text('');
+	 jQuery.ajax({
+         type:"post",
+         url:"showMyFollower",
+         data: {"m_no":m_no},
+         dataType: "json",
+         success : function(data) {
+        	 var list = data.Mylist;
+        	 var m_no = data.m_no;
+        	 var m_no2 = data.m_no2;
+        	 var str = "";
+        	 $.each(list,function(i,ss){
+        		 /* alert(ss.m_email); */
+        		 str += "<div class='row' style='padding-bottom: 1%;'>" +
+        		 		"<div class='col-md-12'>" +
+        		 		"<div class='col-md-2' style='height: 50px'>" +
+        		 		"<img src='http://wbp.synology.me/profileimg/" + ss.m_image + "' alt='Responsive image' class='img-circle img-responsive' style='height: 100%; width: 100%'>" +
+        		 		"</div>" +
+        		 		"<div class='col-md-8'>" +
+ 						"<div class='row' style='cursor: default;'>" +
+ 						"" + ss.m_name + "" +
+        		 		"</div>" +
+ 						"<div class='row'>" +
+ 						"<a href='myinfo?m_no=" + ss.f_sno + "'>" + ss.m_email + "</a>" +
+ 						"</div>" +
+ 						"</div>" +
+ 						"<div class='col-md-2' style='padding-top: 1%;'>";
+ 				if(ss.f_ms == '2' && m_no == m_no2 ){
+ 					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_sno + "," + ss.f_mno +")'>팔로잉</button>";
+ 				}else if(ss.f_ms == '1' && m_no == m_no2){
+ 					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + ss.f_mno + "," + ss.f_sno + ")'>팔로우</button>"; 					
+ 				}else if(ss.f_ms == '1' || ss.f_ms == '2'){
+ 					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_sno + "," + ss.f_mno +")'>팔로잉</button>";
+ 				}else{
+ 					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + ss.f_mno + "," + ss.f_sno + ")'>팔로우</button>";
+ 				}
+ 				str += "</div>" +
+ 						"</div>" +
+ 		      			"</div>";
+        		 
+        	 })        	
+        	 $('#followDiv').append(str);
+        	 /* modalContent modalLike modalDate */
+        	 /* document.getElementById("modalimg").src = dto.b_image;  */
+        	 $('#myFollow').modal('show');
+         },
+         error : function(xhr, status, error) {
+               alert("에러발생 " + error);
+         }
+   });
+}
+
+function follow(m_no) {
+	$('#followHead').text('팔로잉');
+	$('#followDiv').text('');
+	 jQuery.ajax({
+        type:"post",
+        url:"showIFollow",
+        data: {"m_no":m_no},
+        dataType: "json",
+        success : function(data) {
+       	 var list = data.Mylist;
+       	 var str = "";
+       	 $.each(list,function(i,ss){
+       		 /* alert(ss.m_email); */
+       		 str += "<div class='row' style='padding-bottom: 1%;'>" +
+       		 		"<div class='col-md-12'>" +
+       		 		"<div class='col-md-2' style='height: 50px'>" +
+       		 		"<img src='http://wbp.synology.me/profileimg/" + ss.m_image + "' alt='Responsive image' class='img-circle img-responsive' style='height: 100%; width: 100%'>" +
+       		 		"</div>" +
+       		 		"<div class='col-md-8'>" +
+					"<div class='row' style='cursor: default;'>" +
+					"" + ss.m_name + "" +
+       		 		"</div>" +
+					"<div class='row'>" +
+					"<a href='myinfo?m_no=" + ss.f_mno + "'>" + ss.m_email + "</a>" +
+					"</div>" +
+					"</div>" +
+					"<div class='col-md-2' style='padding-top: 1%;'>";
+			if(ss.f_ms == '2' || ss.f_ms == '1'){
+				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_mno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_mno + "," + ss.f_sno +")'>팔로잉</button>";
+			}else{
+				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_mno + "' onclick='upFollow(" + ss.f_sno + "," + ss.f_mno + ")'>팔로우</button>";
+			}	
+			str +=	"</div>" +
+					"</div>" +
+	      			"</div>";
+       		 /* rgb(168,133,239) */
+       	 })        	
+       	 $('#followDiv').append(str);
+       	 /* modalContent modalLike modalDate */
+       	 /* document.getElementById("modalimg").src = dto.b_image;  */
+       	 $('#myFollow').modal('show');
+        },
+        error : function(xhr, status, error) {
+              alert("에러발생 " + error);
+        }
+  });
+}
+
+function upFollow(f_mno,f_sno) {
+	/* alert(m_no + " " + f_sno); */
+	var array = {"f_mno":f_mno,"f_sno":f_sno};
+	jQuery.ajax({
+        type:"post",
+        url:"insertFollow",
+        data: array,
+        success : function() {
+        	$("#followBtn"+f_sno).attr('onclick','cancelFollow('+ f_sno + ',' + f_mno +')');
+        	$("#followBtn"+f_sno).attr('style','background-color: #70c050; color: white;');
+        },
+        error : function(xhr, status, error) {
+              alert("에러발생 insert" + error + "" + status );
+        }
+	}); 
+}
+function up2Follow(m_no,f_sno) {
+	/* alert(m_no + " " + f_sno); */
+	
+	$("#follow").attr('onclick','cancelFollow('+ m_no + ',' + f_sno +')');
+	$("#follow").attr('style','background-color: #70c050; color: white;');
+	$("#follow").attr('value','팔로잉');
+	var array = {"f_mno":m_no,"f_sno":f_sno};
+	
+	jQuery.ajax({
+        type:"post",
+        url:"insertFollow",
+        data: array,
+        success : function() {
+       		alert('성공');
+        },
+        error : function(xhr, status, error) {
+              alert("에러발생 " + error);
+        }
+	}); 
+}
+
+function cancelFollow(f_mno,f_sno) {
+	/* alert(f_mno + " " + f_sno); */
+	var array = {"f_mno":f_sno,"f_sno":f_mno};
+	jQuery.ajax({
+        type:"post",
+        url:"followCancel",
+        data: array,
+        success : function() {
+        	$("#followBtn"+f_mno).attr('onclick','upFollow('+ f_sno + ',' + f_mno +')');
+        	$("#followBtn"+f_mno).attr('style','background-color: white; color: black;');
+        },
+        error : function(xhr, status, error) {
+              alert("에러발생 " + error);
+        }
+	}); 
+	/* $("#followBtn"+f_mno).attr('onclick','upFollow('+ m_no + ',' + f_mno +')');
+	$("#followBtn"+f_mno).attr('style','background-color: white; color: black;'); */
+}
 </script>
 </head>
 
 <%@ include file="../../top.jsp" %>
 <body style="">
 <div class="container">
-<div class="container"  style="padding-top: 2%; padding-bottom: 5%">
-<div class="row" style="background-color: rgb(253,253,253); padding-top: 30px; padding-bottom: 30px">
-	<div class="col-md-2 col-md-offset-2" style="height: 180px">
+<div class="container"  style="padding-top: 2%; padding-bottom: 5%;">
+<div class="row" style="background-color: rgb(253,253,253); padding-top: 30px; padding-bottom: 30px; ">
+	<div class="col-md-2 col-md-offset-2" style="height: 170px">
 		<a style="color: buttontext; border: 0; cursor: pointer; height: 100%; padding: 0; width: 100%;" data-toggle="modal" data-target="#updateInfo">
-		<img src="resources/image/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
+		<img src="http://wbp.synology.me/profileimg/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
 		
 		</a>
 	</div>
@@ -74,7 +266,16 @@ function modalToggle(b_no) {
 				</blockquote>
 			</div>
 			<div class="col-md-3 col-md-offset-1 top_pd">
+				<c:choose>
+				<c:when test="${mno == myinfo.m_no }">
 				<button type="button" class="btn btn-default col-md-12" data-toggle="modal" data-target="#updateInfo">프로필 변경</button>
+				</c:when>
+				<c:otherwise>
+				<button type="button" id="follow" class="btn btn-default col-md-12" onclick="up2Follow(${mno},${myinfo.m_no })">팔로우</button>
+				
+				</c:otherwise>
+				</c:choose>
+				
 			</div>		
 		
 		</div>
@@ -82,25 +283,26 @@ function modalToggle(b_no) {
 		<div class="row">
 			
 			<button type="button" class="btn btn-link col-md-3" disabled="disabled">게시물  ${fn:length(board)}개</button> 
-			<button type="button" class="btn btn-link col-md-3">팔로워 ${fn:length(mylist)}</button>
-			<button type="button" class="btn btn-link col-md-3">팔로우 ${fn:length(ilist)}</button>
+			<button type="button" class="btn btn-link col-md-3" onclick="follower(${myinfo.m_no})">팔로워 ${fn:length(mylist)}</button>
+			<button type="button" class="btn btn-link col-md-3" onclick="follow(${myinfo.m_no})">팔로우 ${fn:length(ilist)}</button>
 		
 		</div>
 	</div>
 </div>
+<c:if test="${mno == myinfo.m_no }">
 <div class="row" style="padding-bottom: 2%">
 	<div class="col-md-10 col-md-offset-1">
-		<button type="button" class="btn btn-link col-md-12" style="background-color: rgb(255,230,231);"><h4><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;게시물 추가하기</h4></button>
+			<button type="button" id="boardInsertBtn" class="btn btn-link col-md-12" style="background-color: rgb(255,230,231);"><h4><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;게시물 추가하기</h4></button>
 	</div>
 </div>
-
+</c:if>
 <div class="row" style="background-color: rgb(253,253,253);"><!-- row  -->
 <div class="col-md-10 col-md-offset-1">
   <c:forEach var="board" items="${board}">  
   <div class="col-md-4">
     <div class="thumbnail">
-    	<div class="row" style="height: 190px;">
-		   <img src="${board.b_image }" alt="Responsive image" class="img-responsive center-block" style="height: 100%">
+    	<div class="row rowimg" >
+		   <img src="${board.b_image }" alt="Responsive image" class="img-responsive center-block img_sss">
     	</div>
       <div class="caption">
         <h3>${board.b_content }</h3>
@@ -132,7 +334,7 @@ function modalToggle(b_no) {
 				<div class="col-md-4 col-md-offset-4 text-center">
 				<div style="color: buttontext; border: 0; cursor: pointer; height: 180px; padding: 0; width: 100%;">
 					<a  onclick="$('#file').click();">
-					<img id="image" src="resources/image/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
+					<img id="image" src="http://wbp.synology.me/profileimg/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
 					</a>
 	      			<input type="file" id="file"  name="fileUp" class="sr-only">
 				</div>
@@ -203,7 +405,9 @@ function modalToggle(b_no) {
 		
 	      	</div>
 	    	<div class="modal-footer">
+	    	
 	    	<button class="btn btn-primary" id="infoSubmit" type="button">Save changes</button>
+	    	
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 			
@@ -214,20 +418,29 @@ function modalToggle(b_no) {
 	  </div>
 	  	
 	</div>
-	<!-- 모달 팝업 -->
+	<!-- 게시물 수정 모달 -->
 
 	<div class="modal fade" id="boardDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	  <div class="modal-dialog" style="margin: 180px auto">
 	    <div class="modal-content">
-	     <form id="boardUpdatefrm" action="updateBoard" method="post">
+	     <form id="boardUpdatefrm" action="updateBoard" method="post" enctype="multipart/form-data">
 	      <div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+			
 			<div class="row">
 				<div class="col-md-12">
+				<c:choose>
+					
+					<c:when test="${mno == myinfo.m_no }">
 					<a  onclick="$('#boardFile').click();" style="cursor: pointer">
 					<img alt="Responsive image" id="modalimg" class="img-responsive center-block" src="">
 					</a>
-					<input name="b_image" type="file" id="boardFile" class="sr-only">
+					</c:when>
+					<c:otherwise>
+					<img alt="Responsive image" id="modalimg" class="img-responsive center-block" src="">
+					</c:otherwise>
+					
+					</c:choose>
+					<input type="file" name="fileUpload"  id="boardFile" class="sr-only" >
 				</div>
 			</div>
 	      </div>
@@ -235,23 +448,94 @@ function modalToggle(b_no) {
 	     
 	 
 	      <div class="row">	      
-			<h3 class="col-md-12"><input name="b_content" id="modalContent" type="text" class="form-control" value=""></h3>
+			<h3 class="col-md-12">
+			<c:choose>
+			<c:when test="${mno == myinfo.m_no }">
+			<input name="b_content" id="modalContent" type="text" class="form-control" value="">
+			</c:when>
+			<c:otherwise>
+			<input name="b_content" id="modalContent" type="text" class="form-control" value="" readonly="readonly">
+			</c:otherwise>
+			</c:choose>
+			</h3>
+			
 			<p class="col-md-6" id="modalLike"></p><p id="modalDate" class="text-right col-md-6"></p>
 	      </div>
 	      </div>
 	      <input type="hidden" value="" id="hiddenNo" name="b_no">
+	      <input type="hidden" value="" id="hiddenImage" name="b_image">
 	     </form>
 	      <div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<c:if test="${mno == myinfo.m_no }">
 			<button id="updateSubmit" type="button" class="btn btn-primary">Save changes</button>
+			</c:if>
 	      </div>
 	      
 	    </div>
 	  </div>
 	</div>
 
+		<!-- 새 게시물 모달 -->
 
-	<!-- 모달 팝업 -->
+	<div class="modal fade" id="boardInsert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+	  <div class="modal-dialog" style="margin: 180px auto">
+	    <div class="modal-content">
+	     <form id="boardInsertfrm" action="insertBoard" method="post" enctype="multipart/form-data">
+	      <div class="modal-header">
+			
+			<div class="row">
+				<div class="col-md-12 text-center" style="">
+					<a  onclick="$('#boardInsertFile').click();" style="cursor: pointer; padding-top: 40%" >
+					<b id="insertBtag">클릭해서 이미지 추가</b>
+					<img alt="Responsive image" id="boardInsertImg" class="img-responsive center-block" src="" style="">
+					</a>
+					<input type="file" name="fileUpload" id="boardInsertFile" class="sr-only">
+				</div>
+			</div>
+	      </div>
+	      <div class="modal-body">
+	     
+	 
+	      <div class="row">	      
+			<h3 class="col-md-12"><input name="b_content" id="modalInsertContent" type="text" class="form-control" placeholder="게시글 내용은 제목으로 보여 집니다."></h3>
+			<input type="hidden" value="${myinfo.m_no}" name="b_mno">
+	      </div>
+	      </div>
+	     </form>
+	      <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			<button id="boardInsertSubmit" type="button" class="btn btn-primary" >Save changes</button>
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
+
+			<!-- 팔로우 모달 -->
+
+	<div class="modal" id="myFollow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+	  <div class="modal-dialog" style="margin: 180px auto">
+	    <div class="modal-content">
+	     <form id="boardInsertfrm" action="insertBoard" method="post" enctype="multipart/form-data">
+	      <div class="modal-header">
+			<div class="row">
+				<div class="col-md-12 text-center" id="followHead">
+					<h3 id="followHead"></h3>
+				</div>
+			</div>
+	      </div>
+	      <div class="modal-body" id="followDiv" style="max-height: 400px">
+		      
+	      </div>
+	     </form>
+	      
+	    </div>
+	  </div>
+	</div>
+	
+
+	<!-- 비밀번호 모달 팝업 -->
 	<div class="modal fade bs-example-modal-sm" id="passwordErr" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
 	  <div class="modal-dialog modal-sm" style="margin: 350px auto;">
 	    <div class="modal-content">
@@ -261,10 +545,22 @@ function modalToggle(b_no) {
 	    </div>
 	  </div>
 	</div>
+
+	<!-- 새 게시글 이미지 없음 -->
+	<div class="modal fade bs-example-modal-sm" id="boardInsertErr" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+	  <div class="modal-dialog modal-sm" style="margin: 260px auto;">
+	    <div class="modal-content">
+	      <div class="row text-center">
+	      	이미지를 선택해주세요.
+	      </div>
+	    </div>
+	  </div>
+	</div>
 	
 	
 </div> <!-- container -->
 <script>
+/* 프로필 수정 이미지 미리보기 */
 var upload = document.getElementById('file'),
  	image = document.getElementById('image');
 upload.onchange = function (e) {
@@ -276,7 +572,7 @@ upload.onchange = function (e) {
   };
   reader.readAsDataURL(file);
 };
-
+/* 게시물 수정 이미지 미리보기 */
 var boardFile = document.getElementById('boardFile'),
 	modalimg = document.getElementById('modalimg');
 boardFile.onchange = function (e) {
@@ -287,6 +583,20 @@ boardFile.onchange = function (e) {
 	  modalimg.src = event.target.result;
   };
   reader2.readAsDataURL(file2);
+};
+/* 게시물 쓰기 이미지 미리보기 */
+var boardInsertFile = document.getElementById('boardInsertFile'),
+	boardInsertImg = document.getElementById('boardInsertImg');
+boardInsertFile.onchange = function (e) {
+  e.preventDefault();
+  var file3 = boardInsertFile.files[0],
+      reader3 = new FileReader();
+  reader3.onload = function (event) {
+	  boardInsertImg.src = event.target.result;
+  };
+  reader3.readAsDataURL(file3);
+  /* $('#insertBtag').text(''); */
+  $('#boardInsertImg').show();
 };
 </script>
 </body>

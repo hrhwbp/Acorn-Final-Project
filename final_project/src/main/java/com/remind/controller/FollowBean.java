@@ -1,7 +1,7 @@
 package com.remind.controller;
 
 public class FollowBean {
-String f_no, f_mno, f_sno;
+String f_no, f_mno, f_sno, f_ms;
 
 public String getF_no() {
 	return f_no;
@@ -27,4 +27,11 @@ public void setF_sno(String f_sno) {
 	this.f_sno = f_sno;
 }
 
+public String getF_ms() {
+	return f_ms;
+}
+
+public void setF_ms(String f_ms) {
+	this.f_ms = f_ms;
+}
 }

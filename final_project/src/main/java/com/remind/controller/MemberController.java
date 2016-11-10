@@ -78,7 +78,6 @@ public class MemberController {
 	public String updateSubmit(MemberBean bean){
 		
 		MultipartFile uploadfile = bean.getFileUp();
-		System.out.println(uploadfile + " " + bean.getFileUp() + " " + bean.getM_name());
 		if (uploadfile != null) {
             String fileName = uploadfile.getOriginalFilename();
             System.out.println(fileName);
@@ -90,7 +89,7 @@ public class MemberController {
                 // output.write(fileData);
                  
                 // 2. File 사용
-                File file = new File("C:/Users/kitcoop/Desktop/final project/final_project/src/main/webapp/resources/image/" + fileName);
+                File file = new File("N:/web/profileimg/" + fileName);
                 
                 uploadfile.transferTo(file);
             } catch (Exception e) {
@@ -128,6 +127,21 @@ public class MemberController {
 	}
 	
 	//내 정보 보기
+	@RequestMapping(value="friendinfo", method = RequestMethod.POST)
+	public ModelAndView showFriendinfo(@RequestParam("m_no")String m_no){
+		System.out.println(m_no);
+		ModelAndView view = new ModelAndView();
+		MemberDto dto = daoInter.showMemberDetail(m_no);
+		view.addObject("myinfo", dto);
+		List<FollowDto> mylist = daoInter.showMyFollower(m_no);
+		view.addObject("mylist", mylist);
+		List<FollowDto> ilist = daoInter.showIFollow(m_no);
+		view.addObject("ilist", ilist);
+		List<BoardDto> list = daoInter.showMyMain(m_no);
+		view.addObject("board",list);
+		view.setViewName("myinfo");
+		return view;
+	}
 	@RequestMapping(value="myinfo", method = RequestMethod.POST)
 	public ModelAndView showMyinfo(@RequestParam("m_no")String m_no){
 		ModelAndView view = new ModelAndView();
@@ -137,7 +151,7 @@ public class MemberController {
 		view.addObject("mylist", mylist);
 		List<FollowDto> ilist = daoInter.showIFollow(m_no);
 		view.addObject("ilist", ilist);
-		List<BoardDto> list = daoInter.showBoard(m_no);
+		List<BoardDto> list = daoInter.showMyMain(m_no);
 		view.addObject("board",list);
 		view.setViewName("myinfo");
 		return view;
@@ -152,7 +166,7 @@ public class MemberController {
 		view.addObject("mylist", mylist);
 		List<FollowDto> ilist = daoInter.showIFollow(m_no);
 		view.addObject("ilist", ilist);
-		List<BoardDto> list = daoInter.showBoard(m_no);
+		List<BoardDto> list = daoInter.showMyMain(m_no);
 		view.addObject("board",list);
 		view.setViewName("myinfo");
 		return view;
