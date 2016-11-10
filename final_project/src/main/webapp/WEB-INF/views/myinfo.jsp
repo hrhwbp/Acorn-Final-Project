@@ -110,7 +110,7 @@ function follower(m_no) {
  						"" + ss.m_name + "" +
         		 		"</div>" +
  						"<div class='row'>" +
- 						"<a href='#'>" + ss.m_email + "</a>" +
+ 						"<a href='myinfo?m_no=" + ss.f_sno + "'>" + ss.m_email + "</a>" +
  						"</div>" +
  						"</div>" +
  						"<div class='col-md-2' style='padding-top: 1%;'>";
@@ -158,7 +158,7 @@ function follow(m_no) {
 					"" + ss.m_name + "" +
        		 		"</div>" +
 					"<div class='row'>" +
-					"<a href='#'>" + ss.m_email + "</a>" +
+					"<a href='myinfo?m_no=" + ss.f_mno + "'>" + ss.m_email + "</a>" +
 					"</div>" +
 					"</div>" +
 					"<div class='col-md-2' style='padding-top: 1%;'>";
@@ -191,7 +191,7 @@ function upFollow(f_mno,f_sno) {
         url:"insertFollow",
         data: array,
         success : function() {
-        	$("#followBtn"+f_sno).attr('onclick','cancleFollow('+ f_sno + ',' + f_mno +')');
+        	$("#followBtn"+f_sno).attr('onclick','cancelFollow('+ f_sno + ',' + f_mno +')');
         	$("#followBtn"+f_sno).attr('style','background-color: #70c050; color: white;');
         },
         error : function(xhr, status, error) {
@@ -202,7 +202,7 @@ function upFollow(f_mno,f_sno) {
 function up2Follow(m_no,f_sno) {
 	/* alert(m_no + " " + f_sno); */
 	
-	$("#follow").attr('onclick','cancleFollow('+ m_no + ',' + f_sno +')');
+	$("#follow").attr('onclick','cancelFollow('+ m_no + ',' + f_sno +')');
 	$("#follow").attr('style','background-color: #70c050; color: white;');
 	$("#follow").attr('value','팔로잉');
 	var array = {"f_mno":m_no,"f_sno":f_sno};
