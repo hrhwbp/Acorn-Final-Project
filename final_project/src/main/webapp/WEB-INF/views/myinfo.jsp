@@ -119,7 +119,7 @@ function follower(m_no) {
  					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_sno + "," + ss.f_mno +")'>팔로잉</button>";
  				}else if(ss.f_ms == '1' && m_no == m_no2){
  					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + ss.f_mno + "," + ss.f_sno + ")'>팔로우</button>"; 					
- 				}else if(ss.f_ms == '1'){
+ 				}else if(ss.f_ms == '1' || ss.f_ms == '2'){
  					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_sno + "," + ss.f_mno +")'>팔로잉</button>";
  				}else{
  					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + ss.f_mno + "," + ss.f_sno + ")'>팔로우</button>";
@@ -167,7 +167,7 @@ function follow(m_no) {
 					"</div>" +
 					"</div>" +
 					"<div class='col-md-2' style='padding-top: 1%;'>";
-			if(ss.f_ms == '2' ){
+			if(ss.f_ms == '2' || ss.f_ms == '1'){
 				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_mno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_mno + "," + ss.f_sno +")'>팔로잉</button>";
 			}else{
 				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_mno + "' onclick='upFollow(" + ss.f_sno + "," + ss.f_mno + ")'>팔로우</button>";

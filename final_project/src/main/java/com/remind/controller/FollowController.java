@@ -28,37 +28,23 @@ public class FollowController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String m_no2 = (String)session.getAttribute("mno");
 		List<FollowDto> list = daoInter.showMyFollower(m_no);
-		List<FollowDto> list2 = daoInter.showMyFollower(m_no2);
+		List<FollowDto> list2 = daoInter.showIFollow(m_no2);
 		System.out.println("주인 " + m_no + " 나 " + m_no2);
 		for(int i = 0; i < list.size(); i++){
 			if(list.get(i).getF_mno().equals(m_no2)){
 				break;
 			}else{
 				list.get(i).setF_mno(m_no2);
+				list.get(i).setF_ms("");
 				for(int j = 0; j < list2.size(); j++){
-					if(list.get(i).getF_sno().equals(list2.get(j).getF_sno())){
+					if(list.get(i).getF_sno().equals(list2.get(j).getF_mno())){
+						System.out.println("3번" + list2.size());
 						list.get(i).setF_ms(list2.get(j).getF_ms());
 						System.out.println(list2.get(j).getF_ms());
-					}else{
-						list.get(i).setF_ms("");
 					}
 				}
 			}
 		}
-		/*	for(FollowDto s:list){
-			for(FollowDto s2:list2){
-				System.out.println("mno" + s.getF_mno() + "session" + "mno" + s2.getF_mno());
-				if(s.getF_sno().equals(s2.getF_sno())){
-				s.setF_ms(s2.getF_ms());
-				s.setF_mno(m_no2);
-				}else{
-				s.setF_ms("");
-				s.setF_mno(m_no2);
-				}
-				
-			}
-		}*/
-		
 		map.put("Mylist", list);
 		/*map.put("Mylist2", list2);*/
 		map.put("m_no", m_no);
@@ -67,11 +53,30 @@ public class FollowController {
 	}
 	@RequestMapping(value="showIFollow", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> showIFollow(@RequestParam("m_no")String m_no){
+	public Map<String, Object> showIFollow(@RequestParam("m_no")String m_no, HttpSession session){
+		String m_no2 = (String)session.getAttribute("mno");
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<FollowDto> list = daoInter.showIFollow(m_no);
+		List<FollowDto> list2 = daoInter.showIFollow(m_no2);
+		for(int i = 0; i < list.size(); i++){
+			if(list.get(i).getF_sno().equals(m_no2)){
+				System.out.println("실행");
+				break;
+			}else{
+				list.get(i).setF_sno(m_no2);
+				list.get(i).setF_ms("");
+				for(int j = 0; j < list2.size(); j++){
+					if(list.get(i).getF_mno().equals(list2.get(j).getF_mno())){
+						System.out.println("3번" + list2.size());
+						list.get(i).setF_ms(list2.get(j).getF_ms());
+						System.out.println(list2.get(j).getF_ms());
+					}
+				}
+			}
+		}
 		map.put("Mylist", list);
 		map.put("m_no", m_no);
+		map.put("m_no2", m_no2);
 		return map;
 	}
 	
