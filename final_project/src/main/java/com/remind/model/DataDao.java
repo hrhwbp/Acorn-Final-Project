@@ -138,6 +138,8 @@ public class DataDao implements DaoInter {
 	
 	@Override //내가 팔로우하는 사람 확인하기 f_ms 수정용
 	public FollowDto selectFollower(FollowBean bean) throws DataAccessException {
+		FollowDto dto = annoInter.selectFollwer(bean);
+				
 		return annoInter.selectFollwer(bean);
 	}
 	

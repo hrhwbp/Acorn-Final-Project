@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,10 +24,30 @@ public class FollowController {
 	
 	@RequestMapping(value="showMyFollower", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> showMyFollower(@RequestParam("m_no")String m_no){
+	public Map<String, Object> showMyFollower(@RequestParam("m_no")String m_no, HttpSession session){
 		Map<String, Object> map = new HashMap<String, Object>();
+		String m_no2 = (String)session.getAttribute("mno");
 		List<FollowDto> list = daoInter.showMyFollower(m_no);
+		List<FollowDto> list2 = daoInter.showMyFollower(m_no2);
+		for(FollowDto s:list){
+			for(FollowDto s2:list2){
+				System.out.println("mno" + s.getF_mno() + "session" + "mno" + s2.getF_mno());
+				if(s.getF_sno().equals(s2.getF_sno())){
+				s.setF_ms(s2.getF_ms());
+				s.setF_mno(m_no2);
+				}else{
+				s.setF_ms("");
+				s.setF_mno(m_no2);
+				}
+				
+			}
+		}
+		
 		map.put("Mylist", list);
+		for(FollowDto s:list){
+			System.out.println(s.getF_ms());
+		}
+		map.put("Mylist2", list2);
 		map.put("m_no", m_no);
 		return map;
 	}
@@ -42,10 +64,13 @@ public class FollowController {
 	
 	@RequestMapping(value="insertFollow", method = RequestMethod.POST)
 	@ResponseBody
-
 	public void follow(FollowBean bean){
 		FollowDto dto = daoInter.selectFollower(bean);
-		if(dto.getF_ms() != null){
+		System.out.println("getf_mno" + bean.getF_mno());
+		System.out.println("getf_sno" + bean.getF_sno());
+		System.out.println("getF_ms" + bean.getF_ms());
+		if(dto != null){
+			System.out.println("????");
 			boolean b = daoInter.followUpdate(dto.getF_no(),"insert");
 			if(b){
 				bean.setF_sno(dto.getF_mno());
@@ -55,9 +80,11 @@ public class FollowController {
 			}
 			/*System.out.println("sno인 사람 f_ms업데이트 필요" + dto.getF_no());*/
 		}else{
+			System.out.println("safj");
 			String imsi = bean.getF_mno();
 			bean.setF_mno(bean.getF_sno());
 			bean.setF_sno(imsi);
+			bean.setF_ms("1");
 			daoInter.follow(bean);
 			/*System.out.println("내가 먼저 팔로우 하는경우");*/
 		}
