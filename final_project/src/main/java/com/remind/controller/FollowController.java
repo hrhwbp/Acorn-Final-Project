@@ -29,7 +29,23 @@ public class FollowController {
 		String m_no2 = (String)session.getAttribute("mno");
 		List<FollowDto> list = daoInter.showMyFollower(m_no);
 		List<FollowDto> list2 = daoInter.showMyFollower(m_no2);
-		for(FollowDto s:list){
+		System.out.println("주인 " + m_no + " 나 " + m_no2);
+		for(int i = 0; i < list.size(); i++){
+			if(list.get(i).getF_mno().equals(m_no2)){
+				break;
+			}else{
+				list.get(i).setF_mno(m_no2);
+				for(int j = 0; j < list2.size(); j++){
+					if(list.get(i).getF_sno().equals(list2.get(j).getF_sno())){
+						list.get(i).setF_ms(list2.get(j).getF_ms());
+						System.out.println(list2.get(j).getF_ms());
+					}else{
+						list.get(i).setF_ms("");
+					}
+				}
+			}
+		}
+		/*	for(FollowDto s:list){
 			for(FollowDto s2:list2){
 				System.out.println("mno" + s.getF_mno() + "session" + "mno" + s2.getF_mno());
 				if(s.getF_sno().equals(s2.getF_sno())){
@@ -41,14 +57,12 @@ public class FollowController {
 				}
 				
 			}
-		}
+		}*/
 		
 		map.put("Mylist", list);
-		for(FollowDto s:list){
-			System.out.println(s.getF_ms());
-		}
-		map.put("Mylist2", list2);
+		/*map.put("Mylist2", list2);*/
 		map.put("m_no", m_no);
+		map.put("m_no2", m_no2);
 		return map;
 	}
 	@RequestMapping(value="showIFollow", method = RequestMethod.POST)

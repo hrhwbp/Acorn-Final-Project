@@ -97,6 +97,7 @@ function follower(m_no) {
          success : function(data) {
         	 var list = data.Mylist;
         	 var m_no = data.m_no;
+        	 var m_no2 = data.m_no2;
         	 var str = "";
         	 $.each(list,function(i,ss){
         		 /* alert(ss.m_email); */
@@ -114,10 +115,13 @@ function follower(m_no) {
  						"</div>" +
  						"</div>" +
  						"<div class='col-md-2' style='padding-top: 1%;'>";
- 				if(ss.f_ms == '2' ||ss.f_ms=='1'){
+ 				if(ss.f_ms == '2' && m_no == m_no2 ){
+ 					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_sno + "," + ss.f_mno +")'>팔로잉</button>";
+ 				}else if(ss.f_ms == '1' && m_no == m_no2){
+ 					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + ss.f_mno + "," + ss.f_sno + ")'>팔로우</button>"; 					
+ 				}else if(ss.f_ms == '1'){
  					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_sno + "," + ss.f_mno +")'>팔로잉</button>";
  				}else{
- 						
  					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + ss.f_mno + "," + ss.f_sno + ")'>팔로우</button>";
  				}
  				str += "</div>" +
