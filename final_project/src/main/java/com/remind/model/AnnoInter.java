@@ -22,7 +22,7 @@ public interface AnnoInter {
 	// sns board
 //	@Select("select b_no, b_image, b_content, b_date, b_like, (select m_name from member where m_no = b_mno) b_mname from board where b_mno = (select f_mno from follow where f_sno=#{m_no}) or b_mno = #{m_no}")
 //	List<BoardDto> showBoard(String m_no);
-	@Select("select distinct b_no, b_image, b_content, b_date, b_like, (select m_name from member where m_no = b_mno) b_mname from board left outer join follow on b_mno = f_sno where f_mno=#{m_no} or b_mno = #{m_no}  order by b_no desc limit 0,3")
+	@Select("select distinct b_no, b_mno, b_image, b_content, b_date, b_like, (select m_name from member where m_no = b_mno) b_mname from board left outer join follow on b_mno = f_sno where f_mno=#{m_no} or b_mno = #{m_no}  order by b_no desc limit 0,3")
 	List<BoardDto> showBoard(String m_no);
 	@Select("select distinct b_no, b_image, b_content, b_date, b_like, (select m_name from member where m_no = b_mno) b_mname from board  left outer join follow on b_mno = f_sno where (f_mno=#{m_no} or b_mno = #{m_no} )and b_no < #{last_b_no} order by b_no desc limit 0,3")
 	List<BoardDto> scrollingBoard(ScrollBean bean);
@@ -68,18 +68,28 @@ public interface AnnoInter {
 
 	
 	// follow
-	@Select("select * from follow where f_sno = #{m_no}")
+	// 나를 팔로우 한사람. 
+	@Select("select f_no,f_mno,f_sno,m_name,m_image,m_email,f_ms from follow left outer join member on f_sno = m_no where f_mno = #{m_no}")
 	List<FollowDto> showMyFollower(String m_no);
+	// 
+	@Select("select * from follow where f_sno = #{f_sno} and f_mno = #{f_mno}")
+	FollowDto selectFollwer(FollowBean bean);
 	
-	@Select("select * from follow where f_mno = #{m_no}")
+	// 내가 팔로우 하고있는사람
+	@Select("select f_no,f_mno,f_sno,m_name,m_image,m_email,f_ms from follow left outer join member on f_mno = m_no where f_sno = #{m_no}")
 	List<FollowDto> showIFollow(String m_no);
 	
-	@Insert("insert into follow (f_sno,f_mno) values(#{f_sno},#{f_mno})")
+	@Insert("insert into follow (f_sno,f_mno,f_ms) values(#{f_sno},#{f_mno},#{f_ms})")
 	boolean follow(FollowBean bean);	//f_sno�� f_mno�� follow
 	
 	@Delete("delete from follow where f_sno = #{f_sno} and f_mno = #{f_mno}")
 	boolean followCancel(FollowBean bean);
 	
+	@Update("update follow set f_ms = 2 where f_no = #{f_no}")
+	boolean followUpdate(String f_no);
+
+	@Update("update follow set f_ms = 1 where f_no = #{f_no}")
+	boolean followUpdate2(String f_no);
 	
 	// reply
 	@Select("select r_no, r_bno, r_content, r_date, (select m_name from member where m_no = r_mno) r_name from reply where r_bno = #{b_no} limit ${limit},5")
@@ -110,7 +120,7 @@ public interface AnnoInter {
 /*	@Select("select * from wishlist where w_mno = #{w_mno}")
 	List<WishlistDto> showWishList(String w_mno);
 	
-	@Insert("insert into wishlist (w_mno, w_pname, w_price, w_image, w_addr, w_detail, w_lock) values(#{w_mno}, #{w_pname}, #{w_price}, #{w_image}, #{w_addr}, #{w_detail}, #{w_lock})")
+	@Insert("insert into wishlist (w_mno, w_pname, w_price, w_image, w_addr, w_detail, w_lock) values(#{w_mno}, #{w_pname}, #{w_price}, #{w_image}, #{w_addr}, #{w_detail}, #{w_lock}")
 	boolean writeWishlist(WishlistBean bean);
 	
 	@Delete("delete from wishlist where w_no = #{w_no}")
@@ -124,13 +134,13 @@ public interface AnnoInter {
 	@Select("select * from wishlist where w_mno = #{w_mno}")
 	List<WishlistDto> showWishList(String w_mno);
 	
-	@Select("select * from wishlist where w_pname = #{w_pname}")
-	List<WishlistDto> showInsertedList(String w_pname);
+	@Select("select * from wishlist where w_no = #{w_no}")
+	List<WishlistDto> showInsertedList(String w_no);
 	
 	@Insert("insert into wishlist (w_mno, w_pname, w_price, w_image, w_addr, w_detail, w_lock) values(#{w_mno}, #{w_pname}, #{w_price}, #{w_image}, #{w_addr}, #{w_detail}, #{w_lock})")
 	boolean writeWishlist(WishlistBean bean);
 	
-	@Delete("delete from wishlist where w_pname = #{w_pname}")
+	@Delete("delete from wishlist where w_no = #{w_no}")
 	boolean deleteWishlist(String w_pname);
 	
 	@Update("update wishlist set w_pname=#{w_pname}, w_price=#{w_price}, w_detail=#{w_detail} where w_no = #{w_no}")

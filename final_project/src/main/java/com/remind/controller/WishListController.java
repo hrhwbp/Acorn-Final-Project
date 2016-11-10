@@ -25,7 +25,7 @@ public class WishListController {
 	private DaoInter daoInter;
 	
 	//Wishlist 보기
-	@RequestMapping(value="showWishList", method = RequestMethod.GET)
+	/*@RequestMapping(value="showWishList", method = RequestMethod.GET)
 	public ModelAndView showWishList(@RequestParam("w_mno")String w_mno){
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("wishlist",daoInter.showWishList(w_mno));	
@@ -74,6 +74,101 @@ public class WishListController {
 			return "showWishList?w_mno=" +w_mno;
 		else
 			return "redirect:/error.jsp";
+	}*/
+	
+	@RequestMapping(value="showWishList", method = RequestMethod.GET)
+	public ModelAndView showWishList(@RequestParam("w_mno")String w_mno){
+		ModelAndView modelAndView = new ModelAndView("../../showWishList", "wishlist", daoInter.showWishList(w_mno)); 	
+		List<WishlistDto> list =  daoInter.showWishList(w_mno);
+		return  modelAndView;
+	}
+	
+	
+	@RequestMapping(value="showInsertedList" ,method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> insertedList(@RequestParam("w_no") String w_no){
+		System.out.println("아작스 힘들다 @@ " + w_no);
+		List<Map<String, String>> insertedList = new ArrayList<Map<String, String>>();
+		Map<String, String> sData = null;
+		
+		List<WishlistDto> list = daoInter.showInsertedList(w_no);
+		
+		for(WishlistDto s:list){
+			sData = new HashMap<String, String>();
+			//System.out.println(s.getW_price() + " %% ");
+			sData.put("w_no", s.getW_no());
+			sData.put("w_mno", s.getW_mno());
+			sData.put("w_detail", s.getW_detail());
+			sData.put("w_pname", s.getW_pname());
+			sData.put("w_price", s.getW_price());
+			sData.put("w_image", s.getW_image());
+			sData.put("url", s.getW_addr());
+			insertedList.add(sData);
+		}
+		
+		Map<String, Object> insertedData = new HashMap<String, Object>();
+		insertedData.put("insertedList", insertedList);
+		return insertedData;
+	}
+	
+	/* 아작스로 할때
+	* @RequestMapping(value="insertWishList", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> insertWishListsubmit(WishlistBean bean){
+		boolean b = daoInter.writeWishlist(bean);
+		
+			List<Map<String, String>> insertedList = new ArrayList<Map<String, String>>();
+			Map<String, String> sData = null;
+			System.out.println();
+			List<WishlistDto> list = daoInter.showInsertedList(bean.w_pname);
+			
+			for(WishlistDto s:list){
+				sData = new HashMap<String, String>();
+				sData.put("w_mno", s.getW_mno());
+				sData.put("w_detail", s.getW_detail());
+				sData.put("w_pname", s.getW_pname());
+				sData.put("w_price", s.getW_price());
+				sData.put("w_image", s.getW_image());
+				sData.put("w_addr", s.getW_addr());
+				insertedList.add(sData);
+			}
+			
+			Map<String, Object> insertedData = new HashMap<String, Object>();
+			insertedData.put("insertedList", insertedList);
+			return insertedData;
+			//return "showInsertedList?w_pname=" + bean.getW_pname();
+	}*/
+	
+	@RequestMapping(value="insertWishList", method = RequestMethod.POST)
+	public String insertWishListsubmit(WishlistBean bean){
+		System.out.println(bean.w_mno + " " + bean.w_pname + " " + bean.w_addr + " " + bean.w_detail + " " + bean.w_image + " " + bean.w_price);
+		boolean b = daoInter.writeWishlist(bean);
+		if(b)
+			return "redirect:/showWishList?w_mno=" +bean.getW_mno();
+		else
+			return "redirect:/error.jsp";
+	}
+	
+	
+	@RequestMapping(value="updateWishList", method = RequestMethod.POST)
+	public String updateWishListsubmit(WishlistBean bean){
+		System.out.println(bean.getW_pname() + " @@" + bean.getW_mno() + " @@@" + bean.getW_no());
+		boolean b = daoInter.updateWishlist(bean);
+		if(b)
+			return "redirect:/showWishList?w_mno=" +bean.getW_mno();
+		else
+			return "redirect:/error.jsp";
+	}
+	
+	@RequestMapping(value="deleteWishList", method = RequestMethod.GET)
+	public ModelAndView deleteWishListsubmit(@RequestParam("w_mno")String w_mno, @RequestParam("w_no")String w_no){
+		boolean b = daoInter.deleteWishlist(w_no);
+		if(b){
+			//System.out.println("삭제 성공");
+			return new ModelAndView("../../showWishList", "wishlist", daoInter.showWishList(w_mno)); //"showWishList?w_mno=" + w_mno;							//이거 왜 forwarding이 되는거지??  showWishList?w_mno=3.jsp를 찾는다
+		}else{
+			return new ModelAndView("../../showWishList");
+		}
 	}
 	
 	//WishList Group 추가

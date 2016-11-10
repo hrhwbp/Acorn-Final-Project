@@ -135,7 +135,24 @@ public class DataDao implements DaoInter {
 	public List<FollowDto> showIFollow(String m_no) throws DataAccessException {
 		return annoInter.showIFollow(m_no);
 	}
-
+	
+	@Override //내가 팔로우하는 사람 확인하기 f_ms 수정용
+	public FollowDto selectFollower(FollowBean bean) throws DataAccessException {
+		return annoInter.selectFollwer(bean);
+	}
+	
+	@Override //f_ms 업데이트용
+	public boolean followUpdate(String f_no,String bb) throws DataAccessException {
+		boolean b = false;
+		if(bb.equals("insert")){
+			b = annoInter.followUpdate(f_no);			
+		}else{
+			b = annoInter.followUpdate2(f_no);
+		}
+		return b;
+	}
+	
+	
 	@Override
 	public boolean follow(FollowBean bean) throws DataAccessException {
 		try {
@@ -257,8 +274,8 @@ public class DataDao implements DaoInter {
 	}
 
 	@Override
-	public List<WishlistDto> showInsertedList(String w_pname) throws DataAccessException {
-		return annoInter.showInsertedList(w_pname);
+	public List<WishlistDto> showInsertedList(String w_no) throws DataAccessException {
+		return annoInter.showInsertedList(w_no);
 	}
 
 	@Override
@@ -267,7 +284,7 @@ public class DataDao implements DaoInter {
 			annoInter.writeWishlist(bean);
 			return true;
 		} catch (Exception e) {
-			System.out.println("writewishlist err");
+			System.out.println("writewishlist err" + e);
 			return false;
 		}
 	}
