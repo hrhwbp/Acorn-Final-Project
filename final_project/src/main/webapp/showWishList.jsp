@@ -50,71 +50,7 @@
 	
 		
 		$(document).ready(function(){									//insert후 카드 나열	
-			/* $("#iteminsert").click(function(){
-				//$("#iteminfo").submit();
-				var w_addr, w_mno, w_pname, w_price, w_image, w_detail;
-				w_mno = $("#w_mno").val();
-				w_addr = $("#w_addr").val();
-				w_pname = $("#w_pname").val();
-				w_price = $("#w_price").val();
-				w_image =$("#w_image").attr("src");
-				w_detail = $("#w_detail").val();
-				
-				var array = {"w_addr":w_addr, "w_pname":w_pname, "w_price":w_price , "w_image":w_image , "w_detail":w_detail, "w_mno":w_mno };
-				$.ajax({
-					type:"post",
-					url:"insertWishList",
-					data:  array,
-					dataType: "json",
-					success: function(insertedData){
-						//var w_addr, w_pname, w_price, w_image, w_detail;
-						
-						var str;
-						var list = insertedData.insertedList;
-						$(list).each(function(index, objArr){
-							
-							str += "<div class='col-md-4 col-sm-6'>";
-							str += "	<div class='card'>";
-							str += "	<div class='front'>";
-							str += "	<div class='cover' align='center'>";
-							str += "	<img id='i_image' name='i_image'  src='" + objArr["w_image"] + "'/>";
-							str += "	</div>";
-							str += "	<div class='content'>";
-							str += "	<div class='main'>";
-							str += "	<h5 class='name motto'>" + objArr["w_pname"] + "</h5>";
-							str += "	<p class='text-center col-md-8-offset-2'>실험삼아 아무거나 써보는 건데 한글은 안넘어 가는데 도대체가 영어는 카드를 넘어가냐?</p>";
-							str += "	</div>";
-							str += "	<div class='footer'>";
-							str += "	<button class='btn btn-simple' onclick='rotateCard(this)''><i class='fa fa-mail-forward'></i> 수동 Rotation</button>";
-							str += "	</div>";
-							str += "	</div>";
-							str += "	</div>";
-							str += "	<div class='back'>";
-							str += "	<div class='header'><h5 class='motto' id='i_pname'>"+ objArr["w_pname"] + "</h5></div>";
-							str += "	<div class='content' style='padding-bottom: 30px'>";
-							str += "	<div class='main' align='center'>";
-							str += "	<textarea class='text-center col-md-12' id='i_detail' name='i_detail'  rows='6'  readonly='readonly'>" + objArr["w_detail"] + "</textarea>";
-							str += "	<div class='stats-container col-md-12'>";
-							str += "	<div class='stats'><p>가격</p><h4 id='i_price'>" + objArr["w_price"] + "</h4></div>";
-							str += "	<div class='stats'><p>등록일</p><h4>114</h4></div>";
-							str += "	<div class='stats'><p>추천</p><h4>35</h4></div>";
-							str += "	</div></div></div>";
-							str += "	<div class='footer'>";
-							str += "	<button class='btn btn-simple' rel='tooltip' title='Flip Card' onclick='rotateCard(this)''><i class='fa fa-reply'></i> Back</button>";
-							str += "	<div class='social-links text-center' >";
-							str += "	<a href='javascript:void(0)' onclick='update('${s.w_pname}')'><i class='glyphicon glyphicon-edit'></i></a>";
-							str += "	<a href='javascript:void(0)' onclick='del('${s.w_pname}', '${s.w_mno }')'><i class='glyphicon glyphicon-trash'></i></a>";
-							str += "</div></div></div></div></div></div>";
-						});
-						$("#cardlist").append(str);
-					},
-					error:function(request,status,error){
-						alert("에러 발생");
-				        //alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				    }
-				});
-			}); */
-		
+
 			$("#reset").click(function(){				//insert card reset시키기
 				$("#w_mno").val("");
 				$("#w_addr").val("");
@@ -201,6 +137,89 @@
 				}
 			}); 
 		}
+		
+		$(document).ready(function(){									//insert후 카드 나열	
+			$("#iteminsert").click(function(){
+				//$("#iteminfo").submit();
+				var w_addr, w_mno, w_pname, w_price, w_image, w_detail;
+				w_mno = $("#w_mno").val();
+				w_addr = $("#w_addr").val();
+				w_pname = $("#w_pname").val();
+				w_price = $("#w_price").val();
+				w_image =$("#w_image").attr("src");
+				w_detail = $("#w_detail").val();
+				
+				var array = {"w_addr":w_addr, "w_pname":w_pname, "w_price":w_price , "w_image":w_image , "w_detail":w_detail, "w_mno":w_mno };
+				$.ajax({
+					type:"post",
+					url:"insertWishList",
+					data:  array,
+					dataType: "json",
+					success: function(insertedData){
+						//var w_addr, w_pname, w_price, w_image, w_detail;
+						
+						var str;
+						var list = insertedData.insertedList;
+						$(list).each(function(index, objArr){
+							/*
+							+ objArr["w_image"] +
+							+ objArr["w_pname"] +
+							+ objArr["w_pname"] +
+							+ objArr["w_detail"] +
+							+ objArr["w_price"] +
+							*/
+							
+							str += "<div class='col-md-4 col-sm-6'>";
+							str += "	<div class='card'>";
+							str += "	<div class='front'>";
+							str += "	<div class='cover' align='center'>";
+							str += "	<img id='i_image' name='i_image'  src='" + objArr["w_image"] + "'/>";
+							str += "	</div>";
+							str += "	<div class='content'>";
+							str += "	<div class='main'>";
+							str += "	<h5 class='name motto'>" + objArr["w_pname"] + "</h5>";
+							str += "	<p class='text-center col-md-8-offset-2'>실험삼아 아무거나 써보는 건데 한글은 안넘어 가는데 도대체가 영어는 카드를 넘어가냐?</p>";
+							str += "	</div>";
+							str += "	<div class='footer'>";
+							str += "	<button class='btn btn-simple' onclick='rotateCard(this)''><i class='fa fa-mail-forward'></i> 수동 Rotation</button>";
+							str += "	</div>";
+							str += "	</div>";
+							str += "	</div>";
+							str += "	<div class='back'>";
+							str += "	<div class='header'><h5 class='motto' id='i_pname'>"+ objArr["w_pname"] + "</h5></div>";
+							str += "	<div class='content' style='padding-bottom: 30px'>";
+							str += "	<div class='main' align='center'>";
+							str += "	<textarea class='text-center col-md-12' id='i_detail' name='i_detail'  rows='6'  readonly='readonly'>" + objArr["w_detail"] + "</textarea>";
+							str += "	<div class='stats-container col-md-12'>";
+							str += "	<div class='stats'><p>가격</p><h4 id='i_price'>" + objArr["w_price"] + "</h4></div>";
+							str += "	<div class='stats'><p>등록일</p><h4>114</h4></div>";
+							str += "	<div class='stats'><p>추천</p><h4>35</h4></div>";
+							str += "	</div></div></div>";
+							str += "	<div class='footer'>";
+							str += "	<button class='btn btn-simple' rel='tooltip' title='Flip Card' onclick='rotateCard(this)''><i class='fa fa-reply'></i> Back</button>";
+							str += "	<div class='social-links text-center' >";
+							str += "	<a href='javascript:void(0)' onclick='update('${s.w_pname}')'><i class='glyphicon glyphicon-edit'></i></a>";
+							str += "	<a href='javascript:void(0)' onclick='del('${s.w_pname}', '${s.w_mno }')'><i class='glyphicon glyphicon-trash'></i></a>";
+							str += "</div></div></div></div></div></div>";
+
+						});
+						
+						$("#cardlist").append(str);
+					},
+					error:function(request,status,error){
+				        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				       }
+				     /*
+					error: function(){
+						alert("에러 발생");
+					}
+				       */
+				});
+			});		
+		
+		
+		
+
 </script>
 <style type="text/css">
 .sss {
@@ -350,52 +369,6 @@
 										</div>
 									</div>
 								</div><!-- end front panel -->
-
-								<!-- <div class="back">
-									<div class="header">
-										<label>URL</label>
-										<div class="form-group sss">
-											<input type="text" class="form-control" id="w_addr" name="w_addr" placeholder="URL" style="width: 180px"> 
-											<input type="button" value="Fetch" class="form-control" id="btnfetch" style="width: 60px">
-										</div>
-									</div><br>
-									<div class="content">
-										<div class="main">
-											<label for="exampleInputName2">ITEM 정보</label>
-											<form class="has-success" >
-												<div class="row">
-													<div class="col-md-7">
-														<div class="form-group">
-															<input type="text" id="w_pname" name="w_pname" class="form-control" aira-describedby="helpBlock2" placeholder="Item Name">
-															<span id="helpBlock2" class="help-block"></span>  
-															<input type="text" id="w_price" name="w_price" class="form-control" placeholder="price" >
-															
-															<input type="hidden" id="w_mno" name="w_mno" value="${mno}">
-														</div>
-													</div>
-													<div class="col-md-5">
-														<img id="w_image" name="w_image" class="img-responsive" alt="Responsive image">
-													</div>
-												</div>
-												<br>
-
-												<div class="row">
-													<div class="col-md-12">
-														<textarea class="form-control" id="w_detail" name="w_detail" rows="4"></textarea>
-													</div>
-												</div>
-											</form>
-
-										</div>
-									</div>
-									<div class="footer">
-										<div class="social-links text-center">
-											<a href="javascript:void(0);" id="iteminsert" name="iteminsert"><i class="glyphicon glyphicon-ok-circle"></i></a>
-											<a href="javascript:void(0);" id="reset" name="reset"><i class="glyphicon glyphicon-repeat"></i></a>
-										</div>
-									</div>
-								</div>
-							</div> -->
 							
 					</div><!-- end card-container -->
 				</div><!-- end col-sm-3 -->
