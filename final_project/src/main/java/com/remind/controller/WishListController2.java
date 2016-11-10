@@ -1,4 +1,4 @@
-package com.remind.controller;
+/*package com.remind.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class WishListController2 {
 	@RequestMapping(value="showInsertedList" ,method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> insertedList(@RequestParam("w_pname") String w_pname){
-		System.out.println("아작스 힘들다 @@ " + w_pname);
+		System.out.println("�븘�옉�뒪 �옒�뱾�떎 @@ " + w_pname);
 		List<Map<String, String>> insertedList = new ArrayList<Map<String, String>>();
 		Map<String, String> sData = null;
 		
@@ -58,15 +58,15 @@ public class WishListController2 {
 	}
 	
 	
-	/*
+	
 	@RequestMapping(value="insertWishList", method = RequestMethod.GET)
 	public String insertWishList(@RequestParam("w_mno")String w_mno){
 		
-		System.out.println("넘어온다~~");
+		System.out.println("�꽆�뼱�삩�떎~~");
 		return "insertWishList?w_mno="+w_mno;			//?w_mno="+w_mno;
 		
 	}
-	*/
+	
 	
 	@RequestMapping(value="insertWishList", method = RequestMethod.POST)
 	@ResponseBody
@@ -95,14 +95,14 @@ public class WishListController2 {
 			return insertedData;
 			//return "showInsertedList?w_pname=" + bean.getW_pname();
 	}
-	/*
+	
 	@RequestMapping(value="updateWishList", method = RequestMethod.GET)
 	public String updateWishList(@RequestParam("w_mno")String w_mno){
 		System.out.println(w_mno + "@@");
 		return "insertWishList?w_mno="+w_mno;
 		
 	}
-	*/
+	
 	
 	@RequestMapping(value="updateWishList", method = RequestMethod.POST)
 	public String updateWishListsubmit(WishlistBean bean){
@@ -118,11 +118,12 @@ public class WishListController2 {
 	public ModelAndView deleteWishListsubmit(@RequestParam("w_pname")String w_pname, @RequestParam("w_mno")String w_mno){
 		boolean b = daoInter.deleteWishlist(w_pname);
 		if(b){
-			//System.out.println("삭제 성공");
-			return new ModelAndView("../../showWishList", "wishlist", daoInter.showWishList(w_mno)); //"showWishList?w_mno=" + w_mno;							//이거 왜 forwarding이 되는거지??  showWishList?w_mno=3.jsp를 찾는다
+			//System.out.println("�궘�젣 �꽦怨�");
+			return new ModelAndView("../../showWishList", "wishlist", daoInter.showWishList(w_mno)); //"showWishList?w_mno=" + w_mno;							//�씠嫄� �솢 forwarding�씠 �릺�뒗嫄곗�??  showWishList?w_mno=3.jsp瑜� 李얜뒗�떎
 		}else{
 			return new ModelAndView("../../showWishList");
 		}
 	}
 	
 }
+*/
