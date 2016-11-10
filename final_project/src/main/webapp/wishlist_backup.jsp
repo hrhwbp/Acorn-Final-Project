@@ -164,6 +164,7 @@ language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 							class="panel-collapse collapse">
 							<div class="panel-body">
 								<!-- ---------각 상품 내용이 들어갈 자리-----------  -->
+								
 								<table border="1"  width="100%" class="table table-striped table-bordered table-hover" style="text-align: center; vertical-align: center;">
 									<c:set var="cnt" value="0" />
 									<c:forEach var="wlist" items="${wishlist }" varStatus="itemcnt">

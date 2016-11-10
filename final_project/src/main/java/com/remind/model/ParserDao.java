@@ -55,7 +55,9 @@ public class ParserDao implements ParserDaoInter {
 			
 			Elements titleelem = doc.select("title");
 			Elements priceelem = doc.select("[itemprop*=price]");
+
 			Elements priceelem2 = doc.select("[class*=price]"); // span[id*=price]    codi_01n.jpg  
+
 			Elements imageelem3 = doc.select("[class*=Img] [src$=jpg]");
 			Elements imageelem = doc.select("[id*=Image] [src$=jpg]");// [src$=jpg]
 			Elements imageelem2 = doc.select("[id*=img] [src$=jpg]");
@@ -175,7 +177,6 @@ public class ParserDao implements ParserDaoInter {
 					}
 				}
 			}
-			
 			list.add(dto);
 			System.out.println(dto.getName() + "~~~~" + dto.getPrice() + " " + dto.getImage());
 
