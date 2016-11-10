@@ -16,23 +16,16 @@
 var lastbno_save = null;
 $(document).ready(function () {
 	$(window).bind("scroll",scrolling);  
-	//console.log(dd)
 });
 
 function scrolling(){ 
 	var documentHeight  = $(document).height() * 2 - 1200;
 	var scrollHeight = $(window).scrollTop()+$(window).height();
-	//console.log ("documentHeight : " + documentHeight) 
-	//console.log ("scrollHeight : " + scrollHeight)
 	
 	if(scrollHeight >= documentHeight) {
 		var lastbno = $(".thumbnail:last").attr("data-bno");	
-		console.log("last_bno : " + lastbno)
-		if(lastbno_save != lastbno){  // 동기화로 바꿈으로서 반드시 들어가야함 ( 안들어갈시 버벅거림 )  //  1.
+		if(lastbno_save != lastbno){  
 		lastbno_save = lastbno;
-		//console.log("last_bno : " + lastbno)
-		//console.log(lastbno_save)
-
 		$.ajax({ // 스크롤링 기본 베이스 ( 댓글 , 라이크는 안에서 반복 function 으로 같이 출력)
 
 			type:"get",
@@ -40,12 +33,11 @@ function scrolling(){
 			dataType:"json",
 			data:{"last_bno":lastbno},
 			success:function(scrollData){
+				console.log("실행중")
 				var str = "";
 				var list = scrollData.datas;
 				$(list).each(function(index,objArr){
-					var num = this.b_no
 					
-					function likescrolling(num);
 					str += '<div class="row">';
 			        str += '<div class="col-md-12">';
 			        str += '	<div class="thumbnail" data-bno='+this.b_no+' >';
@@ -57,6 +49,37 @@ function scrolling(){
 			        str += '          <p>'+objArr["b_content"]+'</p>';
 			        str += '          </div>';
 			        str += '       </div>';
+			        //라이크
+			        //var str2 = objArr["like_mname"]; 
+			        var should_split = this.like_mname;
+			        var like_view = null;
+			        console.log("dd : " + should_split.length);
+			        if (should_split.length == 0) {
+						like_view = "처음 좋아요의 주인공이 되세요!--완료시 수정"
+					}else if (should_split.length > 11){
+						
+					}else{
+						
+					}
+			        
+			        str += '<div class="row">';
+			        str += '	<div class="col-md-12">';
+			        str += '		&nbsp;<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;';
+			        
+			        str += '		<span id="showlike">';
+			        str += ''+like_view+'';
+					
+					
+					
+			        str += '		</span>';
+			        str += '	</div>';
+			        str += '</div>';
+			        
+			        
+			        
+			        //
+			        //var num = this.b_no
+					//likescrolling(num)  // 33
 			        str += '</div>';
 					str += '</div>';
 					str += '</div>';
@@ -73,12 +96,46 @@ function scrolling(){
 		}
 	}
 }
-
-function likescrolling(num){
-	console.log("num : " + num);
-
+function likescrolling(num){ //33 -2
+	$.ajax({
+		type:"get",
+		url:"likescoll",
+		dataType:"json",
+		data:{"likeB_no": num},
+		success:function(likeScrollData){
+			str = "";
+			var list = likeScrollData.datas;
+			//console.log(list.length);
+			str2 = "ddd";
+			str += '<div class="row">';
+			str += '<div class="col-md-12">';
+			str += '&nbsp;<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;';
+			str += '<span id="showlike'+num+'">';
+			
+			if (list.length == 0) {
+				console.log("아무도 좋아요 안함")
+				str += '처음 좋아요의 주인공이 되세요';
+			}else if(list.length > 11){
+				console.log("11 명 이상 좋아요함")
+				str += list.length + '명이 좋아합니다 ';
+			}else{
+				console.log("10명 이하 좋아요함")
+				$(list).each(function(index,objArr){
+					
+				});		
+			}
+			str += '</span>';
+			str += '</div>';
+			str += '</div>';
+			
+			$("#scrollingId").append(str)
+				
+		},
+		error:function(){
+			console.log("like 실패")
+		}
+	});
 }
-
 
 	function replySubmit(no){
 
@@ -157,7 +214,7 @@ function likescrolling(num){
                else if(count<=11){
             	   jQuery(list).each(function(index, objArr){
                       str += objArr.l_name + " ";
-                     }) 
+                     })
                      str += "님이 좋아합니다";
                    }
 				jQuery("#showlike"+b_no).html(str);
