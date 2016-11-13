@@ -51,36 +51,84 @@ function scrolling(){
 			        str += '          </div>';
 			        str += '       </div>';
 			        //라이크
-			        //var str2 = objArr["like_mname"]; 
 			        var should_split = this.like_mname;
-			        var like_view = null;
-			        console.log("dd : " + should_split.length);
-			        if (should_split.length == 0) {
-						like_view = "처음 좋아요의 주인공이 되세요!--완료시 수정"
-					}else if (should_split.length > 11){
-						
+			        var like_view = "";
+			        var n = should_split.split(',');
+			        //console.log("자를 문자열 길이 : " + should_split.length);
+			        //console.log("이름 숫자 길이 :" + n.length);
+			        if (n == 0) {
+						like_view = "처음 좋아요의 주인공이 되세요";
+					}else if (n > 11){
+						like_view = n.length + "명 이상 좋아합니다"
 					}else{
-						
+						for (var int = 0; int < n.length; int++) {
+							like_view += n + " ";
+						}
+						like_view += '님이 좋아합니다';
 					}
 			        
 			        str += '<div class="row">';
 			        str += '	<div class="col-md-12">';
 			        str += '		&nbsp;<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;';
-			        
-			        str += '		<span id="showlike">';
+			        str += '		<span id="showlike'+this.b_no+'">';
 			        str += ''+like_view+'';
-					
-					
-					
 			        str += '		</span>';
 			        str += '	</div>';
 			        str += '</div>';
-			        
-			        
-			        
+					//댓글
+					var reply_Name = this.reply_Name;
+					var reply_Content = this.reply_Content;
+					var reply_Count = this.reply_Count;
+					var reply_name_view = reply_Name.split(',');
+					var reply_content_view = reply_Content.split(',');
+			        str += '<div class="row">';
+					str += '	<div class="col-md-12">';
+					str += '		<div id="showreply'+this.b_no+'">';
+					str += '			<table class="table-condensed small" style="background-color: rgb(245, 245, 245); width: 100%">';
+					if (reply_Count > 5) {
+					str += '				<tr>';
+					str += '					<td><a href="javascript:;" onclick="showReplyMore('+this.b_no+')">show reply all</a></td>';
+					str += '				</tr>';
+					}
+					for (var i in reply_name_view) {
+						str += '				<tr>';
+						str += '<td><a href="#">'+ reply_name_view[i]+'</a> '+reply_content_view[i]+'</td>';
+						str += '				</tr>';
+					}
+					str += '			</table>';
+					str += '		</div>';
+					str += '	</div>';
+					str += '</div>';
+			        //like Yn
+			        str += '<div class="row top_pd">';
+					str += '	<form action="insertReply" method="post" id="reply'+this.b_no+'"';
+					str += '			name="reply">';
+					str += '		<div class="col-md-12">';
+					str += '			<div class="input-group">';
+					str += '				<span class="input-group-addon " id="sizing-addon2">';
+					var likeYnCheck = this.likeYnCheck;
+					if (likeYnCheck >= 1) {
+						str += '<span class="glyphicon glyphicon-heart" onclick="likecancel('+this.b_no+')" style="color: red" id="likeYN'+this.b_no+'"></span>';
+					}else {
+						str += '<span class="glyphicon glyphicon-heart" onclick="likesubmit('+this.b_no+')" id="likeYN'+this.b_no+'"></span>';
+					}
+					str += '				</span> <input type="text" class="form-control"';
+					str += '				placeholder="답글달기..." aria-describedby="sizing-addon2"';
+					str += '				name="r_content" id="r_content'+this.b_no+'"> <input';
+					str += '				type="hidden" name="r_bno" value="'+this.b_no+'"> <input';
+					str += '				type="hidden" name="r_mno" value="'+this.m_no+'">'; 
+//												<!-- 답글 버튼 --> 
+					str += '				<span class="input-group-btn">';
+					str += '				<button class="btn btn-default" type="button"';
+					str += '				id="btn_reply" onclick="replySubmit('+this.b_no+')">답글</button>';
+					str += '			</span>'; 
+				//								<!-- 답글 버튼 끝 -->  
+					str += '		</div>';
+					str += '	</div>';
+							//
+					str += '	</form>';
+					str += '</div>';
 			        //
-			        //var num = this.b_no
-					//likescrolling(num)  // 33
 			        str += '</div>';
 					str += '</div>';
 					str += '</div>';
@@ -96,46 +144,6 @@ function scrolling(){
 
 		}
 	}
-}
-function likescrolling(num){ //33 -2
-	$.ajax({
-		type:"get",
-		url:"likescoll",
-		dataType:"json",
-		data:{"likeB_no": num},
-		success:function(likeScrollData){
-			str = "";
-			var list = likeScrollData.datas;
-			//console.log(list.length);
-			str2 = "ddd";
-			str += '<div class="row">';
-			str += '<div class="col-md-12">';
-			str += '&nbsp;<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;';
-			str += '<span id="showlike'+num+'">';
-			
-			if (list.length == 0) {
-				console.log("아무도 좋아요 안함")
-				str += '처음 좋아요의 주인공이 되세요';
-			}else if(list.length > 11){
-				console.log("11 명 이상 좋아요함")
-				str += list.length + '명이 좋아합니다 ';
-			}else{
-				console.log("10명 이하 좋아요함")
-				$(list).each(function(index,objArr){
-					
-				});		
-			}
-			str += '</span>';
-			str += '</div>';
-			str += '</div>';
-			
-			$("#scrollingId").append(str)
-				
-		},
-		error:function(){
-			console.log("like 실패")
-		}
-	});
 }
 
 	function replySubmit(no){

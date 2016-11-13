@@ -27,7 +27,9 @@ import com.remind.model.ReplyDto;
 public class BoardController {
 	@Autowired
 	private DaoInter daoInter;
-	StringBuffer stringBuffer = new StringBuffer();
+	private StringBuffer likeStringBuffer = new StringBuffer();
+	private StringBuffer replyNameBuffer = new StringBuffer();
+	private StringBuffer replyContentBuffer = new StringBuffer();
 	
 	/*@RequestMapping(value="snslist", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam("mno") String m_no){
@@ -78,6 +80,7 @@ public class BoardController {
 		bean.setLast_b_no(last_bno);
 		bean.setM_no(m_no);
 		List<BoardDto> boardList = daoInter.scrollBoard(bean);
+		LikeBean likeYnBean = new LikeBean();
 		
 		for(BoardDto s : boardList){
 			data = new HashMap<String,String>();
@@ -85,25 +88,55 @@ public class BoardController {
 			data.put("b_image", s.getB_image());
 			data.put("b_content", s.getB_content());
 			data.put("b_mname", s.getB_mname());
-			///			
-			List<LikeDto> dto = daoInter.showLike(s.getB_no());
-			
-			stringBuffer.delete(0, stringBuffer.length());
-			
-			
-			
-			
-			for (int i = 0; i < dto.size(); i++) {
-				stringBuffer.append(dto.get(i).getL_mname());
-				stringBuffer.append(",");
+			///	라이크
+			List<LikeDto> likeDto = daoInter.showLike(s.getB_no());
+			likeStringBuffer.delete(0, likeStringBuffer.length());
+			for (int i = 0; i < likeDto.size(); i++) {
+				likeStringBuffer.append(likeDto.get(i).getL_mname());
+				likeStringBuffer.append(",");
 			}
-			if (stringBuffer.length()>=1) {
-				stringBuffer.delete(stringBuffer.length()-1, stringBuffer.length());
+			if (likeStringBuffer.length() >= 1) {
+				likeStringBuffer.delete(likeStringBuffer.length()-1, likeStringBuffer.length());
 			}
-			data.put("like_mname", stringBuffer.toString());
+			data.put("like_mname", likeStringBuffer.toString());
+			/// 라이크 마지막
+			//댓글 
+			List<ReplyDto> replyDto = daoInter.showReply(s.getB_no());
+			replyNameBuffer.delete(0, replyNameBuffer.length());
+			replyContentBuffer.delete(0, replyContentBuffer.length());
+			for (int i = 0; i < replyDto.size(); i++) {
+				replyNameBuffer.append(replyDto.get(i).getR_name());
+				replyNameBuffer.append(",");
+				replyContentBuffer.append(replyDto.get(i).getR_content());
+				replyContentBuffer.append(",");
+			}
+			if (replyNameBuffer.length() >= 1) {
+				replyNameBuffer.delete(replyNameBuffer.length()-1, replyNameBuffer.length());
+			}
+			if (replyContentBuffer.length() >= 1){
+				replyContentBuffer.delete(replyContentBuffer.length()-1, replyContentBuffer.length());
+			}
+			data.put("reply_Name", replyNameBuffer.toString());
+			data.put("reply_Content", replyContentBuffer.toString());
+			String replyCount = Integer.toString(daoInter.countReply(s.getB_no()));
+			data.put("reply_Count", replyCount);
+			//댓글 마지막
+			//YN
+			//likeYnBean = null;
+			likeYnBean.setL_bno(s.getB_no());
+			likeYnBean.setL_mno(m_no);
 			
-			
-			///
+			int likeYnCheck = daoInter.likeYN(likeYnBean);
+			data.put("scoll_mno", m_no);
+			data.put("likeYnCheck", Integer.toString(likeYnCheck));
+			//YN 마지막
+//			for (int i = 0; i < list.size(); i++) {
+//				LikeBean bean = new LikeBean();
+//				bean.setL_bno(list.get(i).getB_no());
+//				bean.setL_mno(m_no);
+//				int likeYN = daoInter.likeYN(bean);
+//				model.addObject("likeYN" + list.get(i).getB_no(), likeYN);	
+//			}
 			dataList.add(data);
 		}
 		Map<String, Object> scrollData = new HashMap<String, Object>();
