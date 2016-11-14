@@ -302,7 +302,7 @@ function cancelFollow(f_mno,f_sno) {
   <div class="col-md-4">
     <div class="thumbnail">
     	<div class="row rowimg" >
-		   <img src="${board.b_image }" alt="Responsive image" class="img-responsive center-block img_sss">
+		   <img src="${board.b_image }" alt="Responsive image" class="img-responsive center-block img_sss" style="width:90%">
     	</div>
       <div class="caption">
         <h3>${board.b_content }</h3>

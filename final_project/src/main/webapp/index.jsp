@@ -8,10 +8,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>REMIND</title>
 <%@include file="common.jsp"%>
-
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
    $(document).ready(function() {
       $("#showjoin").hide()
+    
+      
    })
 
    function login() {
@@ -23,6 +26,29 @@
       $("#showlogin").hide()
       $("#showjoin").show()
    }
+   function logsubmit(){
+	
+	   $.ajax({
+  			type:"post",
+  			url:"loginsub",
+  			data:$("#loginform").serialize(),
+  			dataType:"text",
+  			success:function(result){
+  			 	if(result =="fail"){
+  			 		
+  					jQuery("#loginresult").html("로그인 정보가 틀렸습니다.");
+  					
+  					
+  				}
+  				else if(result == "success"){
+  					window.location.href = "snslist";
+  				}
+  			}
+  		
+		});}
+	
+
+   
 </script>
 </head>
 <% 
@@ -43,7 +69,7 @@ if (session.getAttribute("mno") != null){
       <div class="container col-md-5">
          <div class="row col-md-12" title="" id="showlogin"
             style="padding-top: 18%">
-            <form class="form-signin" method="post" action="login   ">
+            <form class="form-signin" id="loginform">
                <h2 class="form-signin-heading text-center">로그인</h2>
                <div class="col-md-12">
                   <label for="inputEmail" class="sr-only">Email address</label> <input
@@ -55,10 +81,13 @@ if (session.getAttribute("mno") != null){
                      type="password" id="inputPassword" class="form-control"
                      name="m_password" placeholder="Password" required>
                </div>
+               </form>
+               <div id="loginresult"></div>
+               
                <div class="col-md-12 top_pd">
-                  <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
+                  <button class="btn btn-lg btn-primary btn-block" id="loginsubmit" onclick="logsubmit()">로그인</button>
                </div>
-            </form>
+            
             <div class="col-md-12 top_pd">
                <button class="btn btn-lg btn-primary btn-block" type="button"
                   onclick="join()">회원가입</button>

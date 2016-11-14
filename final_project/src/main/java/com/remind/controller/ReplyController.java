@@ -25,8 +25,8 @@ public class ReplyController {
 	@RequestMapping(value="insertReply", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> writeReply(ReplyBean bean){
-		 daoInter.writeReply(bean);
-		 
+		System.out.println(bean.getR_mno() + " " +bean.getR_content());
+		daoInter.writeReply(bean);
 		List<ReplyDto> reply = daoInter.showReply(bean.getR_bno());
 		List<Map<String, String>> dataList = new ArrayList<Map<String, String>>();
 		Map<String, String> data = null;
