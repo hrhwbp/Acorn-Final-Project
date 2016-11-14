@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>REMIND</title>
+<title>RE:MIND [READ MIND]</title>
 <%@include file="common.jsp"%>
 
 <script type="text/javascript">
