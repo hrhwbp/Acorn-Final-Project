@@ -97,6 +97,7 @@ function follower(m_no) {
          success : function(data) {
         	 var list = data.Mylist;
         	 var m_no = data.m_no;
+        	 var m_no2 = data.m_no2;
         	 var str = "";
         	 $.each(list,function(i,ss){
         		 /* alert(ss.m_email); */
@@ -110,14 +111,18 @@ function follower(m_no) {
  						"" + ss.m_name + "" +
         		 		"</div>" +
  						"<div class='row'>" +
- 						"<a href='#'>" + ss.m_email + "</a>" +
+ 						"<a href='myinfo?m_no=" + ss.f_sno + "'>" + ss.m_email + "</a>" +
  						"</div>" +
  						"</div>" +
  						"<div class='col-md-2' style='padding-top: 1%;'>";
- 				if(ss.f_ms == '1'){
-	 				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + ss.f_mno + "," + ss.f_sno + ")'>팔로우</button>"; 						 					
- 				}else{
+ 				if(ss.f_ms == '2' && m_no == m_no2 ){
  					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_sno + "," + ss.f_mno +")'>팔로잉</button>";
+ 				}else if(ss.f_ms == '1' && m_no == m_no2){
+ 					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + ss.f_mno + "," + ss.f_sno + ")'>팔로우</button>"; 					
+ 				}else if(ss.f_ms == '1' || ss.f_ms == '2'){
+ 					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_sno + "," + ss.f_mno +")'>팔로잉</button>";
+ 				}else{
+ 					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + ss.f_mno + "," + ss.f_sno + ")'>팔로우</button>";
  				}
  				str += "</div>" +
  						"</div>" +
@@ -158,11 +163,11 @@ function follow(m_no) {
 					"" + ss.m_name + "" +
        		 		"</div>" +
 					"<div class='row'>" +
-					"<a href='#'>" + ss.m_email + "</a>" +
+					"<a href='myinfo?m_no=" + ss.f_mno + "'>" + ss.m_email + "</a>" +
 					"</div>" +
 					"</div>" +
 					"<div class='col-md-2' style='padding-top: 1%;'>";
-			if(ss.f_ms == '2'){
+			if(ss.f_ms == '2' || ss.f_ms == '1'){
 				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_mno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_mno + "," + ss.f_sno +")'>팔로잉</button>";
 			}else{
 				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_mno + "' onclick='upFollow(" + ss.f_sno + "," + ss.f_mno + ")'>팔로우</button>";
@@ -191,18 +196,18 @@ function upFollow(f_mno,f_sno) {
         url:"insertFollow",
         data: array,
         success : function() {
-        	$("#followBtn"+f_sno).attr('onclick','cancleFollow('+ f_sno + ',' + f_mno +')');
+        	$("#followBtn"+f_sno).attr('onclick','cancelFollow('+ f_sno + ',' + f_mno +')');
         	$("#followBtn"+f_sno).attr('style','background-color: #70c050; color: white;');
         },
         error : function(xhr, status, error) {
-              alert("에러발생 " + error);
+              alert("에러발생 insert" + error + "" + status );
         }
 	}); 
 }
 function up2Follow(m_no,f_sno) {
 	/* alert(m_no + " " + f_sno); */
 	
-	$("#follow").attr('onclick','cancleFollow('+ m_no + ',' + f_sno +')');
+	$("#follow").attr('onclick','cancelFollow('+ m_no + ',' + f_sno +')');
 	$("#follow").attr('style','background-color: #70c050; color: white;');
 	$("#follow").attr('value','팔로잉');
 	var array = {"f_mno":m_no,"f_sno":f_sno};

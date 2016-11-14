@@ -2,7 +2,8 @@ package com.remind.controller;
 
 public class WishlistBean {
 	
-String w_no, w_mno, w_pname, w_image, w_addr, w_detail, w_like, w_lock, wg_detail, wg_no, wg_mno, w_price;
+String w_no, w_mno, w_pname, w_image, w_addr, w_detail, w_like, w_lock, wg_detail, wg_no, wg_mno, w_price, g_num;
+
 
 	public String getW_no() {
 		return w_no;
@@ -76,5 +77,13 @@ String w_no, w_mno, w_pname, w_image, w_addr, w_detail, w_like, w_lock, wg_detai
 	public void setW_price(String w_price) {
 		this.w_price = w_price;
 	}
+	public String getG_num() {
+		return g_num;
+	}
+	public void setG_num(String g_num) {
+		this.g_num = g_num;
+	}
+	
+	
 
 }

@@ -137,7 +137,7 @@ public interface AnnoInter {
 	@Select("select * from wishlist where w_no = #{w_no}")
 	List<WishlistDto> showInsertedList(String w_no);
 	
-	@Insert("insert into wishlist (w_mno, w_pname, w_price, w_image, w_addr, w_detail, w_lock) values(#{w_mno}, #{w_pname}, #{w_price}, #{w_image}, #{w_addr}, #{w_detail}, #{w_lock})")
+	@Insert("insert into wishlist (w_mno, w_pname, w_price, w_image, w_addr, w_detail, w_lock, g_num) values(#{w_mno}, #{w_pname}, #{w_price}, #{w_image}, #{w_addr}, #{w_detail}, #{w_lock}, #{g_num})")
 	boolean writeWishlist(WishlistBean bean);
 	
 	@Delete("delete from wishlist where w_no = #{w_no}")
@@ -145,6 +145,9 @@ public interface AnnoInter {
 	
 	@Update("update wishlist set w_pname=#{w_pname}, w_price=#{w_price}, w_detail=#{w_detail} where w_no = #{w_no}")
 	boolean updateWishlist(WishlistBean bean);
+	
+	@Update("update wishlist set w_lock=#{w_lock} where w_no = #{w_no}")
+	boolean updateLock(WishlistBean bean);
 	
 	//WishGroup
 	@Select("select * from wishgroup where wg_mno=#{wg_mno}")

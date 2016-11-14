@@ -138,6 +138,8 @@ public class DataDao implements DaoInter {
 	
 	@Override //내가 팔로우하는 사람 확인하기 f_ms 수정용
 	public FollowDto selectFollower(FollowBean bean) throws DataAccessException {
+		FollowDto dto = annoInter.selectFollwer(bean);
+				
 		return annoInter.selectFollwer(bean);
 	}
 	
@@ -310,11 +312,22 @@ public class DataDao implements DaoInter {
 			return false;
 		}
 	}
+	
+	@Override
+	public boolean updateLockStatus(WishlistBean bean) throws DataAccessException {
+		System.out.println(bean.getW_lock() + " !!! " + bean.getW_no());
+		try {
+			annoInter.updateLock(bean);
+			return true;
+		} catch (Exception e) {
+			System.out.println("eraseboard err");
+			return false;
+		}
+	}
 
 	// like
 	@Override
 	public List<LikeDto> showLike(String b_no) throws DataAccessException {
-
 		return annoInter.showLike(b_no);
 	}
 
