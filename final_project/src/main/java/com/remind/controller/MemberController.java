@@ -1,29 +1,25 @@
 package com.remind.controller;
 
 import java.io.File;
-import java.io.IOException;
+
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionAttributeStore;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.remind.model.BoardDto;
 import com.remind.model.DaoInter;
 import com.remind.model.FollowDto;
-import com.remind.model.LikeDto;
+
 import com.remind.model.MemberDto;
 
 @Controller
@@ -106,17 +102,21 @@ public class MemberController {
 	}
 	
 	//로그인
-	@RequestMapping(value="login", method = RequestMethod.POST)
+	@RequestMapping(value="loginsub", method = RequestMethod.POST)
+	@ResponseBody
 	public String login(MemberBean bean, HttpSession session){
 		MemberDto dto = daoInter.login(bean);
-		
-		
-		if(dto.getM_no()!= null){
-			session.setAttribute("mno", dto.getM_no());			
-			return "redirect:/snslist";  //+ dto.getM_no()
+		System.out.println(bean.getM_email());
+		String result = "";
+		if(dto!= null){
+			session.setAttribute("mno", dto.getM_no());		
+			result="success";
+			  //+ dto.getM_no()
 		}else{
-			return "login.jsp";
+			result = "fail";
+			
 		}
+		return result;
 	}
 	
 	//로그아웃
@@ -129,7 +129,8 @@ public class MemberController {
 	//내 정보 보기
 	@RequestMapping(value="friendinfo", method = RequestMethod.POST)
 	public ModelAndView showFriendinfo(@RequestParam("m_no")String m_no){
-		System.out.println(m_no);
+		System.out.println("들어옴?");
+		System.out.println("m_no"+ m_no);
 		ModelAndView view = new ModelAndView();
 		MemberDto dto = daoInter.showMemberDetail(m_no);
 		view.addObject("myinfo", dto);

@@ -33,25 +33,37 @@ public class WishListController {
 	
 	@RequestMapping(value="showInsertedList" ,method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> insertedList(@RequestParam("w_no") String w_no){
-		System.out.println("아작스 힘들다 @@ " + w_no);
+	public Map<String, Object> insertedList(WishlistBean bean){//@RequestParam("w_no") String w_no, @RequestParam("w_mno") String w_mno){
+		System.out.println("아작스 힘들다 @@ " + bean.w_no + " && " + bean.w_mno);
 		List<Map<String, String>> insertedList = new ArrayList<Map<String, String>>();
 		Map<String, String> sData = null;
 		
-		List<WishlistDto> list = daoInter.showInsertedList(w_no);
-		
-		for(WishlistDto s:list){
-			sData = new HashMap<String, String>();
-			//System.out.println(s.getW_price() + " %% ");
-			sData.put("w_no", s.getW_no());
-			sData.put("w_mno", s.getW_mno());
-			sData.put("w_detail", s.getW_detail());
-			sData.put("w_pname", s.getW_pname());
-			sData.put("w_price", s.getW_price());
-			sData.put("w_image", s.getW_image());
-			sData.put("url", s.getW_addr());
-			insertedList.add(sData);
+		if(bean.w_mno != null){
+			List<WishlistDto> list2 = daoInter.showWishList(bean.w_mno);
+			for(WishlistDto s2:list2){
+				sData = new HashMap<String, String>();
+				sData.put("m_name", s2.getM_name());
+				System.out.println(s2.getM_name() + "~~~~~~~~~~~");
+				insertedList.add(sData);
+			}
 		}
+		
+		if(bean.w_no != null){
+			List<WishlistDto> list = daoInter.showInsertedList(bean.w_no);
+			for(WishlistDto s:list){
+				sData = new HashMap<String, String>();
+				//System.out.println(s.getW_price() + " %% ");
+				sData.put("w_no", s.getW_no());
+				sData.put("w_mno", s.getW_mno());
+				sData.put("w_detail", s.getW_detail());
+				sData.put("w_pname", s.getW_pname());
+				sData.put("w_price", s.getW_price());
+				sData.put("w_image", s.getW_image());
+				sData.put("url", s.getW_addr());
+				insertedList.add(sData);
+			}
+		}
+		
 		
 		Map<String, Object> insertedData = new HashMap<String, Object>();
 		insertedData.put("insertedList", insertedList);
@@ -83,7 +95,7 @@ public class WishListController {
 	public Map<String, Object> updateLockStatus(WishlistBean bean){
 		
 		boolean b = daoInter.updateLockStatus(bean);
-		System.out.println(bean.getW_lock() + " @@ " + bean.getW_no());
+		System.out.println(bean.getW_lock() + " @@ " + bean.getW_no() + " $$ " + bean.getW_mno());
 		if(b){
 			List<Map<String, String>> insertedList = new ArrayList<Map<String, String>>();
 			Map<String, String> sData = null;
@@ -94,6 +106,7 @@ public class WishListController {
 				sData = new HashMap<String, String>();
 				System.out.println(s.getW_lock() + " %% ");
 				sData.put("w_lock", s.getW_lock());
+				sData.put("w_mno", s.getW_mno());
 				insertedList.add(sData);
 			}
 		

@@ -46,7 +46,9 @@ function scrolling(){
 			        str += '       <div class="caption">';
 			        str += '       <div class="row">';
 			        str += '          <div class="col-md-12">';
-			        str += '          <h3>'+objArr["b_mname"]+'</h3>';
+			        str += '			<form action="friendinfo" id="friend'+objArr["b_no"]+'" method="post">';
+					str += '				<input type="hidden" name="m_no" value="'+objArr["b_mno"]+'">';
+					str += '          <h3><a href="javascript:;"  onclick="gofriend('+objArr["b_no"]+')">'+objArr["b_mname"]+'</a></h3></form>';
 			        str += '          <p>'+objArr["b_content"]+'</p>';
 			        str += '          </div>';
 			        str += '       </div>';
@@ -61,8 +63,8 @@ function scrolling(){
 					}else if (n > 11){
 						like_view = n.length + "명 이상 좋아합니다"
 					}else{
-						for (var int = 0; int < n.length; int++) {
-							like_view += n + " ";
+						for (var i = 0; i < n.length; i++) {
+							like_view += n[i] + "&nbsp;&nbsp; ";
 						}
 						like_view += '님이 좋아합니다';
 					}
@@ -116,7 +118,7 @@ function scrolling(){
 					str += '				placeholder="답글달기..." aria-describedby="sizing-addon2"';
 					str += '				name="r_content" id="r_content'+this.b_no+'"> <input';
 					str += '				type="hidden" name="r_bno" value="'+this.b_no+'"> <input';
-					str += '				type="hidden" name="r_mno" value="'+this.m_no+'">'; 
+					str += '				type="hidden" name="r_mno" value="'+${mno}+'">'; 
 //												<!-- 답글 버튼 --> 
 					str += '				<span class="input-group-btn">';
 					str += '				<button class="btn btn-default" type="button"';
@@ -148,10 +150,11 @@ function scrolling(){
 
 	function replySubmit(no){
 
-		if($( "input[name$='r_content']" ).val() == ""){
+		if($( "#r_content"+no ).val() == ""){
 			alert("댓글에 내용을 써주세요");
 			return;
 		}else{
+		
 		
 		$.ajax({
 			type:"post",
@@ -167,7 +170,7 @@ function scrolling(){
 				}
 					jQuery(list).each(function(index, objArr){
 					str += "<tr>";
-					str += "<td><a href='#'>" + objArr.r_name +"</a>"+ objArr.r_content + "</td>";
+					str += "<td><a href='#'>" + objArr.r_name +"</a>&nbsp;"+ objArr.r_content + "</td>";
 					str += "</tr>";
 				})
 				str += "</table>";
@@ -436,6 +439,7 @@ function scrolling(){
                      		</c:if>
                      		</c:if>
                      		</c:forEach>
+                     		<tr><td><a href="">기념일 더보기</a></td></tr>
                      		</table>
 							
 						

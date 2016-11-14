@@ -214,7 +214,7 @@ public class DataDao implements DaoInter {
 			annoInter.writeReply(bean);
 			return true;
 		} catch (Exception e) {
-			System.out.println("writereply err");
+			System.out.println("writereply err" + e);
 			return false;
 		}
 	}
@@ -410,13 +410,18 @@ public class DataDao implements DaoInter {
 		// TODO Auto-generated method stub
 		return annoInter.showWishAGroup(wg_no);
 	}
-
+	
 	// anniversary
 	@Override
 	public List<AnniversaryDto> showAnniversary(String m_no) throws DataAccessException {
 		return annoInter.showAnniversary(m_no);
 	}
-
+	@Override
+	public List<AnniversaryDto> showAnniversaryPart(String m_no) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return annoInter.showAnniversaryPart(m_no);
+	}
+	
 	@Override
 	public boolean deleteAnniversary(AnniversaryBean bean) throws DataAccessException {
 		try {

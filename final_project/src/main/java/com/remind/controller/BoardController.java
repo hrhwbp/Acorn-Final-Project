@@ -45,7 +45,7 @@ public class BoardController {
 	public ModelAndView list(HttpSession session){
 		String m_no = (String) session.getAttribute("mno");
 		ModelAndView model = new ModelAndView();
-		List<AnniversaryDto> anniversary = daoInter.showAnniversary(m_no);
+		List<AnniversaryDto> anniversary = daoInter.showAnniversaryPart(m_no);
 		List<BoardDto> list = daoInter.showBoard(m_no);
 		for (int i = 0; i < list.size(); i++) {
 			List<ReplyDto> reply = daoInter.showReply(list.get(i).getB_no()); 
@@ -88,6 +88,8 @@ public class BoardController {
 			data.put("b_image", s.getB_image());
 			data.put("b_content", s.getB_content());
 			data.put("b_mname", s.getB_mname());
+			data.put("b_mno", s.getB_mno());
+			
 			///	라이크
 			List<LikeDto> likeDto = daoInter.showLike(s.getB_no());
 			likeStringBuffer.delete(0, likeStringBuffer.length());
