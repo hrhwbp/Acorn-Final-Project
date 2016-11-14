@@ -10,7 +10,6 @@
 
 	<properties>
 		<java-version>1.6</java-version>
-
 		<org.springframework-version>4.3.3.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
@@ -182,18 +181,6 @@
 			<version>1.9.2</version>
 		</dependency>
 		<!--** Jsoup 처리용** -->
-		<!-- 파일 업로드 처리용 -->
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.0.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>1.2.2</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
