@@ -13,7 +13,7 @@
 
 
 <!-- Bootstrap core CSS common.jsp에 있음-->
-<link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <link href="http://getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
@@ -53,7 +53,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="index.jsp"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
+            <li><a href="snslist"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
             <li><a href="showWishList?w_mno=<%=session.getAttribute("mno")%>"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span></a></li>
             <li><a href="javascript:myinfo()"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
             <li class="dropdown">
