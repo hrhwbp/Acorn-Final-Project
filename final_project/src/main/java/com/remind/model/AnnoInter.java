@@ -131,7 +131,9 @@ public interface AnnoInter {
 
 	@Select("select * from wishlist where g_num = #{g_num}")
 	List<WishlistDto> showEachWishList(String g_num);*/
-	@Select("select * from wishlist where w_mno = #{w_mno}")
+	//("select * from wishlist inner join member on w_mno=m_no where w_mno = #{w_mno}")
+	
+	@Select("select * from wishlist inner join member on w_mno=m_no where w_mno = #{w_mno}")
 	List<WishlistDto> showWishList(String w_mno);
 	
 	@Select("select * from wishlist where w_no = #{w_no}")
@@ -146,7 +148,7 @@ public interface AnnoInter {
 	@Update("update wishlist set w_pname=#{w_pname}, w_price=#{w_price}, w_detail=#{w_detail} where w_no = #{w_no}")
 	boolean updateWishlist(WishlistBean bean);
 	
-	@Update("update wishlist set w_lock=#{w_lock} where w_no = #{w_no}")
+	@Update("update wishlist set w_lock=#{w_lock}, w_like=#{w_mno} where w_no = #{w_no}")
 	boolean updateLock(WishlistBean bean);
 	
 	//WishGroup

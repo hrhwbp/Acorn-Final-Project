@@ -31,9 +31,6 @@
 /*WishList Group관련 Jquery!!!!!!!!!!!!!!!*/
 $(document).ready(function() {
 	
-	
-	
-	
 	$("#btn_wishgroup_submit").click(function() {
 		//alert("hi");
 		if ($("#wg_detail").val() == "") {
@@ -208,11 +205,11 @@ function update(no){
 }
 
 /*상품 lock & unlock 관련  */
-function lock(lockstat, w_no, num){
+function lock(lockstat, w_no, num, mno){
 	$.ajax({
 		type:"post",
 		url:"updatelock",
-		data:  {"w_lock":lockstat, "w_no":w_no},
+		data:  {"w_lock":lockstat, "w_no":w_no, "w_mno":mno},
 		dataType: "json",
 		success: function(insertedData){
 			
@@ -221,28 +218,29 @@ function lock(lockstat, w_no, num){
 			
 			$(list).each(function(index, objArr){
 				w_lock = objArr["w_lock"];
-				
-				/* if(objArr["w_lock"] == 1){
-					str += "<a href='javascript:void(0);' onclick='lock('2', '" + w_no + "')'><img id='i_lock' src='resources/image/Lock-Unlock-icon.png' style='width: 35px; height: 30px'></a>";	
-				}else{
-					str += "<a href='javascript:void(0);' onclick='lock('1', '" + w_no + "')'><img id='i_lock' src='resources/image/Lock-Lock-icon.png' style='width: 35px; height: 30px'></a>";
-				} */
+				w_mno = objArr["w_mno"];
 			});
 			
-			//$("#lockimg").append(str);
 			
 			if(w_lock == '1'){
-				//$("#i_lock").removeAttr("src", "resources/image/Lock-Lock-icon.png");
 				$("#i_lock" + num).attr("src", "resources/image/Lock-Unlock-icon.png");
-				$("#locka" + num).attr("onclick", "lock('2', '" + w_no + "','" + num + "')");
-				//$("#lock").append("src", "resources/image/Lock-Unlock-icon.png");
+				$("#locka" + num).attr("onclick", "lock('2', '" + w_no + "','" + num + "','" + mno + "')");
+				
+				$("#stat" + num).remove();
+				$("#status" + num).empty();
+				$("#status" + num).append("<h5 id='stat" + num +"'>Available</h5>");
+				//$("#stat").val("Available");
+				
 			}else if(w_lock == '2'){
-				//$("#i_lock").removeAttr("src", "resources/image/Lock-Unlock-icon.png");
 				$("#i_lock" + num).attr("src", "resources/image/Lock-Lock-icon.png");
-				$("#locka" + num).attr("onclick", "lock('1', '" + w_no + "','" + num + "')");
-				//$("#i_lock").append("src", "resources/image/Lock-Lock-icon.png");
+				$("#locka" + num).attr("onclick", "lock('1', '" + w_no + "','" + num + "','" + mno + "')");
+				
+				$("#stat" + num).remove();
+				$("#status" + num).empty();
+				$("#status" + num).append("Hold by<h5 id='stat" + num + "'><a href='javascript:void(0);' id='reve" + num + "' onclick='reveal('" + mno + "','" + num + "')'>reveal name</a></h5>");
+												//<h5 id="stat${lock}"><a href="javascript:void(0);" id="reve${lock}" onclick="reveal('${wlist.w_mno}', '${lock}')">reveal name</a></h5>
+				//$("#stat").val("Hold by <a href='javascript:void(0);'>reveled name</a>");
 			}
-			
 		},
 		error: function(e){
 			alert("에러 발생" + e);
@@ -250,7 +248,31 @@ function lock(lockstat, w_no, num){
 	}); 
 }
 
-
+function reveal(mno, num){
+	alert(mno + " " + num);
+	$.ajax({
+		type:"post",
+		url:"showInsertedList",
+		data:  {"w_mno":mno},
+		dataType: "json",
+		success: function(insertedData){
+			var m_name;		
+			var list = insertedData.insertedList;
+			
+			$(list).each(function(index, objArr){
+				m_name = objArr["m_name"];
+			});
+			alert(m_name);
+			
+			$("#reve"+ num).remove();
+			$("#stat" + num).append(m_name);//("<h5 id='stat" + num + "'>Hold by " + m_name + "</h5>");
+			
+		},
+		error: function(e){
+			alert("에러 발생" + e);
+		}
+	});
+}
 
 /*WishList 상품관련 Jquery~~~~~~~~~~~~~*/	
 </script>
@@ -436,18 +458,29 @@ function lock(lockstat, w_no, num){
 																								<h5 id="i_price">${wlist.w_price }</h5>
 																							</div>
 																							<div class="stats">
-																								<p>등록일</p>
-																								<h4>114</h4>
+																								<p>Status</p>
+																								<c:choose>
+																									<c:when test="${wlist.w_lock eq 1}">
+																										<div id="status${lock}"><h5 id="stat${lock}">Available</h5></div>
+																									</c:when>
+																									<c:when test="${wlist.w_lock eq 2}">
+																										<div id="status${lock}">Hold by<h5 id="stat${lock}"><a href="javascript:void(0);" id="reve${lock}" onclick="reveal('${wlist.w_mno}', '${lock}')">reveal name</a></h5></div>
+																									</c:when>
+																								</c:choose>
 																							</div>
 																							<div class="stats">
 																								<p>추천</p>
 																								<!-- <div id="lockimg"> -->
 																									<c:choose>
 																										<c:when test="${wlist.w_lock eq 1}">
-																											<a href="javascript:void(0);" id="locka${lock}" onclick="lock('2', '${wlist.w_no}', '${lock}')"><img id="i_lock${lock}" src="resources/image/Lock-Unlock-icon.png" style="width: 35px; height: 30px"></a>
+																											<a href="javascript:void(0);" id="locka${lock}" onclick="lock('2', '${wlist.w_no}', '${lock}', '${wlist.w_mno}')"><!--${wlist.w_mno}  -->            
+																												<img id="i_lock${lock}" src="resources/image/Lock-Unlock-icon.png" style="width: 35px; height: 30px">
+																											</a>
 																										</c:when>
 																										<c:when test="${wlist.w_lock eq 2}">
-																											<a href="javascript:void(0);" id="locka${lock}" onclick="lock('1', '${wlist.w_no}', '${lock}')"><img id="i_lock${lock}" src="resources/image/Lock-Lock-icon.png" style="width: 35px; height: 30px"></a>
+																											<a href="javascript:void(0);" id="locka${lock}" onclick="lock('1', '${wlist.w_no}', '${lock}', '${wlist.w_mno}')">              
+																												<img id="i_lock${lock}" src="resources/image/Lock-Lock-icon.png" style="width: 35px; height: 30px">
+																											</a>
 																										</c:when>
 																									</c:choose>
 																								<!-- </div> -->	
@@ -476,6 +509,7 @@ function lock(lockstat, w_no, num){
 																<c:set var="lock" value="${lock + 1}"/>
 															</c:if>
 														</c:forEach>
+														
 														<!--추가카드 시작~~~~~~  -->
 														<div class="col-md-4 col-sm-4">
 															<div class="card-container manual-flip">
