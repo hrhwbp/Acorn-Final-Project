@@ -323,4 +323,16 @@ public class BoardController {
 		map.put("detailDto", dto);
 		return map;
 	}
+	
+	@RequestMapping(value="rlCount", method= RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Integer> likeReCount(@RequestParam("b_no") String b_no){
+		LikeDto dto = daoInter.countLike(b_no);
+		int likeCount = Integer.parseInt(dto.getL_count());
+		int replyCount = daoInter.countReply(b_no);
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("likeCount", likeCount);
+		map.put("replyCount", replyCount);
+		return map;
+	}
 }
