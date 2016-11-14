@@ -27,6 +27,9 @@ import com.remind.model.ReplyDto;
 public class BoardController {
 	@Autowired
 	private DaoInter daoInter;
+	private StringBuffer likeStringBuffer = new StringBuffer();
+	private StringBuffer replyNameBuffer = new StringBuffer();
+	private StringBuffer replyContentBuffer = new StringBuffer();
 	
 	/*@RequestMapping(value="snslist", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam("mno") String m_no){
@@ -42,7 +45,7 @@ public class BoardController {
 	public ModelAndView list(HttpSession session){
 		String m_no = (String) session.getAttribute("mno");
 		ModelAndView model = new ModelAndView();
-		List<AnniversaryDto> anniversary = daoInter.showAnniversary(m_no);
+		List<AnniversaryDto> anniversary = daoInter.showAnniversaryPart(m_no);
 		List<BoardDto> list = daoInter.showBoard(m_no);
 		for (int i = 0; i < list.size(); i++) {
 			List<ReplyDto> reply = daoInter.showReply(list.get(i).getB_no()); 
@@ -71,21 +74,71 @@ public class BoardController {
 	@ResponseBody
 	public Map<String, Object> scrolling(@RequestParam("last_bno")String last_bno, HttpSession session){//last_bnoShouldMinus
 		String m_no = (String) session.getAttribute("mno");
-		
 		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
 		Map<String, String> data = null;
-//		int last_bnoInt = Integer.parseInt(last_bnoShouldMinus);
-//		String last_bno = Integer.toString(last_bnoInt -1);
-		System.out.println();
 		ScrollBean bean = new ScrollBean();
 		bean.setLast_b_no(last_bno);
 		bean.setM_no(m_no);
 		List<BoardDto> boardList = daoInter.scrollBoard(bean);
+		LikeBean likeYnBean = new LikeBean();
+		
 		for(BoardDto s : boardList){
 			data = new HashMap<String,String>();
 			data.put("b_no",s.getB_no());
 			data.put("b_image", s.getB_image());
 			data.put("b_content", s.getB_content());
+			data.put("b_mname", s.getB_mname());
+			data.put("b_mno", s.getB_mno());
+			
+			///	라이크
+			List<LikeDto> likeDto = daoInter.showLike(s.getB_no());
+			likeStringBuffer.delete(0, likeStringBuffer.length());
+			for (int i = 0; i < likeDto.size(); i++) {
+				likeStringBuffer.append(likeDto.get(i).getL_mname());
+				likeStringBuffer.append(",");
+			}
+			if (likeStringBuffer.length() >= 1) {
+				likeStringBuffer.delete(likeStringBuffer.length()-1, likeStringBuffer.length());
+			}
+			data.put("like_mname", likeStringBuffer.toString());
+			/// 라이크 마지막
+			//댓글 
+			List<ReplyDto> replyDto = daoInter.showReply(s.getB_no());
+			replyNameBuffer.delete(0, replyNameBuffer.length());
+			replyContentBuffer.delete(0, replyContentBuffer.length());
+			for (int i = 0; i < replyDto.size(); i++) {
+				replyNameBuffer.append(replyDto.get(i).getR_name());
+				replyNameBuffer.append(",");
+				replyContentBuffer.append(replyDto.get(i).getR_content());
+				replyContentBuffer.append(",");
+			}
+			if (replyNameBuffer.length() >= 1) {
+				replyNameBuffer.delete(replyNameBuffer.length()-1, replyNameBuffer.length());
+			}
+			if (replyContentBuffer.length() >= 1){
+				replyContentBuffer.delete(replyContentBuffer.length()-1, replyContentBuffer.length());
+			}
+			data.put("reply_Name", replyNameBuffer.toString());
+			data.put("reply_Content", replyContentBuffer.toString());
+			String replyCount = Integer.toString(daoInter.countReply(s.getB_no()));
+			data.put("reply_Count", replyCount);
+			//댓글 마지막
+			//YN
+			//likeYnBean = null;
+			likeYnBean.setL_bno(s.getB_no());
+			likeYnBean.setL_mno(m_no);
+			
+			int likeYnCheck = daoInter.likeYN(likeYnBean);
+			data.put("scoll_mno", m_no);
+			data.put("likeYnCheck", Integer.toString(likeYnCheck));
+			//YN 마지막
+//			for (int i = 0; i < list.size(); i++) {
+//				LikeBean bean = new LikeBean();
+//				bean.setL_bno(list.get(i).getB_no());
+//				bean.setL_mno(m_no);
+//				int likeYN = daoInter.likeYN(bean);
+//				model.addObject("likeYN" + list.get(i).getB_no(), likeYN);	
+//			}
 			dataList.add(data);
 		}
 		Map<String, Object> scrollData = new HashMap<String, Object>();
@@ -93,6 +146,40 @@ public class BoardController {
 		
 		return scrollData;
 	}
+	
+	@RequestMapping("likescoll")
+	@ResponseBody
+	public Map<String, Object> likeScrolling(@RequestParam("likeB_no")String likeB_no){
+		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
+		Map<String, String> data = null;
+		List<LikeDto> like = daoInter.showLike(likeB_no);
+		for(LikeDto s : like){
+			data = new HashMap<String, String>();
+			data.put("l_mname", s.getL_mname());
+		}
+		
+		Map<String, Object> likeScrollData = new HashMap<String, Object>();
+		likeScrollData.put("datas", dataList);
+		return likeScrollData;
+	}
+	@RequestMapping("replyscrollcount")
+	@ResponseBody
+	public Map<String, Object> likeScrollingCount(@RequestParam("likeB_no")String likeB_no){
+		int num = 0;
+		List<LikeDto> dto = daoInter.showLike(likeB_no);
+//		if (dto.size() == 0) {
+//			num = 0;
+//		}else if(dto.size() > 11){
+//			num = 1;
+//		}else{
+//			num = 2;
+//		}
+		num = dto.size();
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("num", num);
+		return data;
+	}
+	
 	/*@RequestMapping(value="snslist", method = RequestMethod.POST)
 	public Map<String, Object> listPOST(@RequestParam("b_no") String b_no){
 		System.out.println("snslist test" + b_no);

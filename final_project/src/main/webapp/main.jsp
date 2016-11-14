@@ -17,23 +17,16 @@
 var lastbno_save = null;
 $(document).ready(function () {
 	$(window).bind("scroll",scrolling);  
-	//console.log(dd)
 });
 
 function scrolling(){ 
 	var documentHeight  = $(document).height() * 2 - 1200;
 	var scrollHeight = $(window).scrollTop()+$(window).height();
-	//console.log ("documentHeight : " + documentHeight) 
-	//console.log ("scrollHeight : " + scrollHeight)
 	
 	if(scrollHeight >= documentHeight) {
 		var lastbno = $(".thumbnail:last").attr("data-bno");	
-		console.log("last_bno : " + lastbno)
-		if(lastbno_save != lastbno){  // 동기화로 바꿈으로서 반드시 들어가야함 ( 안들어갈시 버벅거림 )  //  1.
+		if(lastbno_save != lastbno){  
 		lastbno_save = lastbno;
-		//console.log("last_bno : " + lastbno)
-		//console.log(lastbno_save)
-
 		$.ajax({ // 스크롤링 기본 베이스 ( 댓글 , 라이크는 안에서 반복 function 으로 같이 출력)
 
 			type:"get",
@@ -41,10 +34,10 @@ function scrolling(){
 			dataType:"json",
 			data:{"last_bno":lastbno},
 			success:function(scrollData){
+				console.log("실행중")
 				var str = "";
 				var list = scrollData.datas;
 				$(list).each(function(index,objArr){
-					var num = this.b_no
 					
 					str += '<div class="row">';
 			        str += '<div class="col-md-12">';
@@ -53,10 +46,91 @@ function scrolling(){
 			        str += '       <div class="caption">';
 			        str += '       <div class="row">';
 			        str += '          <div class="col-md-12">';
-			        str += '          <h3>'+objArr["b_mname"]+'</h3>';
+			        str += '			<form action="friendinfo" id="friend'+objArr["b_no"]+'" method="post">';
+					str += '				<input type="hidden" name="m_no" value="'+objArr["b_mno"]+'">';
+					str += '          <h3><a href="javascript:;"  onclick="gofriend('+objArr["b_no"]+')">'+objArr["b_mname"]+'</a></h3></form>';
 			        str += '          <p>'+objArr["b_content"]+'</p>';
 			        str += '          </div>';
 			        str += '       </div>';
+			        //라이크
+			        var should_split = this.like_mname;
+			        var like_view = "";
+			        var n = should_split.split(',');
+			        //console.log("자를 문자열 길이 : " + should_split.length);
+			        //console.log("이름 숫자 길이 :" + n.length);
+			        if (n == 0) {
+						like_view = "처음 좋아요의 주인공이 되세요";
+					}else if (n > 11){
+						like_view = n.length + "명 이상 좋아합니다"
+					}else{
+						for (var i = 0; i < n.length; i++) {
+							like_view += n[i] + "&nbsp;&nbsp; ";
+						}
+						like_view += '님이 좋아합니다';
+					}
+			        
+			        str += '<div class="row">';
+			        str += '	<div class="col-md-12">';
+			        str += '		&nbsp;<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>&nbsp;';
+			        str += '		<span id="showlike'+this.b_no+'">';
+			        str += ''+like_view+'';
+			        str += '		</span>';
+			        str += '	</div>';
+			        str += '</div>';
+					//댓글
+					var reply_Name = this.reply_Name;
+					var reply_Content = this.reply_Content;
+					var reply_Count = this.reply_Count;
+					var reply_name_view = reply_Name.split(',');
+					var reply_content_view = reply_Content.split(',');
+			        str += '<div class="row">';
+					str += '	<div class="col-md-12">';
+					str += '		<div id="showreply'+this.b_no+'">';
+					str += '			<table class="table-condensed small" style="background-color: rgb(245, 245, 245); width: 100%">';
+					if (reply_Count > 5) {
+					str += '				<tr>';
+					str += '					<td><a href="javascript:;" onclick="showReplyMore('+this.b_no+')">show reply all</a></td>';
+					str += '				</tr>';
+					}
+					for (var i in reply_name_view) {
+						str += '				<tr>';
+						str += '<td><a href="#">'+ reply_name_view[i]+'</a> '+reply_content_view[i]+'</td>';
+						str += '				</tr>';
+					}
+					str += '			</table>';
+					str += '		</div>';
+					str += '	</div>';
+					str += '</div>';
+			        //like Yn
+			        str += '<div class="row top_pd">';
+					str += '	<form action="insertReply" method="post" id="reply'+this.b_no+'"';
+					str += '			name="reply">';
+					str += '		<div class="col-md-12">';
+					str += '			<div class="input-group">';
+					str += '				<span class="input-group-addon " id="sizing-addon2">';
+					var likeYnCheck = this.likeYnCheck;
+					if (likeYnCheck >= 1) {
+						str += '<span class="glyphicon glyphicon-heart" onclick="likecancel('+this.b_no+')" style="color: red" id="likeYN'+this.b_no+'"></span>';
+					}else {
+						str += '<span class="glyphicon glyphicon-heart" onclick="likesubmit('+this.b_no+')" id="likeYN'+this.b_no+'"></span>';
+					}
+					str += '				</span> <input type="text" class="form-control"';
+					str += '				placeholder="답글달기..." aria-describedby="sizing-addon2"';
+					str += '				name="r_content" id="r_content'+this.b_no+'"> <input';
+					str += '				type="hidden" name="r_bno" value="'+this.b_no+'"> <input';
+					str += '				type="hidden" name="r_mno" value="'+${mno}+'">'; 
+//												<!-- 답글 버튼 --> 
+					str += '				<span class="input-group-btn">';
+					str += '				<button class="btn btn-default" type="button"';
+					str += '				id="btn_reply" onclick="replySubmit('+this.b_no+')">답글</button>';
+					str += '			</span>'; 
+				//								<!-- 답글 버튼 끝 -->  
+					str += '		</div>';
+					str += '	</div>';
+							//
+					str += '	</form>';
+					str += '</div>';
+			        //
 			        str += '</div>';
 					str += '</div>';
 					str += '</div>';
@@ -74,18 +148,13 @@ function scrolling(){
 	}
 }
 
-function likescrolling(num){
-	console.log("num : " + num);
-
-}
-
-
 	function replySubmit(no){
 
-		if($( "input[name$='r_content']" ).val() == ""){
+		if($( "#r_content"+no ).val() == ""){
 			alert("댓글에 내용을 써주세요");
 			return;
 		}else{
+		
 		
 		$.ajax({
 			type:"post",
@@ -101,7 +170,7 @@ function likescrolling(num){
 				}
 					jQuery(list).each(function(index, objArr){
 					str += "<tr>";
-					str += "<td><a href='#'>" + objArr.r_name +"</a>"+ objArr.r_content + "</td>";
+					str += "<td><a href='#'>" + objArr.r_name +"</a>&nbsp;"+ objArr.r_content + "</td>";
 					str += "</tr>";
 				})
 				str += "</table>";
@@ -157,7 +226,7 @@ function likescrolling(num){
                else if(count<=11){
             	   jQuery(list).each(function(index, objArr){
                       str += objArr.l_name + " ";
-                     }) 
+                     })
                      str += "님이 좋아합니다";
                    }
 				jQuery("#showlike"+b_no).html(str);
@@ -370,6 +439,7 @@ function likescrolling(num){
                      		</c:if>
                      		</c:if>
                      		</c:forEach>
+                     		<tr><td><a href="">기념일 더보기</a></td></tr>
                      		</table>
 							
 						

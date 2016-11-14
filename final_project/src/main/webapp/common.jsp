@@ -32,8 +32,13 @@
 	}
 	
 	.main_pd {
-		padding-top: 15%;
-		padding-bottom: 20%;
+		padding-top: 5%;
+	    padding-bottom: 5%;
+	    border-style: solid;
+	    border-color: #76c2af;
+	    border-radius: 100px;
+	    border-width: 15px;
+	    margin: 5%;
 	}
 	
 	.lbl_pd {

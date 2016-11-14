@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML>
-<html>
+<html style="margin-bottom:0;">
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,7 +10,7 @@
 <meta name="author" content="">
 <link rel="icon" href="../../favicon.ico">
 
-<title>Fixed Top Navbar</title>
+
 
 <!-- Bootstrap core CSS common.jsp에 있음-->
 <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -49,7 +49,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.jsp"><span class="glyphicon glyphicon-gift" aria-hidden="true">RE:MIND</span></a></a>
+          <a class="navbar-brand" href="index.jsp"><span class="glyphicon glyphicon-gift" aria-hidden="true">RE:MIND</span></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -75,7 +75,7 @@
             <% if(session.getAttribute("mno") != null){%>
             <li><a href="logout">LogOut <span class="sr-only">(current)</span></a></li>
             <%}else{
-            	response.sendRedirect("index.jsp");
+            	response.sendRedirect("index.jsp"); 
             }
             %>
           </ul>
@@ -89,7 +89,7 @@
     ================================================== -->
 <!--     Placed at the end of the document so the pages load faster
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <!-- <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script> -->
     <!-- <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script> -->
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src=http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js></script>
