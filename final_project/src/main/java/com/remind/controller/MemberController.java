@@ -146,6 +146,7 @@ public class MemberController {
 	public ModelAndView showMyinfo(@RequestParam("m_no")String m_no){
 		ModelAndView view = new ModelAndView();
 		MemberDto dto = daoInter.showMemberDetail(m_no);
+		
 		view.addObject("myinfo", dto);
 		List<FollowDto> mylist = daoInter.showMyFollower(m_no);
 		view.addObject("mylist", mylist);

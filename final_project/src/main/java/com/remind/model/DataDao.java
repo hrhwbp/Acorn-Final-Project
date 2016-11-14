@@ -188,7 +188,6 @@ public class DataDao implements DaoInter {
 
 	@Override
 	public int countReply(String b_no) throws DataAccessException {
-
 		return annoInter.countreply(b_no);
 	}
 

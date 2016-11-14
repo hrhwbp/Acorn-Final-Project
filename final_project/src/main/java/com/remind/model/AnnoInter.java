@@ -94,6 +94,7 @@ public interface AnnoInter {
 	// reply
 	@Select("select r_no, r_bno, r_content, r_date, (select m_name from member where m_no = r_mno) r_name from reply where r_bno = #{b_no} limit ${limit},5")
 	List<ReplyDto> showReply(@Param("b_no") String b_no, @Param("limit")int limit);
+	
 	@Select("select count(*) from reply where r_bno = #{b_no}")
 	int countreply(String b_no);
 	

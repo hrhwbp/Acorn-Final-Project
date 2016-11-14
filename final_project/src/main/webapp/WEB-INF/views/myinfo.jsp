@@ -10,21 +10,50 @@
 <title>MyInfo</title>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <style type="text/css">
-.img_sss {
+.thumbnail-wrappper {
+    width: 25%; 
+}
+
+.thumbnail {
+    position: relative;
+    padding-top: 100%;  /* 1:1 ratio */
+    overflow: hidden;
+}
+
+.thumbnail .centered  {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    -webkit-transform: translate(50%,50%);
+    -ms-transform: translate(50%,50%);
+    transform: translate(50%,50%);
+}
+
+.thumbnail .centered img {
+    position: absolute;
+    top: 0;
+    left: 0;   
     max-width: 100%;
     height: auto;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
 }
-.rowimg {
-    position: relative;
-    padding-top: 75%;  /* 1:1 ratio */
-    
-    overflow: hidden;
+
+.thumbnail img.portrait {
+  width: 100%;
+  max-width: none;
+  height: auto;
 }
+.thumbnail img.landscape {
+  width: auto;
+  max-width: none;
+  height: 100%;
+}
+
+} 
 </style>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -243,6 +272,41 @@ function cancelFollow(f_mno,f_sno) {
 	/* $("#followBtn"+f_mno).attr('onclick','upFollow('+ m_no + ',' + f_mno +')');
 	$("#followBtn"+f_mno).attr('style','background-color: white; color: black;'); */
 }
+
+function hoverHide(b_no) {
+	$('#showHover'+b_no).hide();
+}
+
+function hoverShow(b_no) {
+	var showh = $("#showHover"+b_no);
+	var tagA = $("#tagA"+b_no);
+	/* tagA.removeAttr('onmouseover'); */
+	
+	showh.attr('style','background-color: rgba(0,0,0,.3); bottom: 0; -webkit-box-pack: center; justify-content: center; right: 0; left: 0;position: absolute; top: 0;');
+	if(tagA.attr('class') == 'hover'){
+		tagA.attr('class','');
+		jQuery.ajax({
+			 type:"post",
+		     url:"rlCount",
+		     data: {'b_no':b_no},
+		     dataType: 'json',
+		     success : function(data) {
+		      	var like = data.likeCount;
+		      	var reply = data.replyCount;
+				var str = "";
+				str += "<ul style='display: flex; font-size: 16px;font-weight: 600; color: #fff; list-style: none; justify-content: center; margin: 0; padding: 0; border: 0; font: inherit; padding-top: 32%;' class='' >" +
+						"<li style='line-height: 19px;margin: 0 auto;padding-left: 26px;position: relative; display: table;'> 좋아요 :" + like + "</li>" +
+						"<li style='line-height: 19px;margin: 0 auto;padding-left: 26px;position: relative; display: table;'>  댓글 :" + reply +  "</li>" +
+						"</ul>";
+				showh.append(str);
+		     },
+		     error : function(xhr, status, error) {
+		   	    alert("에러발생 " + error);
+		     }
+		});
+	}
+	
+}
 </script>
 </head>
 
@@ -252,8 +316,10 @@ function cancelFollow(f_mno,f_sno) {
 <div class="container"  style="padding-top: 2%; padding-bottom: 5%;">
 <div class="row" style="background-color: rgb(253,253,253); padding-top: 30px; padding-bottom: 30px; ">
 	<div class="col-md-2 col-md-offset-2" style="height: 170px">
+	
 		<a style="color: buttontext; border: 0; cursor: pointer; height: 100%; padding: 0; width: 100%;" data-toggle="modal" data-target="#updateInfo">
-		<img src="http://wbp.synology.me/profileimg/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
+		
+			<img src="http://wbp.synology.me/profileimg/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
 		
 		</a>
 	</div>
@@ -297,24 +363,23 @@ function cancelFollow(f_mno,f_sno) {
 </div>
 </c:if>
 <div class="row" style="background-color: rgb(253,253,253);"><!-- row  -->
-<div class="col-md-10 col-md-offset-1">
+<div class="col-md-12">
   <c:forEach var="board" items="${board}">  
-  <div class="col-md-4">
-    <div class="thumbnail">
-    	<div class="row rowimg" >
-		   <img src="${board.b_image }" alt="Responsive image" class="img-responsive center-block img_sss">
+    	<div class="col-md-4"  >
+    		<div class="thumbnail-wrapper" >
+    			<div class="thumbnail" style="height: 250px; background-color: #000;">
+    				<a class="hover" href="javascript:modalToggle(${board.b_no})" id="tagA${board.b_no}" onmouseover="hoverShow(${board.b_no})" onmouseout="hoverHide(${board.b_no})" >
+        			<div class="centered">
+		  				 <img src="${board.b_image }" class=" landscape"> <!-- portrait -->
+			   		</div>
+			    	<div id="showHover${board.b_no}" style="display: none">
+			    		
+			    	</div>
+    				</a>
+			   </div>
+		   </div>
     	</div>
-      <div class="caption">
-        <h3>${board.b_content }</h3>
-        <p>좋아요 ${board.b_like}개</p>
-        <p class="text-right"><button type="button" class="btn btn-link" onclick="modalToggle(${board.b_no})">더 보기</button></p>
-      </div>
-    </div>
-  </div>
   </c:forEach>
- 
-	
-	
 </div>	
 </div> <!-- row -->
 </div>
@@ -431,9 +496,15 @@ function cancelFollow(f_mno,f_sno) {
 				<c:choose>
 					
 					<c:when test="${mno == myinfo.m_no }">
-					<a  onclick="$('#boardFile').click();" style="cursor: pointer">
-					<img alt="Responsive image" id="modalimg" class="img-responsive center-block" src="">
-					</a>
+			    		<div class="thumbnail-wrapper" >
+			    			<div class="thumbnail" style="height: 350px; background-color: #000;">
+			        			<div class="centered">
+									<a  onclick="$('#boardFile').click();" style="cursor: pointer">
+									<img alt="Responsive image" id="modalimg" class="landscape" src="">
+									</a>
+								</div>
+							</div>
+						</div>
 					</c:when>
 					<c:otherwise>
 					<img alt="Responsive image" id="modalimg" class="img-responsive center-block" src="">
