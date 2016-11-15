@@ -345,7 +345,7 @@ function boardDeleteOk(b_no) {
 <div class="container">
 <div class="container"  style="padding-top: 2%; padding-bottom: 5%;">
 <div class="row" style="background-color: rgba(255, 247, 252, 0.62);; padding-top: 30px; padding-bottom: 30px; ">
-	<div class="col-md-2 col-md-offset-2" style="height: 170px">
+	<div class="col-md-2 col-md-offset-1" style="height: 170px">
 	
 		<a style="color: buttontext; border: 0; cursor: pointer; height: 100%; padding: 0; width: 100%;" data-toggle="modal" data-target="#updateInfo">
 		
