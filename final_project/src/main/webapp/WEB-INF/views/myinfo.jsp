@@ -320,10 +320,10 @@ function hoverShow(b_no) {
 </head>
 
 <%@ include file="../../top.jsp" %>
-<body style="">
+<body style="background-color: rgba(128, 206, 208, 0.14);">
 <div class="container">
 <div class="container"  style="padding-top: 2%; padding-bottom: 5%;">
-<div class="row" style="background-color: rgb(253,253,253); padding-top: 30px; padding-bottom: 30px; ">
+<div class="row" style="background-color: rgba(255, 247, 252, 0.62);; padding-top: 30px; padding-bottom: 30px; ">
 	<div class="col-md-2 col-md-offset-2" style="height: 170px">
 	
 		<a style="color: buttontext; border: 0; cursor: pointer; height: 100%; padding: 0; width: 100%;" data-toggle="modal" data-target="#updateInfo">
@@ -365,13 +365,13 @@ function hoverShow(b_no) {
 	</div>
 </div>
 <c:if test="${mno == myinfo.m_no }">
-<div class="row" style="padding-bottom: 2%">
+<div class="row" style="padding-bottom: 2%; background-color: rgba(255, 247, 252, 0.62);">
 	<div class="col-md-10 col-md-offset-1">
-			<button type="button" id="boardInsertBtn" class="btn btn-link col-md-12" style="background-color: rgb(255,230,231);"><h4><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;게시물 추가하기</h4></button>
+			<button type="button" id="boardInsertBtn" class="btn btn-link col-md-12" style="background-color: rgb(212, 235, 255); border-radius: 20px;"><h4><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;게시물 추가하기</h4></button>
 	</div>
 </div>
 </c:if>
-<div class="row" style="background-color: rgb(253,253,253);"><!-- row  -->
+<div class="row" style="background-color: rgba(255, 247, 252, 0.62);"><!-- row  -->
 <div class="col-md-12">
   <c:forEach var="board" items="${board}">  
     	<div class="col-md-4"  >
