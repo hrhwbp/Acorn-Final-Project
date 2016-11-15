@@ -29,8 +29,8 @@ overflow:visible;
 }
 
 .main-menu {
-background:#fbfbfb;
-border-right:1px solid #e5e5e5;
+/* background:#fbfbfb; */
+/* border-right:1px solid #e5e5e5; */
 position:absolute;
 top:0;
 bottom:0;
@@ -59,10 +59,11 @@ position:relative;
 display:table;
 border-collapse:collapse;
 border-spacing:0;
-color:#999;
- font-family: arial;
+color:#000000;
+font-family: arial;
 font-size: 14px;
-text-decoration:none;
+text-decoration: none;
+font-weight: bold;
 -webkit-transform:translateZ(0) scale(1,1);
 -webkit-transition:all .1s linear;
 transition:all .1s linear;
@@ -76,7 +77,7 @@ width:60px;
 height:34px;
 text-align:center;
 vertical-align:middle;
-font-size:18px;
+font-size:25px;
 }
 
 .main-menu .nav-text {
@@ -120,8 +121,8 @@ margin:0;
 padding:0;
 }
 .main-menu li:hover>a,nav.main-menu li.active>a,.dropdown-menu>li>a:hover,.dropdown-menu>li>a:focus,.dropdown-menu>.active>a,.dropdown-menu>.active>a:hover,.dropdown-menu>.active>a:focus,.no-touch .dashboard-page nav.dashboard-menu ul li:hover a,.dashboard-page nav.dashboard-menu ul li.active a {
-color:#fff;
-background-color:#5fa2db;
+color:#ffffff;
+background-color:#e22914;
 }
 .area {
 float: left;
@@ -153,21 +154,20 @@ height: 100%;
 		                    </a>
 		                </li>
 		                <li class="has-subnav">
-		                    <a href="#">
+		                    <a href="showWishList?w_mno=<%=session.getAttribute("mno")%>">
 		                        <i class="fa fa-gift fa-2x"></i>
 		                        <span class="nav-text">
 		                            WISHLIST
 		                        </span>
-		                    </a>
-		
+		                    </a>		
 		                </li>
 		                <li class="has-subnav">
 		                    <a href="#">
-		                       <i class="fa fa-birthday-cake fa-2x"></i>
+		                        <i class="fa fa-list fa-2x"></i>
 		                        <span class="nav-text">
-		                            EVENT LISTS
+		                            EVENTLIST
 		                        </span>
-		                    </a>
+		                    </a>		
 		                </li>
 		                <li class="has-subnav">
 		                    <a href="#">
@@ -178,18 +178,18 @@ height: 100%;
 		                    </a>
 		                </li>
 		                <li>
-		                    <a href="#">
-		                        <i class="fa fa-bar-chart-o fa-2x"></i>
+		                    <a onclick="follower(${myinfo.m_no})"">
+		                        <i class="fa fa-hand-o-left fa-2x"></i>
 		                        <span class="nav-text">
-		                            Graphs and Statistics
+		                            MY FOLLWERS
 		                        </span>
 		                    </a>
 		                </li>
 		                <li>
-		                    <a href="#">
-		                        <i class="fa fa-font fa-2x"></i>
+		                    <a onclick="follow(${myinfo.m_no})">
+		                        <i class="fa fa-hand-o-right fa-2x"></i>
 		                        <span class="nav-text">
-		                            Typography and Icons
+		                            PEOPLE I FOLLOW
 		                        </span>
 		                    </a>
 		                </li>
@@ -210,17 +210,6 @@ height: 100%;
 		                    </a>
 		                </li>
 		                <li>
-		                    <a href="#">
-		                       <i class="fa fa-info fa-2x"></i>
-		                        <span class="nav-text">
-		                            Documentation
-		                        </span>
-		                    </a>
-		                </li>
-		            </ul>
-
-		            <ul class="logout">
-		                <li>
 		                   <a href="logout">
 		                         <i class="fa fa-power-off fa-2x"></i>
 		                        <span class="nav-text">
@@ -230,6 +219,18 @@ height: 100%;
 		                </li>  
 		            </ul>
 		            
+
+		           <!--  <ul class="logout">
+		                <li>
+		                   <a href="logout">
+		                         <i class="fa fa-power-off fa-2x"></i>
+		                        <span class="nav-text">
+		                            Logout
+		                        </span>
+		                    </a>
+		                </li>  
+		            </ul>
+		             -->
         		</nav>
 			</div>
 		</div>

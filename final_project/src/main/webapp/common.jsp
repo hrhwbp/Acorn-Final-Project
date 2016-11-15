@@ -23,6 +23,9 @@
 	
 	
 	<style type="text/css">
+	body{
+	background-color: rgba(128, 206, 208, 0.14);
+	}
 	.top_pd {
 		padding-top: 2%;
 	}

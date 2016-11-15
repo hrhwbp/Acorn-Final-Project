@@ -337,6 +337,7 @@ function reveal(mno, num){
 </head>
 
 <%@ include file="top.jsp"%>
+<%@include file="sidebar.jsp"%>
 <body>
 <label>${wg_detail}</label>
 	<div class="container col-md-10 col-md-offset-1">
