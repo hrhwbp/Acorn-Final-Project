@@ -281,7 +281,8 @@ public class BoardController {
 		return new ModelAndView("updateboard","dto",dto);
 	}
 	@RequestMapping(value="updateBoard", method = RequestMethod.POST)
-	public String updateSubmit(BoardBean bean){
+	public String updateSubmit(BoardBean bean,@RequestParam("hiddenBoardImg")String boardImg){
+		
 		MultipartFile uploadfile = bean.getFileUpload();
 		if (uploadfile != null) {
             String fileName = uploadfile.getOriginalFilename();
@@ -300,8 +301,11 @@ public class BoardController {
                 uploadfile.transferTo(file);
             } catch (Exception e) {
                 System.out.println("보드 파일 업로드 err : " + e);
+                bean.setB_image(boardImg);
             } // try - catch
-        } // if
+        }else{
+            bean.setB_image(boardImg);
+        }
 		boolean b = daoInter.updateBoard(bean);
 		if(b) return "redirect:/myinfo";
 		else return "redirect:/error.jsp";
@@ -319,7 +323,9 @@ public class BoardController {
 	@ResponseBody
 	public Map<String, Object> boardDetail(@RequestParam("b_no") String b_no){
 		BoardDto dto = daoInter.showBoardDetail(b_no);
+		LikeDto ldto = daoInter.countLike(b_no);
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("likeCount", ldto);
 		map.put("detailDto", dto);
 		return map;
 	}
