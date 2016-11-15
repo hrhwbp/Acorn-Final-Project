@@ -48,7 +48,7 @@ public class BoardController {
 		List<AnniversaryDto> anniversary = daoInter.showAnniversaryPart(m_no);
 		List<BoardDto> list = daoInter.showBoard(m_no);
 		for (int i = 0; i < list.size(); i++) {
-			List<ReplyDto> reply = daoInter.showReply(list.get(i).getB_no()); 
+			List<ReplyDto> reply = daoInter.showReply(list.get(i).getB_no());
 			model.addObject("reply" + list.get(i).getB_no(), reply);
 			int count = daoInter.countReply(list.get(i).getB_no());
 			//System.out.println(count);
@@ -70,7 +70,7 @@ public class BoardController {
 		model.setViewName("../../main");
 		return model;
 	}
-	@RequestMapping("scroll") // 스크롤링 기본 베이스  ( 댓글 , 라이크 뽑을려면 있어야됨 )
+	@RequestMapping("scroll") 
 	@ResponseBody
 	public Map<String, Object> scrolling(@RequestParam("last_bno")String last_bno, HttpSession session){//last_bnoShouldMinus
 		String m_no = (String) session.getAttribute("mno");
@@ -90,7 +90,6 @@ public class BoardController {
 			data.put("b_mname", s.getB_mname());
 			data.put("b_mno", s.getB_mno());
 			
-			///	라이크
 			List<LikeDto> likeDto = daoInter.showLike(s.getB_no());
 			likeStringBuffer.delete(0, likeStringBuffer.length());
 			for (int i = 0; i < likeDto.size(); i++) {
@@ -101,8 +100,6 @@ public class BoardController {
 				likeStringBuffer.delete(likeStringBuffer.length()-1, likeStringBuffer.length());
 			}
 			data.put("like_mname", likeStringBuffer.toString());
-			/// 라이크 마지막
-			//댓글 
 			List<ReplyDto> replyDto = daoInter.showReply(s.getB_no());
 			replyNameBuffer.delete(0, replyNameBuffer.length());
 			replyContentBuffer.delete(0, replyContentBuffer.length());
@@ -122,23 +119,13 @@ public class BoardController {
 			data.put("reply_Content", replyContentBuffer.toString());
 			String replyCount = Integer.toString(daoInter.countReply(s.getB_no()));
 			data.put("reply_Count", replyCount);
-			//댓글 마지막
 			//YN
-			//likeYnBean = null;
 			likeYnBean.setL_bno(s.getB_no());
 			likeYnBean.setL_mno(m_no);
 			
 			int likeYnCheck = daoInter.likeYN(likeYnBean);
 			data.put("scoll_mno", m_no);
 			data.put("likeYnCheck", Integer.toString(likeYnCheck));
-			//YN 마지막
-//			for (int i = 0; i < list.size(); i++) {
-//				LikeBean bean = new LikeBean();
-//				bean.setL_bno(list.get(i).getB_no());
-//				bean.setL_mno(m_no);
-//				int likeYN = daoInter.likeYN(bean);
-//				model.addObject("likeYN" + list.get(i).getB_no(), likeYN);	
-//			}
 			dataList.add(data);
 		}
 		Map<String, Object> scrollData = new HashMap<String, Object>();
@@ -147,38 +134,6 @@ public class BoardController {
 		return scrollData;
 	}
 	
-	@RequestMapping("likescoll")
-	@ResponseBody
-	public Map<String, Object> likeScrolling(@RequestParam("likeB_no")String likeB_no){
-		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
-		Map<String, String> data = null;
-		List<LikeDto> like = daoInter.showLike(likeB_no);
-		for(LikeDto s : like){
-			data = new HashMap<String, String>();
-			data.put("l_mname", s.getL_mname());
-		}
-		
-		Map<String, Object> likeScrollData = new HashMap<String, Object>();
-		likeScrollData.put("datas", dataList);
-		return likeScrollData;
-	}
-	@RequestMapping("replyscrollcount")
-	@ResponseBody
-	public Map<String, Object> likeScrollingCount(@RequestParam("likeB_no")String likeB_no){
-		int num = 0;
-		List<LikeDto> dto = daoInter.showLike(likeB_no);
-//		if (dto.size() == 0) {
-//			num = 0;
-//		}else if(dto.size() > 11){
-//			num = 1;
-//		}else{
-//			num = 2;
-//		}
-		num = dto.size();
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("num", num);
-		return data;
-	}
 	
 	/*@RequestMapping(value="snslist", method = RequestMethod.POST)
 	public Map<String, Object> listPOST(@RequestParam("b_no") String b_no){
@@ -258,7 +213,7 @@ public class BoardController {
             bean.setB_image("http://wbp.synology.me/boardimg/" + fileName);
             System.out.println(bean.getB_image());
             try {
-                // 1. FileOutputStream 사용
+            	// FileOutputStream 사용
                 // byte[] fileData = file.getBytes();
                 // FileOutputStream output = new FileOutputStream("C:/images/" + fileName);
                 // output.write(fileData);
@@ -268,7 +223,7 @@ public class BoardController {
                 
                 uploadfile.transferTo(file);
             } catch (Exception e) {
-                System.out.println("보드 파일 업로드 err : " + e);
+                System.out.println("蹂대뱶 �뙆�씪 �뾽濡쒕뱶 err : " + e);
             } // try - catch
         } // if
 		boolean b = daoInter.write(bean);
