@@ -52,7 +52,7 @@
    } */
    
    function logsubmit(){
-	   alert("a");
+	  
 	      $.ajax({
 	           type:"post",
 	           url:"loginsub",
