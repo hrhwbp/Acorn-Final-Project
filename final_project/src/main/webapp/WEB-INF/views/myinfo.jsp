@@ -10,6 +10,11 @@
 <title>MyInfo</title>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <style type="text/css">
+/* ============아이콘 표시를 위한 import=============== */
+@import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
+}
+@import url(http://fonts.googleapis.com/css?family=Titillium+Web:300);
+/* ============아이콘 표시를 위한 import 끝ㅇ============== */
 .thumbnail-wrappper {
     width: 25%; 
 }
@@ -601,7 +606,7 @@ function boardDeleteOk(b_no) {
 			<div class="row">
 				<div class="col-md-12 text-center" style="">
 					<a  onclick="$('#boardInsertFile').click();" style="cursor: pointer; padding-top: 40%" >
-					<b id="insertBtag">클릭해서 이미지 추가</b>
+					<b id="insertBtag"><i class="fa fa-picture-o" aria-hidden="true"></i>클릭해서 이미지 추가</b>
 					<img alt="Responsive image" id="boardInsertImg" class="img-responsive center-block" src="" style="">
 					</a>
 					<input type="file" name="fileUpload" id="boardInsertFile" class="sr-only">
