@@ -97,15 +97,17 @@ function modalToggle(b_no) {
          success : function(data) {
         	 /* alert(data.detailDto.b_no); */
         	 var dto = data.detailDto;
+        	 var likeCnt = data.likeCount;
         	 /* alert(dto.b_image); */
         	 /* modalContent modalLike modalDate */
         	 /* document.getElementById("modalimg").src = dto.b_image;  */
         	 $("#modalimg").attr('src', dto.b_image);
         	 $('#modalContent').val(dto.b_content);
-        	 $('#modalLike').text('좋아요 ' + dto.b_like);
+        	 $('#modalLike').text('좋아요 ' + likeCnt.l_count);
         	 $('#modalDate').text(dto.b_date);
         	 $('#hiddenNo').val(dto.b_no); 
         	 $('#hiddenImage').val(dto.b_image); 
+        	 $('#hiddenBoardImg').attr('value',dto.b_image);
         	 $('#boardDetail').modal('show');
          },
          error : function(xhr, status, error) {
@@ -406,9 +408,10 @@ function hoverShow(b_no) {
 				<div class="col-md-4 col-md-offset-4 text-center">
 				<div style="color: buttontext; border: 0; cursor: pointer; height: 180px; padding: 0; width: 100%;">
 					<a  onclick="$('#file').click();">
-					<img id="image" src="http://wbp.synology.me/profileimg/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
+					<img id="image" src="http://wbp.synology.me/profileimg/${myinfo.m_image}" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
 					</a>
 	      			<input type="file" id="file"  name="fileUp" class="sr-only">
+	      			<input type="hidden" name="hiddenName" value="${myinfo.m_image}"> 
 				</div>
 				</div>
 			</div>
@@ -525,6 +528,7 @@ function hoverShow(b_no) {
 					
 					</c:choose>
 					<input type="file" name="fileUpload"  id="boardFile" class="sr-only" >
+					<input type="hidden" name="hiddenBoardImg" value="" id="hiddenBoardImg">
 				</div>
 			</div>
 	      </div>
