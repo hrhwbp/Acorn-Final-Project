@@ -14,7 +14,7 @@
 <title>RE:MIND [READ MIND]</title>
 
 <!-- Bootstrap core CSS -->
-<link href="http://getbootstrap.com/dist/css/bootstrap.min.css"
+<link href="resources/css/bootstrap.min.css"
    rel="stylesheet">
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
@@ -52,7 +52,11 @@
    } */
    
    function logsubmit(){
+<<<<<<< HEAD
 	  
+=======
+	   
+>>>>>>> 25d0bd68ed4769848aabf7850028ecd108f7dec0
 	      $.ajax({
 	           type:"post",
 	           url:"loginsub",
@@ -80,8 +84,8 @@
    <div class="navbar-wrapper">
       <div class="container">
 
-         <nav class="navbar navbar-inverse navbar-static-top">
-            <div class="container">
+         <nav class="navbar navbar-inverse navbar-static-top" style="background-color: white; opacity: 0.7">
+            <div class="container" style="background-color: white;">
                <div class="navbar-header">
                   <button type="button" class="navbar-toggle collapsed"
                      data-toggle="collapse" data-target="#navbar"
@@ -96,7 +100,7 @@
                </div>
                <div id="navbar" class="navbar-collapse collapse">
                   <ul class="nav navbar-nav">
-                     <li><a href="index.jsp"><span
+                     <li><a href="snslist"><span
                            class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
                      <li><a
                         href="showWishList?w_mno=<%=session.getAttribute("mno")%>"><span
@@ -154,15 +158,17 @@
                alt="원하는 선물을 받는 즐거움 오늘부터 경험하세요" width="100%">
             <div class="container">
                <div class="carousel-caption">
-                  <div class="input-group col-md-6 col-sm-12">
-                     <h1>선물을 받는 즐거운 경험</h1>
-                     <p>원하는 선물을 받는 즐거움 오늘부터~</p>
+                  <div class="input-group col-md-5 col-sm-12">
+                     <h1>선물을 받는 즐거운 경험</h1><p/>
+                     <p>오늘부터 내가 정말 원하는 선물을 받는 
+                     <p>즐거움을 만끽하세요~</p>
                      <p>
                         <a class="btn btn-lg btn-danger" href="#about" role="button">알아보기</a>
                      </p>
                   </div>
+                   <% if (session.getAttribute("mno") == null) { %>
                   <form id="loginform"> 
-                  <div class="input-group col-md-6 col-sm-12">
+                  <div class="input-group col-md-5 col-sm-12">
                      <span class="input-group-addon" id="basic-addon1"><span
                         class="glyphicon glyphicon-user" aria-hidden="true"></span></span> <input
                         type="email" class="form-control" placeholder="이메일" name="m_email" required autofocus
@@ -170,16 +176,20 @@
                      <!-- <span class="input-group-btn"><button class="btn btn-default" type="button"> 가 입</button></span> -->
                   </div>
                   <br>
-                  <div class="input-group col-md-6 col-sm-12">
+                  <div class="input-group col-md-5 col-sm-12">
                      <span class="input-group-addon" id="basic-addon1"><span
                         class="glyphicon glyphicon-lock" aria-hidden="true"></span></span> <input
                         type="password" class="form-control" placeholder="비밀번호"
                         aria-describedby="basic-addon1" id="inputPassword"
-                     name="m_password" required> <span
-                        class="input-group-btn"><button class="btn btn-default"
-                           type="button" onclick="logsubmit()">로그인</button></span>
+                     name="m_password" required>
                   </div>
+                  <div class="input-group col-md-5 col-sm-12">
+						<br><br><a class="btn btn-lg btn-primary" role="button" onclick="logsubmit()">로그인</a><a class="btn btn-lg btn-success" href="#about" role="button">가입하기</a>                  
+                  </div>                          
                   </form>
+                  <%} else { %>
+                  <br><br><br><br><br><br>
+                  <%}  %>
                   <br>
                   <br>
                   <br>
@@ -189,15 +199,14 @@
             </div>
          </div>
          <div class="item">
-            <img class="second-slide" src="resources/image/biggiftboxsm.jpg"
+            <img class="second-slide" src="resources/image/childbox.jpg"
                alt="Second slide">
             <div class="container">
                <div class="carousel-caption">
-                  <h1>Another example headline.</h1>
-                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget
-                     quam. Donec id elit non mi porta gravida at eget metus. Nullam id
-                     dolor id nibh ultricies vehicula ut id elit.</p>
-                  <p>
+                  <h1>상대를 생각한 선물</h1>
+                  <p>지금까지는 가족, 친척, 친구들에게 어떤 선물을 해야하나 고민많으셨죠?</p>
+                  <p>이제는 고민하지 말고 RE:MIND에서 찾아보세요! </p><br>
+                  </p>
                      <a class="btn btn-lg btn-primary" href="#" role="button">Learn
                         more</a>
                   </p>
@@ -209,11 +218,10 @@
                alt="Third slide">
             <div class="container">
                <div class="carousel-caption">
-                  <h1>세번째 슬라이드</h1>
-                  <p>Cras justo odio, dapibus ac facilisis in, egestas eget
-                     quam. Donec id elit non mi porta gravida at eget metus. Nullam id
-                     dolor id nibh ultricies vehicula ut id elit.</p>
-                  <p>
+                  <h1>선물을 풀러볼 때의 만족감</h1><br>
+                  <p>내 맘에 드는 선물이면 좋겠는데...</p>
+                  <p>열어볼 때의 설레임, 기쁨! RE:MIND에서 경험하세요</p>
+                  </p>                  
                      <a class="btn btn-lg btn-primary" href="#" role="button">Browse
                         gallery</a>
                   </p>
