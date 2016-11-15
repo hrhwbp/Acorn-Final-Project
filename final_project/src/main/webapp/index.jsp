@@ -12,6 +12,7 @@
 <link rel="icon" href="../../favicon.ico">
 
 <title>RE:MIND [READ MIND]</title>
+<link rel="stylesheet" type="text/css" media="screen" href="resources/css/index.css"/>
 
 <!-- Bootstrap core CSS -->
 <link href="resources/css/bootstrap.min.css"
@@ -35,7 +36,8 @@
 
 <!-- Custom styles for this template -->
 <link href="resources/css/carousel.css" rel="stylesheet">
-
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
 /*    $(document).ready(function() {
       $("#showjoin").hide()
@@ -72,6 +74,7 @@
 	           }
 	        
 	      });}
+  
 </script>
 
 </head>
@@ -146,8 +149,8 @@
       <!-- Indicators -->
       <ol class="carousel-indicators">
          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-         <li data-target="#myCarousel" data-slide-to="1"></li>
-         <li data-target="#myCarousel" data-slide-to="2"></li>
+         <!-- <li data-target="#myCarousel" data-slide-to="1"></li>
+         <li data-target="#myCarousel" data-slide-to="2"></li> -->
       </ol>
       <div class="carousel-inner" role="listbox">
          <div class="item active">
@@ -245,26 +248,24 @@
    <div class="container marketing" id="about" style="padding-top: 100px;">
       <!-- Three columns of text below the carousel -->
       <div class="row">
-         <div class="col-lg-4">
+      <div class="wrap">
+         <div class="col-lg-3">
             <img class="img-circle"
-               src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
+               src="resources/image/312329358718a5d4c15ba4ebb7462ff2.jpg"
                alt="Generic placeholder image" width="140" height="140">
-            <h2>Heading</h2>
-            <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis
-               euismod. Nullam id dolor id nibh ultricies vehicula ut id elit.
-               Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-               Praesent commodo cursus magna.</p>
+            <h2>christmas</h2>
+            <p></p>
             <p>
                <a class="btn btn-default" href="#" role="button">View details
                   &raquo;</a>
             </p>
          </div>
          <!-- /.col-lg-4 -->
-         <div class="col-lg-4">
+         <div class="col-lg-3">
             <img class="img-circle"
-               src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
+               src="resources/image/6afa8a568e2112efaa0a0e219178444b.jpg"
                alt="Generic placeholder image" width="140" height="140">
-            <h2>Heading</h2>
+            <h2>wedding</h2>
             <p>Duis mollis, est non commodo luctus, nisi erat porttitor
                ligula, eget lacinia odio sem nec elit. Cras mattis consectetur
                purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo,
@@ -275,11 +276,11 @@
             </p>
          </div>
          <!-- /.col-lg-4 -->
-         <div class="col-lg-4">
+         <div class="col-lg-3">
             <img class="img-circle"
-               src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
+               src="resources/image/6662d954f801a699a27ccd349d501988.jpg"
                alt="Generic placeholder image" width="140" height="140">
-            <h2>Heading</h2>
+            <h2>birthday</h2>
             <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in,
                egestas eget quam. Vestibulum id ligula porta felis euismod semper.
                Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum
@@ -289,7 +290,22 @@
                   &raquo;</a>
             </p>
          </div>
+         <div class="col-lg-3">
+            <img class="img-circle"
+               src="resources/image/a2e025b30f2e129672b480a54ecc0b6c.jpg"
+               alt="Generic placeholder image" width="140" height="140">
+            <h2>baby</h2>
+            <p>Duis mollis, est non commodo luctus, nisi erat porttitor
+               ligula, eget lacinia odio sem nec elit. Cras mattis consectetur
+               purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo,
+               tortor mauris condimentum nibh.</p>
+            <p>
+               <a class="btn btn-default" href="#" role="button">View details
+                  &raquo;</a>
+            </p>
+         </div>
          <!-- /.col-lg-4 -->
+      </div>
       </div>
       <!-- /.row -->
 
@@ -363,7 +379,7 @@
             <a href="#">Back to top</a>
          </p>
          <p>
-            &copy; 2016 Company, Inc. &middot; <a href="#">Privacy</a> &middot;
+            &copy; 2016 REMIND, Inc. &middot; <a href="about">Privacy</a> &middot;
             <a href="#">Terms</a>
          </p>
       </footer>

@@ -147,33 +147,33 @@ height: 100%;
 				<nav class="main-menu float_sidebar">
 		            <ul class="bs-docs-sidenav">
 		                <li>
-		                    <a href="#">
+		                    <a href="snslist">
 		                        <i class="fa fa-home fa-2x"></i>
-		                        <span class="nav-text">Dashboard</span>
+		                        <span class="nav-text">HOME</span>
 		                    </a>
 		                </li>
 		                <li class="has-subnav">
 		                    <a href="#">
-		                        <i class="fa fa-laptop fa-2x"></i>
+		                        <i class="fa fa-gift fa-2x"></i>
 		                        <span class="nav-text">
-		                            UI Components
+		                            WISHLIST
 		                        </span>
 		                    </a>
 		
 		                </li>
 		                <li class="has-subnav">
 		                    <a href="#">
-		                       <i class="fa fa-list fa-2x"></i>
+		                       <i class="fa fa-birthday-cake fa-2x"></i>
 		                        <span class="nav-text">
-		                            Forms
+		                            EVENT LISTS
 		                        </span>
 		                    </a>
 		                </li>
 		                <li class="has-subnav">
 		                    <a href="#">
-		                       <i class="fa fa-folder-open fa-2x"></i>
+		                       <i class="fa fa-edit fa-2x"></i>
 		                        <span class="nav-text">
-		                            Pages
+		                            POSTING
 		                        </span>
 		                    </a>
 		                </li>
