@@ -10,6 +10,11 @@
 <title>MyInfo</title>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <style type="text/css">
+/* ============아이콘 표시를 위한 import=============== */
+@import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
+}
+@import url(http://fonts.googleapis.com/css?family=Titillium+Web:300);
+/* ============아이콘 표시를 위한 import 끝ㅇ============== */
 .thumbnail-wrappper {
     width: 25%; 
 }
@@ -87,6 +92,7 @@ $(document).ready(function() {
 	})
 })
 
+/* 내 게시물 자세히 복 */
 function modalToggle(b_no) {
 	/* alert(b_no) 보드 번호 받기. */ 
 	 jQuery.ajax({
@@ -108,6 +114,7 @@ function modalToggle(b_no) {
         	 $('#hiddenNo').val(dto.b_no); 
         	 $('#hiddenImage').val(dto.b_image); 
         	 $('#hiddenBoardImg').attr('value',dto.b_image);
+        	 $('#boardNo').attr('value', b_no );
         	 $('#boardDetail').modal('show');
          },
          error : function(xhr, status, error) {
@@ -116,7 +123,7 @@ function modalToggle(b_no) {
    });
 	
 }
-
+/* 내 팔로워 보기 */
 function follower(m_no) {
 	$('#followHead').text('팔로워');
 	$('#followDiv').text('');
@@ -173,6 +180,7 @@ function follower(m_no) {
    });
 }
 
+/* 내 팔로우 상태 보기 */
 function follow(m_no) {
 	$('#followHead').text('팔로잉');
 	$('#followDiv').text('');
@@ -224,6 +232,7 @@ function follow(m_no) {
   });
 }
 
+/* 팔로우 하기 */
 function upFollow(f_mno,f_sno) {
 	/* alert(m_no + " " + f_sno); */
 	var array = {"f_mno":f_mno,"f_sno":f_sno};
@@ -241,6 +250,8 @@ function upFollow(f_mno,f_sno) {
         }
 	}); 
 }
+
+/*  */
 function up2Follow(m_no,f_sno) {
 	/* alert(m_no + " " + f_sno); */
 	
@@ -262,6 +273,7 @@ function up2Follow(m_no,f_sno) {
 	}); 
 }
 
+/* 팔로우 취소 */
 function cancelFollow(f_mno,f_sno) {
 	/* alert(f_mno + " " + f_sno); */
 	var array = {"f_mno":f_sno,"f_sno":f_mno};
@@ -282,10 +294,12 @@ function cancelFollow(f_mno,f_sno) {
 	$("#followBtn"+f_mno).attr('style','background-color: white; color: black;'); */
 }
 
+/* 마우스 아웃 hover hide처리  */
 function hoverHide(b_no) {
 	$('#showHover'+b_no).hide();
 }
 
+/* 마우스 오버 hover show 처리. ajax 한번호출. */
 function hoverShow(b_no) {
 	var showh = $("#showHover"+b_no);
 	var tagA = $("#tagA"+b_no);
@@ -316,15 +330,27 @@ function hoverShow(b_no) {
 	}
 	
 }
+
+/* 내 게시물 삭제 */
+function boardDelete() {
+	$('#boardDeleteOk').modal('show');
+}
+
+/* 삭제 확인 */
+
+function boardDeleteOk(b_no) {
+	$('#deleteFrm').submit();
+}
 </script>
 </head>
 
 <%@ include file="../../top.jsp" %>
+<%@include file="../../sidebar.jsp"%>
 <body style="background-color: rgba(128, 206, 208, 0.14);">
 <div class="container">
 <div class="container"  style="padding-top: 2%; padding-bottom: 5%;">
-<div class="row" style="background-color: rgba(255, 247, 252, 0.62);; padding-top: 30px; padding-bottom: 30px; ">
-	<div class="col-md-2 col-md-offset-2" style="height: 170px">
+<div class="row" style="background-color: rgba(255, 247, 252, 0.62); padding-top: 30px; padding-bottom: 30px; border-top-right-radius: 20px; border-top-left-radius: 20px;">
+	<div class="col-md-2 col-md-offset-1" style="height: 170px">
 	
 		<a style="color: buttontext; border: 0; cursor: pointer; height: 100%; padding: 0; width: 100%;" data-toggle="modal" data-target="#updateInfo">
 		
@@ -371,7 +397,7 @@ function hoverShow(b_no) {
 	</div>
 </div>
 </c:if>
-<div class="row" style="background-color: rgba(255, 247, 252, 0.62);"><!-- row  -->
+<div class="row" style="background-color: rgba(255, 247, 252, 0.62); border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;"><!-- row  -->
 <div class="col-md-12">
   <c:forEach var="board" items="${board}">  
     	<div class="col-md-4"  >
@@ -554,6 +580,11 @@ function hoverShow(b_no) {
 	      <input type="hidden" value="" id="hiddenImage" name="b_image">
 	     </form>
 	      <div class="modal-footer">
+		      <c:if test="${mno == myinfo.m_no }">
+		      	<div class="col-md-2 text-left">
+				<button type="button" class="btn btn-danger" onclick="boardDelete()">Delete</button>
+		      	</div>
+		      </c:if>
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			<c:if test="${mno == myinfo.m_no }">
 			<button id="updateSubmit" type="button" class="btn btn-primary">Save changes</button>
@@ -575,7 +606,7 @@ function hoverShow(b_no) {
 			<div class="row">
 				<div class="col-md-12 text-center" style="">
 					<a  onclick="$('#boardInsertFile').click();" style="cursor: pointer; padding-top: 40%" >
-					<b id="insertBtag">클릭해서 이미지 추가</b>
+					<b id="insertBtag"><i class="fa fa-picture-o" aria-hidden="true"></i>클릭해서 이미지 추가</b>
 					<img alt="Responsive image" id="boardInsertImg" class="img-responsive center-block" src="" style="">
 					</a>
 					<input type="file" name="fileUpload" id="boardInsertFile" class="sr-only">
@@ -624,7 +655,7 @@ function hoverShow(b_no) {
 	
 
 	<!-- 비밀번호 모달 팝업 -->
-	<div class="modal fade bs-example-modal-sm" id="passwordErr" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+	<div class="modal fade " id="passwordErr" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
 	  <div class="modal-dialog modal-sm" style="margin: 350px auto;">
 	    <div class="modal-content">
 	      <div class="row text-center">
@@ -635,13 +666,37 @@ function hoverShow(b_no) {
 	</div>
 
 	<!-- 새 게시글 이미지 없음 -->
-	<div class="modal fade bs-example-modal-sm" id="boardInsertErr" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+	<div class="modal fade " id="boardInsertErr" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
 	  <div class="modal-dialog modal-sm" style="margin: 260px auto;">
 	    <div class="modal-content">
 	      <div class="row text-center">
 	      	이미지를 선택해주세요.
 	      </div>
 	    </div>
+	  </div>
+	</div>
+
+	<!-- 삭제 확인 모달 -->
+	<div class="modal fade" id="boardDeleteOk" tabindex="-1" role="dialog" aria-labelledby="">
+	  <div class="modal-dialog modal-sm" style="margin: 350px auto;">
+	    <div class="modal-content">
+	      <div class="row text-center">
+	      	<p style="padding-top: 2%"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true" style="color: red;  font-size: 25px;"></span></p>
+	      	<h5>
+	      	<b>정말 삭제 하시겠습니까?</b>
+	      	</h5>
+	      </div>
+	    </div>
+	    
+	     <div class="modal-footer">
+	     	<div class="row text-center">
+			<button type="button" class="btn btn-danger" id="boardDelOk" onclick="boardDeleteOk()">Delete</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	     	</div>
+	      </div>
+	    	<form action="boardDelete" method="post" id="deleteFrm">
+	    		<input type="hidden" id="boardNo" name="b_no" value="">
+	    	</form>
 	  </div>
 	</div>
 	

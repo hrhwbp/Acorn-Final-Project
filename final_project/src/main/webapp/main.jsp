@@ -1,3 +1,4 @@
+<%@page import="com.remind.model.BoardDto"%>
 <%@page import="com.remind.model.LikeDto"%>
 <%@page import="com.remind.model.ReplyDto"%>
 <%@page import="java.util.List"%>
@@ -16,7 +17,7 @@
 <script type="text/javascript">
 var lastbno_save = null;
 $(document).ready(function () {
-	$(window).bind("scroll",scrolling);  
+	$(window).bind("scroll",scrolling);
 });
 
 function scrolling(){ 
@@ -295,7 +296,7 @@ function scrolling(){
 		<!--Top menubar와의 거리 2% -->
 		
 		<div class="container col-md-5 col-md-offset-0 " id="scrollingId"
-			style="background-color: rgb(250, 250, 250); padding-top: 1%; padding-bottom: 2%">
+			style="padding-top: 1%; padding-bottom: 2%">
 			<c:forEach var="list" items="${list }">
 				<div class="row">
 					<div class="col-md-12">
@@ -451,8 +452,13 @@ function scrolling(){
 
 		</div>
 	</div>
-
-	
+	<c:set var="listSizeTest" value="${fn:length(list)}" /><!-- 게시물이 없으면  -->
+	<c:if test="${listSizeTest == 0}">
+	<script type="text/javascript">
+		alert("dd");
+	</script>
+	</c:if>
+	${fn:length(list)}
 
 </body>
 <%@include file="bottom.jsp"%>

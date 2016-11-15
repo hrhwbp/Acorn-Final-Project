@@ -41,29 +41,64 @@ public class BoardController {
 		model.setViewName("../../main");
 		return model;
 	}*/
-	@RequestMapping(value="snslist", method = RequestMethod.GET)
+//	@RequestMapping(value="snslist", method = RequestMethod.GET)
+//	public ModelAndView list(HttpSession session){
+//		String m_no = (String) session.getAttribute("mno");
+//		ModelAndView model = new ModelAndView();
+//		List<AnniversaryDto> anniversary = daoInter.showAnniversaryPart(m_no);
+//		List<BoardDto> list = daoInter.showBoard(m_no);
+//		for (int i = 0; i < list.size(); i++) {
+//			List<ReplyDto> reply = daoInter.showReply(list.get(i).getB_no());
+//			model.addObject("reply" + list.get(i).getB_no(), reply);
+//			int count = daoInter.countReply(list.get(i).getB_no());
+//			//System.out.println(count);
+//			model.addObject("replycount"+list.get(i).getB_no(),count);
+//		}
+//		for (int i = 0; i < list.size(); i++) {
+//			List<LikeDto> like = daoInter.showLike(list.get(i).getB_no());
+//			model.addObject("like" + list.get(i).getB_no(), like);	
+//		}
+//		for (int i = 0; i < list.size(); i++) {
+//			LikeBean bean = new LikeBean();
+//			bean.setL_bno(list.get(i).getB_no());
+//			bean.setL_mno(m_no);
+//			int likeYN = daoInter.likeYN(bean);
+//			model.addObject("likeYN" + list.get(i).getB_no(), likeYN);	
+//		}
+//		model.addObject("list", list);
+//		model.addObject("anniversary",anniversary);
+//		model.setViewName("../../main");
+//		return model;
+//	}
+	@RequestMapping(value="snslist", method = RequestMethod.GET) // 회원가입 후 첫 로그인 화면 작업중 
 	public ModelAndView list(HttpSession session){
 		String m_no = (String) session.getAttribute("mno");
 		ModelAndView model = new ModelAndView();
 		List<AnniversaryDto> anniversary = daoInter.showAnniversaryPart(m_no);
 		List<BoardDto> list = daoInter.showBoard(m_no);
-		for (int i = 0; i < list.size(); i++) {
-			List<ReplyDto> reply = daoInter.showReply(list.get(i).getB_no());
-			model.addObject("reply" + list.get(i).getB_no(), reply);
-			int count = daoInter.countReply(list.get(i).getB_no());
-			//System.out.println(count);
-			model.addObject("replycount"+list.get(i).getB_no(),count);
-		}
-		for (int i = 0; i < list.size(); i++) {
-			List<LikeDto> like = daoInter.showLike(list.get(i).getB_no());
-			model.addObject("like" + list.get(i).getB_no(), like);	
-		}
-		for (int i = 0; i < list.size(); i++) {
-			LikeBean bean = new LikeBean();
-			bean.setL_bno(list.get(i).getB_no());
-			bean.setL_mno(m_no);
-			int likeYN = daoInter.likeYN(bean);
-			model.addObject("likeYN" + list.get(i).getB_no(), likeYN);	
+		if (list.size() >= 1) {
+			System.out.println("리스트 사이즈 1 이상");
+		
+			for (int i = 0; i < list.size(); i++) {
+				List<ReplyDto> reply = daoInter.showReply(list.get(i).getB_no());
+				model.addObject("reply" + list.get(i).getB_no(), reply);
+				int count = daoInter.countReply(list.get(i).getB_no());
+				//System.out.println(count);
+				model.addObject("replycount"+list.get(i).getB_no(),count);
+			}
+			for (int i = 0; i < list.size(); i++) {
+				List<LikeDto> like = daoInter.showLike(list.get(i).getB_no());
+				model.addObject("like" + list.get(i).getB_no(), like);	
+			}
+			for (int i = 0; i < list.size(); i++) {
+				LikeBean bean = new LikeBean();
+				bean.setL_bno(list.get(i).getB_no());
+				bean.setL_mno(m_no);
+				int likeYN = daoInter.likeYN(bean);
+				model.addObject("likeYN" + list.get(i).getB_no(), likeYN);	
+			}
+		}else{
+			System.out.println("리스트 사이즈  0");
 		}
 		model.addObject("list", list);
 		model.addObject("anniversary",anniversary);
@@ -266,11 +301,10 @@ public class BoardController {
 		else return "redirect:/error.jsp";
 	}
 	
-	@RequestMapping(value="deleteBoard", method = RequestMethod.GET)
-	public String deleteSubmit(@RequestParam("b_no1") String b_no1){
-		boolean b = daoInter.eraseBoard(b_no1);
-		BoardDto dto = daoInter.showBoardDetail(b_no1);
-		if(b){return "snslist?m_no=" + dto.getB_mno();}
+	@RequestMapping(value="boardDelete", method = RequestMethod.POST)
+	public String deleteSubmit(@RequestParam("b_no") String b_no){
+		boolean b = daoInter.eraseBoard(b_no);
+		if(b) return "redirect:/myinfo";
 		else return "redirect:/error.jsp";
 	}
 	
