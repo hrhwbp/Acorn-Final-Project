@@ -150,6 +150,8 @@ function follower(m_no) {
  					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + ss.f_mno + "," + ss.f_sno + ")'>팔로우</button>"; 					
  				}else if(ss.f_ms == '1' || ss.f_ms == '2'){
  					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_sno + "," + ss.f_mno +")'>팔로잉</button>";
+ 				}else if(ss.f_sno == m_no2){
+ 					str +=	"<button type='button' class='btn btn-default' style='width:68px'>나</button>";
  				}else{
  					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + ss.f_mno + "," + ss.f_sno + ")'>팔로우</button>";
  				}
@@ -179,6 +181,7 @@ function follow(m_no) {
         dataType: "json",
         success : function(data) {
        	 var list = data.Mylist;
+       	 var m_no2 = data.m_no2;
        	 var str = "";
        	 $.each(list,function(i,ss){
        		 /* alert(ss.m_email); */
@@ -198,6 +201,8 @@ function follow(m_no) {
 					"<div class='col-md-2' style='padding-top: 1%;'>";
 			if(ss.f_ms == '2' || ss.f_ms == '1'){
 				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_mno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_mno + "," + ss.f_sno +")'>팔로잉</button>";
+			}else if(ss.f_mno == m_no2){
+				str +=	"<button type='button' class='btn btn-default' style='width:68px'>나</button>";	
 			}else{
 				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_mno + "' onclick='upFollow(" + ss.f_sno + "," + ss.f_mno + ")'>팔로우</button>";
 			}	
@@ -227,6 +232,7 @@ function upFollow(f_mno,f_sno) {
         success : function() {
         	$("#followBtn"+f_sno).attr('onclick','cancelFollow('+ f_sno + ',' + f_mno +')');
         	$("#followBtn"+f_sno).attr('style','background-color: #70c050; color: white;');
+        	$("#followBtn"+f_sno).text('팔로잉');
         },
         error : function(xhr, status, error) {
               alert("에러발생 insert" + error + "" + status );
@@ -264,6 +270,7 @@ function cancelFollow(f_mno,f_sno) {
         success : function() {
         	$("#followBtn"+f_mno).attr('onclick','upFollow('+ f_sno + ',' + f_mno +')');
         	$("#followBtn"+f_mno).attr('style','background-color: white; color: black;');
+        	$("#followBtn"+f_mno).text('팔로우');
         },
         error : function(xhr, status, error) {
               alert("에러발생 " + error);
@@ -295,8 +302,8 @@ function hoverShow(b_no) {
 		      	var reply = data.replyCount;
 				var str = "";
 				str += "<ul style='display: flex; font-size: 16px;font-weight: 600; color: #fff; list-style: none; justify-content: center; margin: 0; padding: 0; border: 0; font: inherit; padding-top: 32%;' class='' >" +
-						"<li style='line-height: 19px;margin: 0 auto;padding-left: 26px;position: relative; display: table;'> 좋아요 :" + like + "</li>" +
-						"<li style='line-height: 19px;margin: 0 auto;padding-left: 26px;position: relative; display: table;'>  댓글 :" + reply +  "</li>" +
+						"<li style='line-height: 19px; padding-left: 20%; font-size: 18px; margin: 0 auto; position: relative; display: table;' class='text-right'><span class='glyphicon glyphicon-heart' aria-hidden='true'></span>&nbsp;&nbsp;" + like + "</li>" +
+						"<li style='line-height: 19px; padding-right: 20%; margin: 0 auto; font-size: 18px; position: relative; display: table;'><span class='glyphicon glyphicon-comment' aria-hidden='true'></span>&nbsp;&nbsp;" + reply +  "</li>" +
 						"</ul>";
 				showh.append(str);
 		     },
@@ -507,7 +514,13 @@ function hoverShow(b_no) {
 						</div>
 					</c:when>
 					<c:otherwise>
-					<img alt="Responsive image" id="modalimg" class="img-responsive center-block" src="">
+					<div class="thumbnail-wrapper" >
+		    			<div class="thumbnail" style="height: 350px; background-color: #000;">
+		        			<div class="centered">
+								<img alt="Responsive image" id="modalimg" class="landscape" src="">
+							</div>
+						</div>
+					</div>
 					</c:otherwise>
 					
 					</c:choose>
@@ -586,7 +599,7 @@ function hoverShow(b_no) {
 			<!-- 팔로우 모달 -->
 
 	<div class="modal" id="myFollow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-	  <div class="modal-dialog" style="margin: 180px auto">
+	  <div class="modal-dialog" style="margin: 180px auto; ">
 	    <div class="modal-content">
 	     <form id="boardInsertfrm" action="insertBoard" method="post" enctype="multipart/form-data">
 	      <div class="modal-header">
@@ -596,7 +609,7 @@ function hoverShow(b_no) {
 				</div>
 			</div>
 	      </div>
-	      <div class="modal-body" id="followDiv" style="max-height: 400px">
+	      <div class="modal-body" id="followDiv" style="max-height: 400px; overflow-y: scroll;">
 		      
 	      </div>
 	     </form>

@@ -52,11 +52,7 @@
    } */
    
    function logsubmit(){
-<<<<<<< HEAD
-	  
-=======
-	   
->>>>>>> 25d0bd68ed4769848aabf7850028ecd108f7dec0
+
 	      $.ajax({
 	           type:"post",
 	           url:"loginsub",
