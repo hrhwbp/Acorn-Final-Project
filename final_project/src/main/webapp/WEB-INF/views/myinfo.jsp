@@ -87,6 +87,7 @@ $(document).ready(function() {
 	})
 })
 
+/* 내 게시물 자세히 복 */
 function modalToggle(b_no) {
 	/* alert(b_no) 보드 번호 받기. */ 
 	 jQuery.ajax({
@@ -108,6 +109,7 @@ function modalToggle(b_no) {
         	 $('#hiddenNo').val(dto.b_no); 
         	 $('#hiddenImage').val(dto.b_image); 
         	 $('#hiddenBoardImg').attr('value',dto.b_image);
+        	 $('#boardNo').attr('value', b_no );
         	 $('#boardDetail').modal('show');
          },
          error : function(xhr, status, error) {
@@ -116,7 +118,7 @@ function modalToggle(b_no) {
    });
 	
 }
-
+/* 내 팔로워 보기 */
 function follower(m_no) {
 	$('#followHead').text('팔로워');
 	$('#followDiv').text('');
@@ -173,6 +175,7 @@ function follower(m_no) {
    });
 }
 
+/* 내 팔로우 상태 보기 */
 function follow(m_no) {
 	$('#followHead').text('팔로잉');
 	$('#followDiv').text('');
@@ -224,6 +227,7 @@ function follow(m_no) {
   });
 }
 
+/* 팔로우 하기 */
 function upFollow(f_mno,f_sno) {
 	/* alert(m_no + " " + f_sno); */
 	var array = {"f_mno":f_mno,"f_sno":f_sno};
@@ -241,6 +245,8 @@ function upFollow(f_mno,f_sno) {
         }
 	}); 
 }
+
+/*  */
 function up2Follow(m_no,f_sno) {
 	/* alert(m_no + " " + f_sno); */
 	
@@ -262,6 +268,7 @@ function up2Follow(m_no,f_sno) {
 	}); 
 }
 
+/* 팔로우 취소 */
 function cancelFollow(f_mno,f_sno) {
 	/* alert(f_mno + " " + f_sno); */
 	var array = {"f_mno":f_sno,"f_sno":f_mno};
@@ -282,10 +289,12 @@ function cancelFollow(f_mno,f_sno) {
 	$("#followBtn"+f_mno).attr('style','background-color: white; color: black;'); */
 }
 
+/* 마우스 아웃 hover hide처리  */
 function hoverHide(b_no) {
 	$('#showHover'+b_no).hide();
 }
 
+/* 마우스 오버 hover show 처리. ajax 한번호출. */
 function hoverShow(b_no) {
 	var showh = $("#showHover"+b_no);
 	var tagA = $("#tagA"+b_no);
@@ -315,6 +324,17 @@ function hoverShow(b_no) {
 		});
 	}
 	
+}
+
+/* 내 게시물 삭제 */
+function boardDelete() {
+	$('#boardDeleteOk').modal('show');
+}
+
+/* 삭제 확인 */
+
+function boardDeleteOk(b_no) {
+	$('#deleteFrm').submit();
 }
 </script>
 </head>
@@ -555,6 +575,11 @@ function hoverShow(b_no) {
 	      <input type="hidden" value="" id="hiddenImage" name="b_image">
 	     </form>
 	      <div class="modal-footer">
+		      <c:if test="${mno == myinfo.m_no }">
+		      	<div class="col-md-2 text-left">
+				<button type="button" class="btn btn-danger" onclick="boardDelete()">Delete</button>
+		      	</div>
+		      </c:if>
 			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			<c:if test="${mno == myinfo.m_no }">
 			<button id="updateSubmit" type="button" class="btn btn-primary">Save changes</button>
@@ -625,7 +650,7 @@ function hoverShow(b_no) {
 	
 
 	<!-- 비밀번호 모달 팝업 -->
-	<div class="modal fade bs-example-modal-sm" id="passwordErr" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+	<div class="modal fade " id="passwordErr" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
 	  <div class="modal-dialog modal-sm" style="margin: 350px auto;">
 	    <div class="modal-content">
 	      <div class="row text-center">
@@ -636,13 +661,37 @@ function hoverShow(b_no) {
 	</div>
 
 	<!-- 새 게시글 이미지 없음 -->
-	<div class="modal fade bs-example-modal-sm" id="boardInsertErr" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+	<div class="modal fade " id="boardInsertErr" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
 	  <div class="modal-dialog modal-sm" style="margin: 260px auto;">
 	    <div class="modal-content">
 	      <div class="row text-center">
 	      	이미지를 선택해주세요.
 	      </div>
 	    </div>
+	  </div>
+	</div>
+
+	<!-- 삭제 확인 모달 -->
+	<div class="modal fade" id="boardDeleteOk" tabindex="-1" role="dialog" aria-labelledby="">
+	  <div class="modal-dialog modal-sm" style="margin: 350px auto;">
+	    <div class="modal-content">
+	      <div class="row text-center">
+	      	<p style="padding-top: 2%"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true" style="color: red;  font-size: 25px;"></span></p>
+	      	<h5>
+	      	<b>정말 삭제 하시겠습니까?</b>
+	      	</h5>
+	      </div>
+	    </div>
+	    
+	     <div class="modal-footer">
+	     	<div class="row text-center">
+			<button type="button" class="btn btn-danger" id="boardDelOk" onclick="boardDeleteOk()">Delete</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	     	</div>
+	      </div>
+	    	<form action="boardDelete" method="post" id="deleteFrm">
+	    		<input type="hidden" id="boardNo" name="b_no" value="">
+	    	</form>
 	  </div>
 	</div>
 	

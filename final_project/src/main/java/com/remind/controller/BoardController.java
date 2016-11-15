@@ -266,11 +266,10 @@ public class BoardController {
 		else return "redirect:/error.jsp";
 	}
 	
-	@RequestMapping(value="deleteBoard", method = RequestMethod.GET)
-	public String deleteSubmit(@RequestParam("b_no1") String b_no1){
-		boolean b = daoInter.eraseBoard(b_no1);
-		BoardDto dto = daoInter.showBoardDetail(b_no1);
-		if(b){return "snslist?m_no=" + dto.getB_mno();}
+	@RequestMapping(value="boardDelete", method = RequestMethod.POST)
+	public String deleteSubmit(@RequestParam("b_no") String b_no){
+		boolean b = daoInter.eraseBoard(b_no);
+		if(b) return "redirect:/myinfo";
 		else return "redirect:/error.jsp";
 	}
 	
