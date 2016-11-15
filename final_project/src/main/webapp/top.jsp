@@ -38,6 +38,24 @@
 	function myinfo() {
 		$("#info").submit();
 	}
+	function search(){
+		 $.ajax({
+	           type:"post",
+	           url:"searching",
+	           data:{"name":jQuery("#friendSearch").val()},
+	           dataType:"json",
+	           success:function(result){
+	        	   var list = result.datas;
+	           	$(list).each(function(index,objArr){
+	           		$("#seresult").html("");
+	           		$("#seresult").append()
+	           	})
+	           },error:function(request,status,error){
+	               alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	           }
+	         
+	      });
+	}
 </script>
 </head>
 <body
@@ -81,10 +99,11 @@
 						</ul>
 					</li>
 				</ul>
-				<form class="navbar-form navbar-left">
+				<form class="navbar-form navbar-left" id="searchfr">
 					<div class="form-group">
-						<input type="text" class="form-control" id="friendSearch" placeholder="친구찾기">
+						<input type="text" class="form-control" id="friendSearch" placeholder="친구찾기" onkeydown="search()">
 					</div>
+					<div class="dropdown" id="research"></div>
 					<!-- <button type="submit" class="btn btn-default">Submit</button> -->
 				</form>
 				<ul class="nav navbar-nav navbar-right">

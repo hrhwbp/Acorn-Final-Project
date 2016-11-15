@@ -73,7 +73,7 @@ public class DataDao implements DaoInter {
 	}
 
 	@Override
-	public List<BoardDto> showMyMain(String b_mno) {
+	public List<BoardDto> showMyMain(String b_mno) throws DataAccessException{
 		return annoInter.showMyMain(b_mno);
 	}
 
@@ -81,7 +81,11 @@ public class DataDao implements DaoInter {
 	public MemberDto showMemberDetail(String m_no) throws DataAccessException {
 		return annoInter.showMemberDetail(m_no);
 	}
-
+	@Override
+	public List<MemberDto> searchMember(String m_name) throws DataAccessException {
+		
+		return annoInter.searchMember("%" + m_name + "%");
+	}
 	@Override
 	public MemberDto memberDetail(String m_name) throws DataAccessException {
 
@@ -122,7 +126,7 @@ public class DataDao implements DaoInter {
 	}
 
 	@Override
-	public MemberDto login(MemberBean bean) {
+	public MemberDto login(MemberBean bean) throws DataAccessException{
 		return annoInter.login(bean);
 	}
 

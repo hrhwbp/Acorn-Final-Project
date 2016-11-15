@@ -23,13 +23,14 @@ public interface DaoInter {
 	boolean updateBoard(BoardBean bean) throws DataAccessException;
 	
 	//member
-	List<BoardDto> showMyMain(String b_mno);
+	List<BoardDto> showMyMain(String b_mno) throws DataAccessException;
+	List<MemberDto> searchMember(String m_name) throws DataAccessException;
 	MemberDto showMemberDetail(String m_no) throws DataAccessException;
 	MemberDto memberDetail(String m_name) throws DataAccessException;
 	boolean joinMember(MemberBean bean) throws DataAccessException;
 	boolean outMember(String m_no) throws DataAccessException;
 	boolean updateMember(MemberBean bean) throws DataAccessException;
-	MemberDto login(MemberBean bean);
+	MemberDto login(MemberBean bean) throws DataAccessException;
 	
 	//follow
 	List<FollowDto> showMyFollower(String m_no) throws DataAccessException;

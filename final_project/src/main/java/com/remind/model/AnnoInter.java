@@ -47,6 +47,9 @@ public interface AnnoInter {
 	// member
 	@Select("select * from board where b_mno = #{b_mno} order by b_no desc")
 	List<BoardDto> showMyMain(String b_mno);
+	@Select("select * from member where m_name like #{name} or m_email like #{name}")
+	List<MemberDto> searchMember(String name);
+	
 	
 	@Select("select * from member where m_no=#{m_no}")
 	MemberDto showMemberDetail(String m_no);

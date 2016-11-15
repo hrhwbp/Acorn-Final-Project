@@ -1,8 +1,10 @@
 package com.remind.controller;
 
 import java.io.File;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -57,6 +59,30 @@ public class MemberController {
 	public ModelAndView outConfirm(@RequestParam("m_no") String m_no){
 		return new ModelAndView("deleteconfirm","m_no",m_no);
 	}
+	
+	@RequestMapping(value="searching",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> search(@RequestParam("name") String name){
+		
+		List<MemberDto> list = daoInter.searchMember(name);
+		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
+		Map<String, String> data = null;
+		for(MemberDto s : list){
+			data = new HashMap<String,String>();
+			data.put("m_image",s.getM_image());
+			data.put("m_email", s.getM_email());
+			
+			data.put("m_name", s.getM_name());
+			data.put("m_no", s.getM_no());
+			dataList.add(data);
+		}
+		Map<String, Object> searchData = new HashMap<String, Object>();
+		searchData.put("datas", dataList);
+		
+		return searchData;
+			
+	}
+	
 	@RequestMapping(value="out", method= RequestMethod.POST)
 	public String out(@RequestParam("m_no") String m_no){
 		boolean b = daoInter.outMember(m_no);
