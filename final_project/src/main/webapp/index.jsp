@@ -54,6 +54,7 @@
    function logsubmit(){
 
 	      $.ajax({
+
 	           type:"post",
 	           url:"loginsub",
 	           data:$("#loginform").serialize(),
@@ -66,7 +67,7 @@
 	                 
 	              }
 	              else if(result == "success"){
-	                 window.location.href = "snslist";
+	                 window.location.href = "snslist"
 	              }
 	           }
 	        

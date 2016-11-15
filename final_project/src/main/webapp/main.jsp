@@ -27,8 +27,8 @@ function scrolling(){
 		var lastbno = $(".thumbnail:last").attr("data-bno");	
 		if(lastbno_save != lastbno){  
 		lastbno_save = lastbno;
-		$.ajax({ // 스크롤링 기본 베이스 ( 댓글 , 라이크는 안에서 반복 function 으로 같이 출력)
-
+		$.ajax({ // 스크롤링 
+			
 			type:"get",
 			url:"scroll",
 			dataType:"json",
