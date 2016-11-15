@@ -52,7 +52,9 @@
    } */
    
    function logsubmit(){
-	   $.ajax({
+
+	      $.ajax({
+
 	           type:"post",
 	           url:"loginsub",
 	           data:$("#loginform").serialize(),

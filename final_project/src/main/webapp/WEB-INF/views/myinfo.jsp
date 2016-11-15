@@ -97,15 +97,17 @@ function modalToggle(b_no) {
          success : function(data) {
         	 /* alert(data.detailDto.b_no); */
         	 var dto = data.detailDto;
+        	 var likeCnt = data.likeCount;
         	 /* alert(dto.b_image); */
         	 /* modalContent modalLike modalDate */
         	 /* document.getElementById("modalimg").src = dto.b_image;  */
         	 $("#modalimg").attr('src', dto.b_image);
         	 $('#modalContent').val(dto.b_content);
-        	 $('#modalLike').text('좋아요 ' + dto.b_like);
+        	 $('#modalLike').text('좋아요 ' + likeCnt.l_count);
         	 $('#modalDate').text(dto.b_date);
         	 $('#hiddenNo').val(dto.b_no); 
         	 $('#hiddenImage').val(dto.b_image); 
+        	 $('#hiddenBoardImg').attr('value',dto.b_image);
         	 $('#boardDetail').modal('show');
          },
          error : function(xhr, status, error) {
@@ -150,6 +152,8 @@ function follower(m_no) {
  					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + ss.f_mno + "," + ss.f_sno + ")'>팔로우</button>"; 					
  				}else if(ss.f_ms == '1' || ss.f_ms == '2'){
  					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_sno + "," + ss.f_mno +")'>팔로잉</button>";
+ 				}else if(ss.f_sno == m_no2){
+ 					str +=	"<button type='button' class='btn btn-default' style='width:68px'>나</button>";
  				}else{
  					str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_sno + "' onclick='upFollow(" + ss.f_mno + "," + ss.f_sno + ")'>팔로우</button>";
  				}
@@ -179,6 +183,7 @@ function follow(m_no) {
         dataType: "json",
         success : function(data) {
        	 var list = data.Mylist;
+       	 var m_no2 = data.m_no2;
        	 var str = "";
        	 $.each(list,function(i,ss){
        		 /* alert(ss.m_email); */
@@ -198,6 +203,8 @@ function follow(m_no) {
 					"<div class='col-md-2' style='padding-top: 1%;'>";
 			if(ss.f_ms == '2' || ss.f_ms == '1'){
 				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_mno + "' style='background-color: #70c050; color: white;' onclick='cancelFollow("+ ss.f_mno + "," + ss.f_sno +")'>팔로잉</button>";
+			}else if(ss.f_mno == m_no2){
+				str +=	"<button type='button' class='btn btn-default' style='width:68px'>나</button>";	
 			}else{
 				str +=	"<button type='button' class='btn btn-default' id='followBtn" + ss.f_mno + "' onclick='upFollow(" + ss.f_sno + "," + ss.f_mno + ")'>팔로우</button>";
 			}	
@@ -227,6 +234,7 @@ function upFollow(f_mno,f_sno) {
         success : function() {
         	$("#followBtn"+f_sno).attr('onclick','cancelFollow('+ f_sno + ',' + f_mno +')');
         	$("#followBtn"+f_sno).attr('style','background-color: #70c050; color: white;');
+        	$("#followBtn"+f_sno).text('팔로잉');
         },
         error : function(xhr, status, error) {
               alert("에러발생 insert" + error + "" + status );
@@ -264,6 +272,7 @@ function cancelFollow(f_mno,f_sno) {
         success : function() {
         	$("#followBtn"+f_mno).attr('onclick','upFollow('+ f_sno + ',' + f_mno +')');
         	$("#followBtn"+f_mno).attr('style','background-color: white; color: black;');
+        	$("#followBtn"+f_mno).text('팔로우');
         },
         error : function(xhr, status, error) {
               alert("에러발생 " + error);
@@ -295,8 +304,8 @@ function hoverShow(b_no) {
 		      	var reply = data.replyCount;
 				var str = "";
 				str += "<ul style='display: flex; font-size: 16px;font-weight: 600; color: #fff; list-style: none; justify-content: center; margin: 0; padding: 0; border: 0; font: inherit; padding-top: 32%;' class='' >" +
-						"<li style='line-height: 19px;margin: 0 auto;padding-left: 26px;position: relative; display: table;'> 좋아요 :" + like + "</li>" +
-						"<li style='line-height: 19px;margin: 0 auto;padding-left: 26px;position: relative; display: table;'>  댓글 :" + reply +  "</li>" +
+						"<li style='line-height: 19px; padding-left: 20%; font-size: 18px; margin: 0 auto; position: relative; display: table;' class='text-right'><span class='glyphicon glyphicon-heart' aria-hidden='true'></span>&nbsp;&nbsp;" + like + "</li>" +
+						"<li style='line-height: 19px; padding-right: 20%; margin: 0 auto; font-size: 18px; position: relative; display: table;'><span class='glyphicon glyphicon-comment' aria-hidden='true'></span>&nbsp;&nbsp;" + reply +  "</li>" +
 						"</ul>";
 				showh.append(str);
 		     },
@@ -311,10 +320,10 @@ function hoverShow(b_no) {
 </head>
 
 <%@ include file="../../top.jsp" %>
-<body style="">
+<body style="background-color: rgba(128, 206, 208, 0.14);">
 <div class="container">
 <div class="container"  style="padding-top: 2%; padding-bottom: 5%;">
-<div class="row" style="background-color: rgb(253,253,253); padding-top: 30px; padding-bottom: 30px; ">
+<div class="row" style="background-color: rgba(255, 247, 252, 0.62);; padding-top: 30px; padding-bottom: 30px; ">
 	<div class="col-md-2 col-md-offset-2" style="height: 170px">
 	
 		<a style="color: buttontext; border: 0; cursor: pointer; height: 100%; padding: 0; width: 100%;" data-toggle="modal" data-target="#updateInfo">
@@ -356,13 +365,13 @@ function hoverShow(b_no) {
 	</div>
 </div>
 <c:if test="${mno == myinfo.m_no }">
-<div class="row" style="padding-bottom: 2%">
+<div class="row" style="padding-bottom: 2%; background-color: rgba(255, 247, 252, 0.62);">
 	<div class="col-md-10 col-md-offset-1">
-			<button type="button" id="boardInsertBtn" class="btn btn-link col-md-12" style="background-color: rgb(255,230,231);"><h4><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;게시물 추가하기</h4></button>
+			<button type="button" id="boardInsertBtn" class="btn btn-link col-md-12" style="background-color: rgb(212, 235, 255); border-radius: 20px;"><h4><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;게시물 추가하기</h4></button>
 	</div>
 </div>
 </c:if>
-<div class="row" style="background-color: rgb(253,253,253);"><!-- row  -->
+<div class="row" style="background-color: rgba(255, 247, 252, 0.62);"><!-- row  -->
 <div class="col-md-12">
   <c:forEach var="board" items="${board}">  
     	<div class="col-md-4"  >
@@ -399,9 +408,10 @@ function hoverShow(b_no) {
 				<div class="col-md-4 col-md-offset-4 text-center">
 				<div style="color: buttontext; border: 0; cursor: pointer; height: 180px; padding: 0; width: 100%;">
 					<a  onclick="$('#file').click();">
-					<img id="image" src="http://wbp.synology.me/profileimg/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
+					<img id="image" src="http://wbp.synology.me/profileimg/${myinfo.m_image}" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
 					</a>
 	      			<input type="file" id="file"  name="fileUp" class="sr-only">
+	      			<input type="hidden" name="hiddenName" value="${myinfo.m_image}"> 
 				</div>
 				</div>
 			</div>
@@ -507,11 +517,18 @@ function hoverShow(b_no) {
 						</div>
 					</c:when>
 					<c:otherwise>
-					<img alt="Responsive image" id="modalimg" class="img-responsive center-block" src="">
+					<div class="thumbnail-wrapper" >
+		    			<div class="thumbnail" style="height: 350px; background-color: #000;">
+		        			<div class="centered">
+								<img alt="Responsive image" id="modalimg" class="landscape" src="">
+							</div>
+						</div>
+					</div>
 					</c:otherwise>
 					
 					</c:choose>
 					<input type="file" name="fileUpload"  id="boardFile" class="sr-only" >
+					<input type="hidden" name="hiddenBoardImg" value="" id="hiddenBoardImg">
 				</div>
 			</div>
 	      </div>
@@ -586,7 +603,7 @@ function hoverShow(b_no) {
 			<!-- 팔로우 모달 -->
 
 	<div class="modal" id="myFollow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-	  <div class="modal-dialog" style="margin: 180px auto">
+	  <div class="modal-dialog" style="margin: 180px auto; ">
 	    <div class="modal-content">
 	     <form id="boardInsertfrm" action="insertBoard" method="post" enctype="multipart/form-data">
 	      <div class="modal-header">
@@ -596,7 +613,7 @@ function hoverShow(b_no) {
 				</div>
 			</div>
 	      </div>
-	      <div class="modal-body" id="followDiv" style="max-height: 400px">
+	      <div class="modal-body" id="followDiv" style="max-height: 400px; overflow-y: scroll;">
 		      
 	      </div>
 	     </form>
