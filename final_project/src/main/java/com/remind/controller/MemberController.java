@@ -71,9 +71,10 @@ public class MemberController {
 		return new ModelAndView("updateform","dto",dto);
 	}	
 	@RequestMapping(value="updateInfo", method = RequestMethod.POST)
-	public String updateSubmit(MemberBean bean){
-		
+	public String updateSubmit(MemberBean bean,@RequestParam("hiddenName")String imgName){
+		System.out.println(imgName);
 		MultipartFile uploadfile = bean.getFileUp();
+		System.out.println(uploadfile);
 		if (uploadfile != null) {
             String fileName = uploadfile.getOriginalFilename();
             System.out.println(fileName);
@@ -89,9 +90,12 @@ public class MemberController {
                 
                 uploadfile.transferTo(file);
             } catch (Exception e) {
+            	bean.setM_image(imgName);
                 System.out.println("파일 업로드 err : " + e);
             } // try - catch
-        } // if
+        }else{
+        	bean.setM_image(imgName);
+        }
         // 데이터 베이스 처리를 현재 위치에서 처리
 		bean.setM_bdate(bean.getYear()+ "-" + bean.getMonth() + "-" + bean.getDay());
 		boolean b = daoInter.updateMember(bean);

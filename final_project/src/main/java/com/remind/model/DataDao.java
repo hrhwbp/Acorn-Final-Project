@@ -37,9 +37,9 @@ public class DataDao implements DaoInter {
 	}
 
 	@Override
-	public boolean eraseBoard(String b_no1) throws DataAccessException {
+	public boolean eraseBoard(String b_no) throws DataAccessException {
 		try {
-			annoInter.eraseBoard(b_no1);
+			annoInter.eraseBoard(b_no);
 			return true;
 		} catch (Exception e) {
 			System.out.println("eraseboard err");
