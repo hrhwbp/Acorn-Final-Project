@@ -320,6 +320,7 @@ function hoverShow(b_no) {
 </head>
 
 <%@ include file="../../top.jsp" %>
+<%@include file="../../sidebar.jsp"%>
 <body style="background-color: rgba(128, 206, 208, 0.14);">
 <div class="container">
 <div class="container"  style="padding-top: 2%; padding-bottom: 5%;">
