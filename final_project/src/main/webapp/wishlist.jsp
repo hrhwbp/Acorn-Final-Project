@@ -413,7 +413,6 @@ function wgopen(wg_no, wg_detail){
 <%@ include file="sidebar.jsp"%>
 <body>
 
-
    <div class="container col-md-10 col-md-offset-1">
       <div class="row">
          <div class="col-md-12">
@@ -427,29 +426,33 @@ function wgopen(wg_no, wg_detail){
                <div class="panel-group" id="accordion">
 
                   <!-- ----------------새로운 소원목록 작성-------------------------- -->
-                  <div class="panel panel-default">
-                     <div class="panel-heading">
-                        <h4 class="panel-title">
-                           <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree"> 새로운 소원목록 작성하기</a>
-                        </h4>
-                     </div>
-                     <div id="collapseThree" class="panel-collapse collapse">
-                        <div class="panel-body">
-
-                           <form name="wishGroupForm">
-                              <div class="input-group">
-                                 <input type="text" name="wg_detail" id="wg_detail" class="form-control" placeholder="새로운 소원목록명..."> 
-                                 <input type="hidden" name="wg_mno" id="wg_mno" value="<%=session.getAttribute("mno")%>"> 
-                                 <input type="hidden" name="w_mno" id="w_mno" value="<%=session.getAttribute("mno")%>"> 
-                                 <span class="input-group-btn">
-                                    <button class="btn btn-success" id="btn_wishgroup_submit" type="button">추가</button>
-                                 </span>
-                              </div>
-                              <!-- /input-group -->
-                           </form>
-                        </div>
-                     </div>
-                  </div>
+				  <%-- <c:set var="regw_mno" value="<%=session.getAttribute("mno")%>"/> --%>
+                  <c:if test="${mno == w_mno}">
+	                  <div class="panel panel-default">
+	                     <div class="panel-heading">
+	                        <h4 class="panel-title">
+	                           <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree"> 새로운 소원목록 작성하기${regw_mno }</a>										
+	                        </h4>
+	                     </div>
+	                     <div id="collapseThree" class="panel-collapse collapse">
+	                        <div class="panel-body">
+	
+	                           <form name="wishGroupForm">
+	                              <div class="input-group">
+	                                 <input type="text" name="wg_detail" id="wg_detail" class="form-control" placeholder="새로운 소원목록명..."> 
+	                                 <input type="hidden" name="wg_mno" id="wg_mno" value="<%=session.getAttribute("mno")%>"> 
+	                                 <input type="hidden" name="w_mno" id="w_mno" value="<%=session.getAttribute("mno")%>"> 
+	                                 <span class="input-group-btn">
+	                                    <button class="btn btn-success" id="btn_wishgroup_submit" type="button">추가</button>
+	                                 </span>
+	                              </div>
+	                              <!-- //input-group -->
+	                           </form>
+	                           
+	                        </div>
+	                     </div>
+	                  </div>
+                  </c:if>
                   <!-- ----------------새로운 소원목록 작성 끝------------------------ -->
 
                   <!-- ---------------기존 등록된 소원목록 뽑기----------------------- -->
