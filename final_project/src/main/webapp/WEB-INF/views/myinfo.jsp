@@ -474,9 +474,13 @@ function boardDeleteOk(b_no) {
 							<jsp:useBean id="toDay" class="java.util.Date" />
 							<fmt:formatDate value="${toDay}" var = "viewYear" pattern="yyyy" />
 							<select class="form-control" name="year">
-								<option>${fn:substring(date,0,4) }</option>
 								<c:forEach var="i" begin="0" end ="100" step="1">
+								<c:if test="${fn:substring(date,0,4) == (viewYear -i)}">
+								<option selected="selected">${viewYear -i }</option>
+								</c:if>
+								<c:if test="${fn:substring(date,0,4) != (viewYear -i)}">
 								<option>${viewYear -i }</option>
+								</c:if>
 								</c:forEach>
 
 							</select>
@@ -485,9 +489,13 @@ function boardDeleteOk(b_no) {
 						<div class="col-md-3 top_pd text-right">
 							<label class="">월</label> 
 							<select class="form-control" name="month">
-								<option>${fn:substring(date,5,7) }</option>
 								<c:forEach var="i" begin="1" end ="12" step="1">
+								<c:if test="${fn:substring(date,5,7) == i}">
+								<option selected="selected">${i}</option>								
+								</c:if>
+								<c:if test="${fn:substring(date,5,7) != i}">
 								<option>${i}</option>
+								</c:if>
 								</c:forEach>
 							</select>
 						</div>
@@ -496,9 +504,13 @@ function boardDeleteOk(b_no) {
 							<label class="" for="ss">일</label> 
 							<select id="ss" name="day"
 								class="form-control" >
-								<option>${fn:substring(date,8,10) }</option>
 								<c:forEach var="i" begin="1" end ="31" step="1">
+								<c:if test="${fn:substring(date,8,10) == i}">
+								<option selected="selected">${i}</option>
+								</c:if>
+								<c:if test="${fn:substring(date,8,10) != i}">
 								<option>${i}</option>
+								</c:if>
 								</c:forEach>
 							</select>
 						</div>
@@ -561,23 +573,27 @@ function boardDeleteOk(b_no) {
 	      <div class="modal-body">
 	     
 	 
-	      <div class="row">	      
-			<h3 class="col-md-12">
-			<c:choose>
-			<c:when test="${mno == myinfo.m_no }">
-			<input name="b_content" id="modalContent" type="text" class="form-control" value="">
-			</c:when>
-			<c:otherwise>
-			<input name="b_content" id="modalContent" type="text" class="form-control" value="" readonly="readonly">
-			</c:otherwise>
-			</c:choose>
-			</h3>
-			
-			<p class="col-md-6" id="modalLike"></p><p id="modalDate" class="text-right col-md-6"></p>
+	      	<div class="row">	      
+				<h3 class="col-md-12">
+				<c:choose>
+				<c:when test="${mno == myinfo.m_no }">
+				<input name="b_content" id="modalContent" type="text" class="form-control" value="">
+				</c:when>
+				<c:otherwise>
+				<input name="b_content" id="modalContent" type="text" class="form-control" value="" readonly="readonly">
+				</c:otherwise>
+				</c:choose>
+				</h3>
+				
+				<p class="col-md-6" id="modalLike"></p><p id="modalDate" class="text-right col-md-6"></p>
+	      	</div>
+	     	<hr>
+	     	<div class="row">
+	     		
+	     	</div>
 	      </div>
-	      </div>
-	      <input type="hidden" value="" id="hiddenNo" name="b_no">
-	      <input type="hidden" value="" id="hiddenImage" name="b_image">
+	      <input type="hidden" value="" id="hiddenNo" name="b_no" class="sr-only">
+	      <input type="hidden" value="" id="hiddenImage" name="b_image" class="sr-only">
 	     </form>
 	      <div class="modal-footer">
 		      <c:if test="${mno == myinfo.m_no }">

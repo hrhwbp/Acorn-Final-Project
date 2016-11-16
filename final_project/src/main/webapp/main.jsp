@@ -43,7 +43,12 @@ function scrolling(){
 					str += '<div class="row">';
 			        str += '<div class="col-md-12">';
 			        str += '	<div class="thumbnail" data-bno='+this.b_no+' >';
-			        str += '       <img alt="food" src='+objArr["b_image"]+' height="400px">';
+			       	str += '<div class="thumbnail-wrapper1">' +
+							'<div class="thumbnail1" style="background-color: #000;">' +
+							'<div class="centered1">';
+			        str += '       <img src='+objArr["b_image"]+' class="landscape1">' +
+			        		'</div></div></div>';
+			        
 			        str += '       <div class="caption">';
 			        str += '       <div class="row">';
 			        str += '          <div class="col-md-12">';
@@ -284,6 +289,49 @@ function scrolling(){
 	border-style: solid;
 	border-width: thin;
 }
+.thumbnail-wrappper1 {
+    width: 25%; 
+}
+
+.thumbnail1 {
+    position: relative;
+    padding-top: 75%;  /* 1:1 ratio */
+    overflow: hidden;
+}
+
+.thumbnail1 .centered1  {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transform: translate(50%,50%);
+    -ms-transform: translate(50%,50%);
+    transform: translate(50%,50%);
+}
+
+.thumbnail1 .centered1 img {
+    position: absolute;
+    top: 0;
+    left: 0;   
+    max-width: 100%;
+    height: auto;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+
+.thumbnail1 img.portrait1 {
+  width: 100%;
+  max-width: none;
+  height: auto;
+}
+.thumbnail1 img.landscape1 {
+  width: auto;
+  max-width: none;
+  height: 100%;
+}
+
 </style>
 </head>
 <%@include file="common.jsp"%>
@@ -301,7 +349,13 @@ function scrolling(){
 				<div class="row">
 					<div class="col-md-12">
 						<div class="thumbnail" data-bno="${list.b_no }">
-							<img alt="Responsive image" src="${list.b_image}" class="img-responsive">
+							<div class="thumbnail-wrapper1" >
+    							<div class="thumbnail1" style="background-color: #000;">
+    								<div class="centered1">
+										<img alt="" src="${list.b_image}" class="landscape1">
+									</div>
+								</div>
+							</div>
 							<div class="caption">
 								<div class="row">
 									<div class="col-md-12">
