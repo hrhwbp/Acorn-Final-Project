@@ -212,7 +212,7 @@ function follow(m_no) {
 					"" + ss.m_name + "" +
        		 		"</div>" +
 					"<div class='row'>" +
-					"<a href='myinfo?m_no=" + ss.f_mno + "'>" + ss.m_email + "</a>" +
+					"<a href='friendinfo?m_no=" + ss.f_mno + "'>" + ss.m_email + "</a>" +
 					"</div>" +
 					"</div>" +
 					"<div class='col-md-2' style='padding-top: 1%;'>";
@@ -383,7 +383,14 @@ function boardDeleteOk(b_no) {
 				<button type="button" class="btn btn-default col-md-12" data-toggle="modal" data-target="#updateInfo">프로필 변경</button>
 				</c:when>
 				<c:otherwise>
-				<button type="button" id="follow" class="btn btn-default col-md-12" onclick="up2Follow(${mno},${myinfo.m_no })">팔로우</button>
+					<c:choose>
+					<c:when test="${follow == 'true'}">
+						<button type="button" id="follow" class="btn btn-default col-md-12" onclick="up2Follow(${mno},${myinfo.m_no })">팔로우</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" class="btn btn-default" id="followBtn${mno}" style='background-color: #70c050; color: white;' onclick="cancelFollow(${mno},${myinfo.m_no})">팔로잉</button>
+					</c:otherwise>
+					</c:choose>
 				</c:otherwise>
 				</c:choose>
 			</div>		
@@ -584,7 +591,7 @@ function boardDeleteOk(b_no) {
 				        <ul class="dropdown-menu dropdown-menu-right" role="menu">
 				          <li><a href="#" id="updateSubmit">수정내역 저장</a></li>
 				          <!-- <li class="divider"></li> -->
-				          <li><a href="javascript:boardDelete()">게시물 삭제</a></li>
+				          <li><a style="color: red" href="javascript:boardDelete()">게시물 삭제</a></li>
 				        </ul>
 				      </div><!-- /btn-group -->
 				    </div><!-- /input-group -->
