@@ -313,11 +313,9 @@ public class BoardController {
 	public Map<String, Object> boardDetail(@RequestParam("b_no") String b_no){
 		BoardDto dto = daoInter.showBoardDetail(b_no);
 		LikeDto ldto = daoInter.countLike(b_no);
-		List<ReplyDto> listReply = daoInter.showReply(b_no);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("likeCount", ldto);
 		map.put("detailDto", dto);
-		map.put("reply", listReply);
 		return map;
 	}
 	
