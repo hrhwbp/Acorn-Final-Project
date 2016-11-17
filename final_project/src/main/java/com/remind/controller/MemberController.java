@@ -186,14 +186,12 @@ public class MemberController {
 		view.addObject("ilist", ilist);
 		List<BoardDto> list = daoInter.showMyMain(m_no);
 		view.addObject("board",list);
-		List<FollowDto> follow = daoInter.showIFollow(m_no);
-		String flw = "";
+		List<FollowDto> follow = daoInter.showIFollow(m_no2);
+		boolean flw = false;
 		for(FollowDto f:follow){
-			if(f.getF_mno() == m_no2){
-				flw = "true";
+			if(f.getF_mno().equals(m_no)){
+				flw = true;
 				break;
-			}else{
-				flw = "false";
 			}
 		}
 		view.addObject("follow",flw);
@@ -214,15 +212,15 @@ public class MemberController {
 		view.addObject("ilist", ilist);
 		List<BoardDto> list = daoInter.showMyMain(m_no);
 		view.addObject("board",list);
-		List<FollowDto> follow = daoInter.showIFollow(m_no);
-		String flw = "";
+		List<FollowDto> follow = daoInter.showIFollow(m_no2);
+		boolean flw = false;
 		for(FollowDto f:follow){
-			if(f.getF_mno() == m_no2){
-				flw = "true";
+			System.out.println("fmno" + f.getF_mno() + " mno" + m_no);
+			if(f.getF_mno().equals(m_no)){
+				flw = true;
 				break;
-			}else{
-				flw = "false";
 			}
+			System.out.println(flw);
 		}
 		view.addObject("follow",flw);
 		view.setViewName("myinfo");
