@@ -58,13 +58,13 @@ public interface AnnoInter {
 	@Select("select * from member where m_name=#{m_name}")
 	MemberDto memberDetail(String m_name);
 	
-	@Insert("insert into member (m_name, m_bdate, m_email, m_gender, m_password) values (#{m_name}, #{m_bdate}, #{m_email}, #{m_gender}, #{m_password})")
+	@Insert("insert into member (m_name, m_bdate, m_email, m_gender, m_password, m_introduce) values (#{m_name}, #{m_bdate}, #{m_email}, #{m_gender}, #{m_password}, #{m_introduce})")
 	boolean joinMember(MemberBean bean);
 	
 	@Delete("delete from member where m_no = #{m_no}")
 	boolean outMember(String m_no);
 	
-	@Update("update member set m_name = #{m_name}, m_bdate = #{m_bdate}, m_image = #{m_image} where m_no = #{m_no}")
+	@Update("update member set m_name = #{m_name}, m_bdate = #{m_bdate}, m_image = #{m_image}, m_introduce = #{m_introduce} where m_no = #{m_no}")
 	boolean updateMember(MemberBean bean);
 	
 	@Select("select * from member where m_email = #{m_email} and m_password = #{m_password}")

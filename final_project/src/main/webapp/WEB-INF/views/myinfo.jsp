@@ -47,6 +47,7 @@
     transform: translate(-50%,-50%);
 }
 
+
 .thumbnail img.portrait {
   width: 100%;
   max-width: none;
@@ -111,7 +112,7 @@ function modalToggle(b_no) {
         	 /* document.getElementById("modalimg").src = dto.b_image;  */
         	 $("#modalimg").attr('src', dto.b_image);
         	 $('#modalContent').val(dto.b_content);
-        	 $('#modalLike').text('좋아요 ' + likeCnt.l_count);
+        	 $('#modalLike').text('좋아요 ' + likeCnt.l_count + '개');
         	 
         	 $('#modalDate').text(date);
         	 $('#hiddenNo').val(dto.b_no); 
@@ -156,7 +157,7 @@ function follower(m_no) {
  						"" + ss.m_name + "" +
         		 		"</div>" +
  						"<div class='row'>" +
- 						"<a href='myinfo?m_no=" + ss.f_sno + "'>" + ss.m_email + "</a>" +
+ 						"<a href='friendinfo?m_no=" + ss.f_sno + "'>" + ss.m_email + "</a>" +
  						"</div>" +
  						"</div>" +
  						"<div class='col-md-2' style='padding-top: 1%;'>";
@@ -239,7 +240,7 @@ function follow(m_no) {
   });
 }
 
-/* 팔로우 하기 */
+/* 모달용 팔로우 하기 */
 function upFollow(f_mno,f_sno) {
 	/* alert(m_no + " " + f_sno); */
 	var array = {"f_mno":f_mno,"f_sno":f_sno};
@@ -248,6 +249,7 @@ function upFollow(f_mno,f_sno) {
         url:"insertFollow",
         data: array,
         success : function() {
+        	/* 모달용 팔로우 하기 */
         	$("#followBtn"+f_sno).attr('onclick','cancelFollow('+ f_sno + ',' + f_mno +')');
         	$("#followBtn"+f_sno).attr('style','background-color: #70c050; color: white;');
         	$("#followBtn"+f_sno).text('팔로잉');
@@ -258,29 +260,7 @@ function upFollow(f_mno,f_sno) {
 	}); 
 }
 
-/*  */
-function up2Follow(m_no,f_sno) {
-	/* alert(m_no + " " + f_sno); */
-	
-	$("#follow").attr('onclick','cancelFollow('+ m_no + ',' + f_sno +')');
-	$("#follow").attr('style','background-color: #70c050; color: white;');
-	$("#follow").attr('value','팔로잉');
-	var array = {"f_mno":m_no,"f_sno":f_sno};
-	
-	jQuery.ajax({
-        type:"post",
-        url:"insertFollow",
-        data: array,
-        success : function() {
-       		alert('성공');
-        },
-        error : function(xhr, status, error) {
-              alert("에러발생 " + error);
-        }
-	}); 
-}
-
-/* 팔로우 취소 */
+/* 모달용 팔로우 취소 */
 function cancelFollow(f_mno,f_sno) {
 	/* alert(f_mno + " " + f_sno); */
 	var array = {"f_mno":f_sno,"f_sno":f_mno};
@@ -289,9 +269,52 @@ function cancelFollow(f_mno,f_sno) {
         url:"followCancel",
         data: array,
         success : function() {
+        	/* 모달용 팔로우 취소 */
         	$("#followBtn"+f_mno).attr('onclick','upFollow('+ f_sno + ',' + f_mno +')');
         	$("#followBtn"+f_mno).attr('style','background-color: white; color: black;');
         	$("#followBtn"+f_mno).text('팔로우');
+        },
+        error : function(xhr, status, error) {
+              alert("에러발생 " + error);
+        }
+	}); 
+	/* $("#followBtn"+f_mno).attr('onclick','upFollow('+ m_no + ',' + f_mno +')');
+	$("#followBtn"+f_mno).attr('style','background-color: white; color: black;'); */
+}
+
+/* 친구 정보에서 팔로우 하기 */
+function upFollow(f_mno,f_sno) {
+	/* alert(m_no + " " + f_sno); */
+	var array = {"f_mno":f_mno,"f_sno":f_sno};
+	jQuery.ajax({
+        type:"post",
+        url:"insertFollow",
+        data: array,
+        success : function() {
+        	/* 친구 정보에서 팔로우 하기 */
+        	$("#followBtn"+f_mno).attr('onclick','cancelFollow('+ f_sno + ',' + f_mno +')');
+        	$("#followBtn"+f_mno).attr('style','background-color: #70c050; color: white;');
+        	$("#followBtn"+f_mno).text('팔로잉');
+        },
+        error : function(xhr, status, error) {
+              alert("에러발생 insert" + error + "" + status );
+        }
+	}); 
+}
+
+/* 친구 정보에서 팔로우 취소 */
+function cancelFollow(f_mno,f_sno) {
+	/* alert(f_mno + " " + f_sno); */
+	var array = {"f_mno":f_sno,"f_sno":f_mno};
+	jQuery.ajax({
+        type:"post",
+        url:"followCancel",
+        data: array,
+        success : function() {
+        	/* 친구 정보에서 팔로우 취소 */
+        	$("#followBtn"+f_sno).attr('onclick','upFollow('+ f_sno + ',' + f_mno +')');
+        	$("#followBtn"+f_sno).attr('style','background-color: white; color: black;');
+        	$("#followBtn"+f_sno).text('팔로우');
         },
         error : function(xhr, status, error) {
               alert("에러발생 " + error);
@@ -352,12 +375,12 @@ function boardDeleteOk(b_no) {
 </head>
 
 <%@ include file="../../top.jsp" %>
-<%@include file="../../sidebar.jsp"%>
+<%-- <%@include file="../../sidebar.jsp"%> --%>
 <body style="background-color: rgba(128, 206, 208, 0.14);">
 <div class="container">
 <div class="container"  style="padding-top: 2%; padding-bottom: 5%;">
-<div class="row" style="background-color: rgba(255, 247, 252, 0.62); padding-top: 30px;">
-	<div class="col-md-2 col-md-offset-1" style="height: 150px">	
+<div class="row" style="background-color: rgba(255, 247, 252, 0.62); padding-top: 30px; padding-bottom: 30px">
+	<div class="col-md-2 col-md-offset-2" style="height: 165px">	
 	<c:choose>
 		<c:when test="${mno == myinfo.m_no }">
 		<a style="color: buttontext; border: 0; cursor: pointer; height: 100%; padding: 0; width: 100%;" data-toggle="modal" data-target="#updateInfo">		
@@ -369,7 +392,7 @@ function boardDeleteOk(b_no) {
 		</c:otherwise>
 	</c:choose>
 	</div>
-	<div class="col-md-6">
+	<div class="col-md-6" style="padding-top: 1%;">
 		<div class="row">
 		<div class="col-md-12">
 			<div class="col-md-6">
@@ -384,11 +407,11 @@ function boardDeleteOk(b_no) {
 				</c:when>
 				<c:otherwise>
 					<c:choose>
-					<c:when test="${follow == 'true'}">
-						<button type="button" id="follow" class="btn btn-default col-md-12" onclick="up2Follow(${mno},${myinfo.m_no })">팔로우</button>
+					<c:when test="${follow == false}">
+						<button type="button" id="followBtn${mno}" class="btn btn-default col-md-12" onclick="upFollow(${mno},${myinfo.m_no })">팔로우</button>
 					</c:when>
 					<c:otherwise>
-						<button type="button" class="btn btn-default" id="followBtn${mno}" style='background-color: #70c050; color: white;' onclick="cancelFollow(${mno},${myinfo.m_no})">팔로잉</button>
+						<button type="button" class="btn btn-default col-md-12" id="followBtn${mno}" style='background-color: #70c050; color: white;' onclick="cancelFollow(${myinfo.m_no},${mno})">팔로잉</button>
 					</c:otherwise>
 					</c:choose>
 				</c:otherwise>
@@ -400,35 +423,84 @@ function boardDeleteOk(b_no) {
 			<button type="button" class="btn btn-link col-md-3" style="color: black; background-color:#e4d3c4;" disabled="disabled"><b>게시물  ${fn:length(board)}개</b></button> 
 			<button type="button" class="btn btn-link col-md-3" style="background-color: rgba(229, 212, 200, 0.63)" onclick="follower(${myinfo.m_no})"><b>팔로워 ${fn:length(mylist)}</b></button>
 			<button type="button" class="btn btn-link col-md-3" style="background-color: rgba(229, 212, 200, 0.63);" onclick="follow(${myinfo.m_no})"><b>팔로우 ${fn:length(ilist)}</b></button>
+			<button type="button" class="btn btn-link col-md-3" style="background-color: rgba(229, 212, 200, 0.63);"><b>위시리스트</b></button>
+		</div>
+		<div class="row" style="padding-top: 2%">
+			<div class="col-md-1">
+				<span class="glyphicon glyphicon-option-horizontal" aria-hidden="true" style="size: 100%"></span>
+			</div>
+			<c:choose>
+			<c:when test="${myinfo.m_introduce == null || myinfo.m_introduce == ''}">
+				<div class="col-md-10">
+					아직 소개말이 없습니다.
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="col-md-10">
+					${myinfo.m_introduce}
+				</div>
+			</c:otherwise>
+			</c:choose>
 		</div>
 	</div>
 </div>
 <c:if test="${mno == myinfo.m_no }">
 <div class="row" style="padding-bottom: 2%; background-color: rgba(255, 247, 252, 0.62);">
 	<div class="col-md-10 col-md-offset-1">
-			<button type="button" id="boardInsertBtn" class="btn btn-link col-md-12" style="background-color: rgb(212, 235, 255); border-radius: 20px;"><h4><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;게시물 추가하기</h4></button>
+			<button type="button" id="boardInsertBtn" class="btn btn-link col-md-12" style="background-color: rgba(224, 208, 194, 0.58); border-radius: 20px;"><h4><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;&nbsp;게시물 추가하기</h4></button>
 	</div>
 </div>
 </c:if>
 <div class="row" style="background-color: rgba(255, 247, 252, 0.62);"><!-- row  -->
-<div class="col-md-12">
-  <c:forEach var="board" items="${board}">  
-    	<div class="col-md-4"  >
-    		<div class="thumbnail-wrapper" >
-    			<div class="thumbnail" style="height: 250px; background-color: #000;">
-    				<a class="hover" href="javascript:modalToggle(${board.b_no})" id="tagA${board.b_no}" onmouseover="hoverShow(${board.b_no})" onmouseout="hoverHide(${board.b_no})" >
-        			<div class="centered">
-		  				 <img src="${board.b_image }" class=" landscape"> <!-- portrait -->
-			   		</div>
-			    	<div id="showHover${board.b_no}" style="display: none">
-			    		
-			    	</div>
-    				</a>
+	<c:choose>
+	<c:when test="${fn:length(board) == 0}">
+	<div class="col-md-12">
+	    	<div class="col-md-6"  >
+	    		<div class="thumbnail-wrapper" >
+	    			<div class="thumbnail" style="height: 400px; background-color: #000;">
+	        			<div class="centered">
+			  				 <img src="resources/image/exexex.png" class=" landscape"> 
+				   		</div>
+				   </div>
 			   </div>
-		   </div>
-    	</div>
-  </c:forEach>
-</div>	
+	    	</div>
+	    	<div class="col-md-6 text-center" style="height:400px; background-color: rgba(255, 247, 252, 0.62);">
+	    		
+	    		
+	    		<h4 style="padding-top: 100px"><b>아직 게시물이 없습니다.</b></h4>
+	    		<br>
+	    		<p>게시물을 등록 하시려면<br>
+	    		게시물 추가하기 버튼을 누르시거나<br>
+	    		<b><span class="glyphicon glyphicon-gift" aria-hidden="true">RE:MIND</span></b> 앱을 다운받으시기 바랍니다.<br><br>
+	    		<b>앱 다운 받으러 가기</b><br>
+	    		<button type="button" class="btn btn-link col-md-3 col-md-offset-3" style=""><img src="resources/image/google.jpg" style="max-width: 100%"></button>
+	    		<button type="button" class="btn btn-link col-md-3"><img src="resources/image/Apple.png" style="max-width: 100%"></button>
+	    		
+	    		</p>
+	    	</div>
+	</div>	
+	</c:when>
+	<c:otherwise>
+	<div class="col-md-12">
+	  <c:forEach var="board" items="${board}">  
+	    	<div class="col-md-4"  >
+	    		<div class="thumbnail-wrapper" >
+	    			<div class="thumbnail" style="height: 250px; background-color: #000;">
+	    				<a class="hover" href="javascript:modalToggle(${board.b_no})" id="tagA${board.b_no}" onmouseover="hoverShow(${board.b_no})" onmouseout="hoverHide(${board.b_no})" >
+	        			<div class="centered">
+			  				 <img src="${board.b_image }" class=" landscape"> <!-- portrait -->
+				   		</div>
+				    	<div id="showHover${board.b_no}" style="display: none">
+				    		
+				    	</div>
+	    				</a>
+				   </div>
+			   </div>
+	    	</div>
+	  </c:forEach>
+	</div>	
+	</c:otherwise>
+	</c:choose>
 </div> <!-- row -->
 </div>
 
@@ -445,7 +517,7 @@ function boardDeleteOk(b_no) {
 		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
 			<div class="row">
 				<div class="col-md-4 col-md-offset-4 text-center">
-				<div style="color: buttontext; border: 0; cursor: pointer; height: 180px; padding: 0; width: 100%;">
+				<div style="color: buttontext; border: 0; cursor: pointer; height: 170px; padding: 0; width: 100%;">
 					<a  onclick="$('#file').click();">
 					<img id="image" src="http://wbp.synology.me/profileimg/${myinfo.m_image}" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
 					</a>
@@ -526,6 +598,11 @@ function boardDeleteOk(b_no) {
 								</c:if>
 								</c:forEach>
 							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class=" col-md-12">
+						<textarea class="form-control" rows="3" placeholder="자신의 소개말을 입력해주세요." name="m_introduce">${myinfo.m_introduce }</textarea>
 						</div>
 					</div>
 		
