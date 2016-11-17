@@ -31,12 +31,9 @@
 <script type="text/javascript">
 /*WishList Group관련 Jquery!!!!!!!!!!!!!!!*/
 $(document).ready(function(){
-   
-   
-   
-   
+	
    /*open된 어코디언 다시열시 작업 시작 */
-   /*insert후 wg_detail 파라미터값 잘라오기  */
+   /*insert후 wg_detail, wg_no 파라미터값 잘라오기  */
    $.extend({
         getUrlVars: function(){
           var vars = [], hash;

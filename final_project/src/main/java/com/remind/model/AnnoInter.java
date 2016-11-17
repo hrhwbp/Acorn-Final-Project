@@ -51,7 +51,6 @@ public interface AnnoInter {
 	@Select("select * from member where m_name like #{name} or m_email like #{name}")
 	List<MemberDto> searchMember(String name);
 	
-	
 	@Select("select * from member where m_no=#{m_no}")
 	MemberDto showMemberDetail(String m_no);
 	
@@ -75,19 +74,19 @@ public interface AnnoInter {
   
    
    // follow
-   // 나를 팔로우 한사람. 
+   // �굹瑜� �뙏濡쒖슦 �븳�궗�엺. 
    @Select("select f_no,f_mno,f_sno,m_name,m_image,m_email,f_ms from follow left outer join member on f_sno = m_no where f_mno = #{m_no}")
    List<FollowDto> showMyFollower(String m_no);
    // 
    @Select("select * from follow where f_sno = #{f_sno} and f_mno = #{f_mno}")
    FollowDto selectFollwer(FollowBean bean);
    
-   // 내가 팔로우 하고있는사람
+   // �궡媛� �뙏濡쒖슦 �븯怨좎엳�뒗�궗�엺
    @Select("select f_no,f_mno,f_sno,m_name,m_image,m_email,f_ms from follow left outer join member on f_mno = m_no where f_sno = #{m_no}")
    List<FollowDto> showIFollow(String m_no);
    
    @Insert("insert into follow (f_sno,f_mno,f_ms) values(#{f_sno},#{f_mno},#{f_ms})")
-   boolean follow(FollowBean bean);   //f_sno�� f_mno�� follow
+   boolean follow(FollowBean bean);   //f_sno占쏙옙 f_mno占쏙옙 follow
    
    @Delete("delete from follow where f_sno = #{f_sno} and f_mno = #{f_mno}")
    boolean followCancel(FollowBean bean);

@@ -15,19 +15,15 @@
 <link rel="stylesheet" type="text/css" media="screen" href="resources/css/index.css"/>
 
 <!-- Bootstrap core CSS -->
-<link href="resources/css/bootstrap.min.css"
-   rel="stylesheet">
+<link href="resources/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<link
-   href="http://getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css"
-   rel="stylesheet">
+<link href="http://getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
 
 <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
 <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-<script
-   src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>
+<script src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -37,8 +33,7 @@
 
 <!-- Custom styles for this template -->
 <link href="resources/css/carousel.css" rel="stylesheet">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
 /*    $(document).ready(function() {
       $("#showjoin").hide()
