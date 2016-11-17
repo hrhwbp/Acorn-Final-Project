@@ -859,4 +859,4 @@ function wgopen(wg_no, wg_detail){
                   <div class="form-group9">
                      <input type="hidden" id="itemNo" name="w_no"> 
                      <input type="hidden" id="itemMno" name="w_mno">
-                  </
+                  </div></form></div></div></div></div></body></html>
