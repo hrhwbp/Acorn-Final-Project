@@ -508,13 +508,6 @@ function boardDeleteOk(b_no) {
 
 
 
-<%@include file="../../sidebar.jsp"%>
-
-
-
-
-
-
 
 	<!-- 프로필 수정 모달 -->
 	
