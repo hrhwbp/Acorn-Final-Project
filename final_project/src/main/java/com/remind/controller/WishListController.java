@@ -183,6 +183,7 @@ public class WishListController {
       ModelAndView modelAndView = new ModelAndView();
       modelAndView.addObject("wishlist",daoInter.showWishList(w_mno));   
       modelAndView.addObject("wishgroup",daoInter.showWishGroup(w_mno));
+      modelAndView.addObject("w_mno", w_mno);
       System.out.println("test : " + daoInter.showWishList(w_mno));
       
       modelAndView.setViewName("../../wishlist");

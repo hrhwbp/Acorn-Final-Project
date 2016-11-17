@@ -33,7 +33,7 @@ public interface AnnoInter {
    @Select("select * from board where b_no=#{b_no}")
    BoardDto showBoardDetail(String b_no);
 
-   @Delete("delete from board whre b_no=#{b_no}")
+   @Delete("delete from board where b_no=#{b_no}")
    boolean eraseBoard(String b_no);
 
    @Insert("insert into board (b_mno, b_image, b_content, b_like) values (#{b_mno}, #{b_image}, #{b_content}, 0)")

@@ -35,7 +35,7 @@ function scrolling(){
 			dataType:"json",
 			data:{"last_bno":lastbno},
 			success:function(scrollData){
-				console.log("실행중")
+				/* console.log("실행중") */
 				var str = "";
 				var list = scrollData.datas;
 				$(list).each(function(index,objArr){
@@ -43,7 +43,12 @@ function scrolling(){
 					str += '<div class="row">';
 			        str += '<div class="col-md-12">';
 			        str += '	<div class="thumbnail" data-bno='+this.b_no+' >';
-			        str += '       <img alt="food" src='+objArr["b_image"]+' height="400px">';
+			       	str += '<div class="thumbnail-wrapper1">' +
+							'<div class="thumbnail1" style="background-color: #000;">' +
+							'<div class="centered1">';
+			        str += '       <img src='+objArr["b_image"]+' class="landscape1">' +
+			        		'</div></div></div>';
+			        
 			        str += '       <div class="caption">';
 			        str += '       <div class="row">';
 			        str += '          <div class="col-md-12">';
@@ -284,24 +289,73 @@ function scrolling(){
 	border-style: solid;
 	border-width: thin;
 }
+.thumbnail-wrappper1 {
+    width: 25%; 
+}
+
+.thumbnail1 {
+    position: relative;
+    padding-top: 75%;  /* 1:1 ratio */
+    overflow: hidden;
+}
+
+.thumbnail1 .centered1  {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -webkit-transform: translate(50%,50%);
+    -ms-transform: translate(50%,50%);
+    transform: translate(50%,50%);
+}
+
+.thumbnail1 .centered1 img {
+    position: absolute;
+    top: 0;
+    left: 0;   
+    max-width: 100%;
+    height: auto;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+
+.thumbnail1 img.portrait1 {
+  width: 100%;
+  max-width: none;
+  height: auto;
+}
+.thumbnail1 img.landscape1 {
+  width: auto;
+  max-width: none;
+  height: 100%;
+}
+
 </style>
 </head>
 <%@include file="common.jsp"%>
 <%@include file="top.jsp"%>
 <%@include file="sidebar.jsp"%>
 
+
 <body style="background-color: white">
 
 	<div style="padding-top: 2%">
 		<!--Top menubar와의 거리 2% -->
 		
-		<div class="container col-md-5 col-md-offset-0 " id="scrollingId"
-			style="padding-top: 1%; padding-bottom: 2%">
+		<div class="container col-md-5 col-md-offset-0 " id="scrollingId" style="padding-top: 1%; padding-bottom: 2%">
 			<c:forEach var="list" items="${list }">
 				<div class="row">
 					<div class="col-md-12">
 						<div class="thumbnail" data-bno="${list.b_no }">
-							<img alt="Responsive image" src="${list.b_image}" class="img-responsive">
+							<div class="thumbnail-wrapper1" >
+    							<div class="thumbnail1" style="background-color: #000;">
+    								<div class="centered1">
+										<img alt="" src="${list.b_image}" class="landscape1">
+									</div>
+								</div>
+							</div>
 							<div class="caption">
 								<div class="row">
 									<div class="col-md-12">
@@ -404,25 +458,25 @@ function scrolling(){
 			</c:forEach>
 		</div>
 	</div>
+	
+	<!-- 이벤트일 표시 DIV -->
 	<div class="container col-md-3 col-md-offset-1">
 		<div class="col-md-3 " role="complementray">
 			<div class="row">
 				<div class="col-md-10 col-md-offset-2">
-					<nav class="bs-docs-sidebar hidden-print hidden-xs affix">
+					<nav class="bs-docs-sidebar hidden-print hidden-xs affix"  style="background-color: rgb(2, 119, 12); opacity: 0.8; padding-top: 5px; padding-left: 20px; padding-right: 20px; padding-bottom: 20px; border-radius: 10px;">
 						
-							<table>
-							<tr><th>생일</th></tr>
-							<c:forEach var="anni" items="${anniversary}">
-							
-							<c:if test="${anni.a_detail eq '생일'}">
-							<tr><td>
-                  			  D-${anni.a_dday }<a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a><br/>
-                  			  </td>
+							<table style="color: white;">
+							<tr><th colspan="2">생일</th></tr>
+								<c:forEach var="anni" items="${anniversary}">							
+								<c:if test="${anni.a_detail eq '생일'}">
+							<tr>
+								<td>D-${anni.a_dday }</td><td><a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a><br/></td>
                      		</tr>
-                     		</c:if>
-                     		</c:forEach>
-                     		<tr><td>&nbsp;</td></tr>
-                     		<tr><th>다른날</th></tr>
+                     			</c:if>
+                     			</c:forEach>
+                     		<tr><td colspan="2">&nbsp;</td></tr>
+                     		<tr><th colspan="2">다른날</th></tr>
                      		<jsp:useBean id="now" class="java.util.Date" />
                      		<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" var="today" />
                      		  
@@ -431,35 +485,39 @@ function scrolling(){
                      		<fmt:formatDate value="${date }" pattern="yyyy-MM-dd" var="day" />
 							<c:if test="${anni.a_detail ne '생일'}">
 							<c:if test="${day >= today}">
-							<tr><td>
-							
-                  			  D-${anni.a_dday }<a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>의 ${anni.a_detail}<br/>
-                  			 
-                  			</td>
+							<tr>
+								<td>D-${anni.a_dday }</td>
+								<td><a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>의 ${anni.a_detail}<br/></td>
                      		</tr>
                      		</c:if>
                      		</c:if>
                      		</c:forEach>
-                     		<tr><td><a href="">기념일 더보기</a></td></tr>
+                     		<tr><td colspan="2"><a href="">기념일 더보기</a></td></tr>
                      		</table>
-							
-						
-						
-					</nav>
-					
+                     </nav>					
 				</div>
 			</div>
-
 		</div>
 	</div>
-	<c:set var="listSizeTest" value="${fn:length(list)}" /><!-- 게시물이 없으면  -->
+	<!-- 이벤트일 표시 DIV 끝-->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 게시물이 없으면  -->
+	<c:set var="listSizeTest" value="${fn:length(list)}" />
 	<c:if test="${listSizeTest == 0}">
 	<script type="text/javascript">
 		alert("dd");
 	</script>
 	</c:if>
-	${fn:length(list)}
 
 </body>
+
 <%@include file="bottom.jsp"%>
 </html>

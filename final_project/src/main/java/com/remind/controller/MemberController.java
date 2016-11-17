@@ -174,9 +174,9 @@ public class MemberController {
 	
 	//내 정보 보기
 	@RequestMapping(value="friendinfo", method = RequestMethod.POST)
-	public ModelAndView showFriendinfo(@RequestParam("m_no")String m_no){
-		System.out.println("들어옴?");
-		System.out.println("m_no"+ m_no);
+	public ModelAndView showFriendinfo(@RequestParam("m_no")String m_no, HttpSession session){
+		String m_no2 = (String)session.getAttribute("mno");
+		
 		ModelAndView view = new ModelAndView();
 		MemberDto dto = daoInter.showMemberDetail(m_no);
 		view.addObject("myinfo", dto);
@@ -186,9 +186,49 @@ public class MemberController {
 		view.addObject("ilist", ilist);
 		List<BoardDto> list = daoInter.showMyMain(m_no);
 		view.addObject("board",list);
+		List<FollowDto> follow = daoInter.showIFollow(m_no);
+		String flw = "";
+		for(FollowDto f:follow){
+			if(f.getF_mno() == m_no2){
+				flw = "true";
+				break;
+			}else{
+				flw = "false";
+			}
+		}
+		view.addObject("follow",flw);
 		view.setViewName("myinfo");
 		return view;
 	}
+	
+	@RequestMapping(value="friendinfo", method = RequestMethod.GET)
+	public ModelAndView showFriendinfo2(@RequestParam("m_no")String m_no, HttpSession session){
+		String m_no2 = (String)session.getAttribute("mno");
+		
+		ModelAndView view = new ModelAndView();
+		MemberDto dto = daoInter.showMemberDetail(m_no);
+		view.addObject("myinfo", dto);
+		List<FollowDto> mylist = daoInter.showMyFollower(m_no);
+		view.addObject("mylist", mylist);
+		List<FollowDto> ilist = daoInter.showIFollow(m_no);
+		view.addObject("ilist", ilist);
+		List<BoardDto> list = daoInter.showMyMain(m_no);
+		view.addObject("board",list);
+		List<FollowDto> follow = daoInter.showIFollow(m_no);
+		String flw = "";
+		for(FollowDto f:follow){
+			if(f.getF_mno() == m_no2){
+				flw = "true";
+				break;
+			}else{
+				flw = "false";
+			}
+		}
+		view.addObject("follow",flw);
+		view.setViewName("myinfo");
+		return view;
+	}
+	
 	@RequestMapping(value="myinfo", method = RequestMethod.POST)
 	public ModelAndView showMyinfo(@RequestParam("m_no")String m_no){
 		ModelAndView view = new ModelAndView();

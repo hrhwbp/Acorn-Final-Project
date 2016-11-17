@@ -104,17 +104,24 @@ function modalToggle(b_no) {
         	 /* alert(data.detailDto.b_no); */
         	 var dto = data.detailDto;
         	 var likeCnt = data.likeCount;
+        	 var reply = data.reply;
+        	 var date = dto.b_date.substring(0,16);
         	 /* alert(dto.b_image); */
         	 /* modalContent modalLike modalDate */
         	 /* document.getElementById("modalimg").src = dto.b_image;  */
         	 $("#modalimg").attr('src', dto.b_image);
         	 $('#modalContent').val(dto.b_content);
         	 $('#modalLike').text('좋아요 ' + likeCnt.l_count);
-        	 $('#modalDate').text(dto.b_date);
+        	 
+        	 $('#modalDate').text(date);
         	 $('#hiddenNo').val(dto.b_no); 
         	 $('#hiddenImage').val(dto.b_image); 
         	 $('#hiddenBoardImg').attr('value',dto.b_image);
         	 $('#boardNo').attr('value', b_no );
+        	 $.each(reply,function(ss){
+        		 /* var str = "<div class='col-md-12'>" + ss.r_name + "</div>";
+	        	 $('#boardReplyModal').append(str);     */		 
+        	 });
         	 $('#boardDetail').modal('show');
          },
          error : function(xhr, status, error) {
@@ -205,7 +212,7 @@ function follow(m_no) {
 					"" + ss.m_name + "" +
        		 		"</div>" +
 					"<div class='row'>" +
-					"<a href='myinfo?m_no=" + ss.f_mno + "'>" + ss.m_email + "</a>" +
+					"<a href='friendinfo?m_no=" + ss.f_mno + "'>" + ss.m_email + "</a>" +
 					"</div>" +
 					"</div>" +
 					"<div class='col-md-2' style='padding-top: 1%;'>";
@@ -345,18 +352,22 @@ function boardDeleteOk(b_no) {
 </head>
 
 <%@ include file="../../top.jsp" %>
-<%@include file="../../sidebar.jsp"%>
+
 <body style="background-color: rgba(128, 206, 208, 0.14);">
 <div class="container">
 <div class="container"  style="padding-top: 2%; padding-bottom: 5%;">
-<div class="row" style="background-color: rgba(255, 247, 252, 0.62);; padding-top: 30px; padding-bottom: 30px; ">
-	<div class="col-md-2 col-md-offset-1" style="height: 170px">
-	
-		<a style="color: buttontext; border: 0; cursor: pointer; height: 100%; padding: 0; width: 100%;" data-toggle="modal" data-target="#updateInfo">
-		
+<div class="row" style="background-color: rgba(255, 247, 252, 0.62); padding-top: 30px;">
+	<div class="col-md-2 col-md-offset-1" style="height: 150px">	
+	<c:choose>
+		<c:when test="${mno == myinfo.m_no }">
+		<a style="color: buttontext; border: 0; cursor: pointer; height: 100%; padding: 0; width: 100%;" data-toggle="modal" data-target="#updateInfo">		
 			<img src="http://wbp.synology.me/profileimg/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
-		
 		</a>
+		</c:when>
+		<c:otherwise>
+			<img src="http://wbp.synology.me/profileimg/${myinfo.m_image }" alt="Responsive image" class="img-circle img-responsive" style="height: 100%; width: 100%">
+		</c:otherwise>
+	</c:choose>
 	</div>
 	<div class="col-md-6">
 		<div class="row">
@@ -366,27 +377,29 @@ function boardDeleteOk(b_no) {
 				  <p>${myinfo.m_name}</p>
 				</blockquote>
 			</div>
-			<div class="col-md-3 col-md-offset-1 top_pd">
+			<div class="col-md-3 col-md-offset-1">
 				<c:choose>
 				<c:when test="${mno == myinfo.m_no }">
 				<button type="button" class="btn btn-default col-md-12" data-toggle="modal" data-target="#updateInfo">프로필 변경</button>
 				</c:when>
 				<c:otherwise>
-				<button type="button" id="follow" class="btn btn-default col-md-12" onclick="up2Follow(${mno},${myinfo.m_no })">팔로우</button>
-				
+					<c:choose>
+					<c:when test="${follow == 'true'}">
+						<button type="button" id="follow" class="btn btn-default col-md-12" onclick="up2Follow(${mno},${myinfo.m_no })">팔로우</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" class="btn btn-default" id="followBtn${mno}" style='background-color: #70c050; color: white;' onclick="cancelFollow(${mno},${myinfo.m_no})">팔로잉</button>
+					</c:otherwise>
+					</c:choose>
 				</c:otherwise>
 				</c:choose>
-				
 			</div>		
-		
 		</div>
 		</div>
-		<div class="row">
-			
-			<button type="button" class="btn btn-link col-md-3" disabled="disabled">게시물  ${fn:length(board)}개</button> 
-			<button type="button" class="btn btn-link col-md-3" onclick="follower(${myinfo.m_no})">팔로워 ${fn:length(mylist)}</button>
-			<button type="button" class="btn btn-link col-md-3" onclick="follow(${myinfo.m_no})">팔로우 ${fn:length(ilist)}</button>
-		
+		<div class="row">			
+			<button type="button" class="btn btn-link col-md-3" style="color: black; background-color:#e4d3c4;" disabled="disabled"><b>게시물  ${fn:length(board)}개</b></button> 
+			<button type="button" class="btn btn-link col-md-3" style="background-color: rgba(229, 212, 200, 0.63)" onclick="follower(${myinfo.m_no})"><b>팔로워 ${fn:length(mylist)}</b></button>
+			<button type="button" class="btn btn-link col-md-3" style="background-color: rgba(229, 212, 200, 0.63);" onclick="follow(${myinfo.m_no})"><b>팔로우 ${fn:length(ilist)}</b></button>
 		</div>
 	</div>
 </div>
@@ -418,6 +431,17 @@ function boardDeleteOk(b_no) {
 </div>	
 </div> <!-- row -->
 </div>
+
+
+
+
+
+<%@include file="../../sidebar.jsp"%>
+
+
+
+
+
 
 
 	<!-- 프로필 수정 모달 -->
@@ -474,9 +498,13 @@ function boardDeleteOk(b_no) {
 							<jsp:useBean id="toDay" class="java.util.Date" />
 							<fmt:formatDate value="${toDay}" var = "viewYear" pattern="yyyy" />
 							<select class="form-control" name="year">
-								<option>${fn:substring(date,0,4) }</option>
 								<c:forEach var="i" begin="0" end ="100" step="1">
+								<c:if test="${fn:substring(date,0,4) == (viewYear -i)}">
+								<option selected="selected">${viewYear -i }</option>
+								</c:if>
+								<c:if test="${fn:substring(date,0,4) != (viewYear -i)}">
 								<option>${viewYear -i }</option>
+								</c:if>
 								</c:forEach>
 
 							</select>
@@ -485,9 +513,13 @@ function boardDeleteOk(b_no) {
 						<div class="col-md-3 top_pd text-right">
 							<label class="">월</label> 
 							<select class="form-control" name="month">
-								<option>${fn:substring(date,5,7) }</option>
 								<c:forEach var="i" begin="1" end ="12" step="1">
+								<c:if test="${fn:substring(date,5,7) == i}">
+								<option selected="selected">${i}</option>								
+								</c:if>
+								<c:if test="${fn:substring(date,5,7) != i}">
 								<option>${i}</option>
+								</c:if>
 								</c:forEach>
 							</select>
 						</div>
@@ -496,9 +528,13 @@ function boardDeleteOk(b_no) {
 							<label class="" for="ss">일</label> 
 							<select id="ss" name="day"
 								class="form-control" >
-								<option>${fn:substring(date,8,10) }</option>
 								<c:forEach var="i" begin="1" end ="31" step="1">
+								<c:if test="${fn:substring(date,8,10) == i}">
+								<option selected="selected">${i}</option>
+								</c:if>
+								<c:if test="${fn:substring(date,8,10) != i}">
 								<option>${i}</option>
+								</c:if>
 								</c:forEach>
 							</select>
 						</div>
@@ -521,22 +557,20 @@ function boardDeleteOk(b_no) {
 	</div>
 	<!-- 게시물 수정 모달 -->
 
-	<div class="modal fade" id="boardDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-	  <div class="modal-dialog" style="margin: 180px auto">
+	<div class="modal fade" id="boardDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="">
+	  <div class="modal-dialog" style="margin: 180px auto; width: 55%">
 	    <div class="modal-content">
 	     <form id="boardUpdatefrm" action="updateBoard" method="post" enctype="multipart/form-data">
-	      <div class="modal-header">
-			
+	      <div class="modal-body">
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-8">
 				<c:choose>
-					
 					<c:when test="${mno == myinfo.m_no }">
 			    		<div class="thumbnail-wrapper" >
-			    			<div class="thumbnail" style="height: 350px; background-color: #000;">
+			    			<div class="thumbnail" style="height: 480px; background-color: #000; margin-bottom: 0;">
 			        			<div class="centered">
 									<a  onclick="$('#boardFile').click();" style="cursor: pointer">
-									<img alt="Responsive image" id="modalimg" class="landscape" src="">
+									<img alt="Responsive image" id="modalimg" class="landscape" src="" >
 									</a>
 								</div>
 							</div>
@@ -544,9 +578,9 @@ function boardDeleteOk(b_no) {
 					</c:when>
 					<c:otherwise>
 					<div class="thumbnail-wrapper" >
-		    			<div class="thumbnail" style="height: 350px; background-color: #000;">
+		    			<div class="thumbnail" style="height: 480px; background-color: #000; margin-bottom: 0;">
 		        			<div class="centered">
-								<img alt="Responsive image" id="modalimg" class="landscape" src="">
+								<img alt="Responsive image" id="modalimg" class="landscape" src="" >
 							</div>
 						</div>
 					</div>
@@ -556,41 +590,68 @@ function boardDeleteOk(b_no) {
 					<input type="file" name="fileUpload"  id="boardFile" class="sr-only" >
 					<input type="hidden" name="hiddenBoardImg" value="" id="hiddenBoardImg">
 				</div>
+				<div class="col-md-4">
+				<c:choose>
+				<c:when test="${mno == myinfo.m_no }">
+					<!--  -->
+					
+				    <div class="input-group">
+				      <input name="b_content" id="modalContent" type="text" class="form-control" value="">
+				      <div class="input-group-btn">
+				        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span></button>
+				        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+				          <li><a href="#" id="updateSubmit">수정내역 저장</a></li>
+				          <!-- <li class="divider"></li> -->
+				          <li><a style="color: red" href="javascript:boardDelete()">게시물 삭제</a></li>
+				        </ul>
+				      </div><!-- /btn-group -->
+				    </div><!-- /input-group -->
+				  
+					<!--  -->				
+				</c:when>
+				<c:otherwise>
+				<!--  -->
+					
+				    <div class="input-group">
+				      <input name="b_content" id="modalContent" type="text" class="form-control" value="" readonly="readonly">
+				      <div class="input-group-btn">
+				        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span></button>
+				        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+				          <li><a href="#">게시물 신고하기</a></li>
+				        </ul>
+				      </div><!-- /btn-group -->
+				    </div><!-- /input-group -->
+				  
+					<!--  -->		
+				</c:otherwise>
+				</c:choose>
+				</div>
+				
+				<p class="col-md-2" id="modalLike" style="padding-top: 1%"></p><p id="modalDate" style="padding-top: 1%" class="text-right col-md-2"></p>
+				<div class="col-md-4">
+		     		<div class="" style="background-color: 0; height: 360px; overflow-y: scroll;" id="boardReplyModal">
+		     		
+		     		</div>
+				</div>
+		     	<div class="col-md-4">
+		     	<div class="input-group " style="padding-top: 1%">
+		     		<span class="input-group-addon " id="sizing-addon2">
+		     			<span class="glyphicon glyphicon-heart" onclick="" style="color: red" id="likeYN"></span>
+		     		</span>
+		      		<input type="text" class="form-control" placeholder="답글달기..." aria-describedby="sizing-addon2" name="r_content" id="r_content"> 
+					<input type="hidden" name="r_bno" value=""> 
+					<input type="hidden" name="r_mno" value=""> 
+													<!-- 답글 버튼 --> 
+					<span class="input-group-btn ">
+						<button class="btn btn-default" type="button" id="btn_reply" onclick="">답글</button>
+					</span> 		     	
+		     	</div>
+		     	</div>
 			</div>
 	      </div>
-	      <div class="modal-body">
-	     
-	 
-	      <div class="row">	      
-			<h3 class="col-md-12">
-			<c:choose>
-			<c:when test="${mno == myinfo.m_no }">
-			<input name="b_content" id="modalContent" type="text" class="form-control" value="">
-			</c:when>
-			<c:otherwise>
-			<input name="b_content" id="modalContent" type="text" class="form-control" value="" readonly="readonly">
-			</c:otherwise>
-			</c:choose>
-			</h3>
-			
-			<p class="col-md-6" id="modalLike"></p><p id="modalDate" class="text-right col-md-6"></p>
-	      </div>
-	      </div>
-	      <input type="hidden" value="" id="hiddenNo" name="b_no">
-	      <input type="hidden" value="" id="hiddenImage" name="b_image">
-	     </form>
-	      <div class="modal-footer">
-		      <c:if test="${mno == myinfo.m_no }">
-		      	<div class="col-md-2 text-left">
-				<button type="button" class="btn btn-danger" onclick="boardDelete()">Delete</button>
-		      	</div>
-		      </c:if>
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			<c:if test="${mno == myinfo.m_no }">
-			<button id="updateSubmit" type="button" class="btn btn-primary">Save changes</button>
-			</c:if>
-	      </div>
-	      
+	      <input type="hidden" value="" id="hiddenNo" name="b_no" class="sr-only">
+	      <input type="hidden" value="" id="hiddenImage" name="b_image" class="sr-only">
+	     </form>	      
 	    </div>
 	  </div>
 	</div>
@@ -742,6 +803,7 @@ boardInsertFile.onchange = function (e) {
   $('#boardInsertImg').show();
 };
 </script>
+
 </body>
 <%@ include file="../../bottom.jsp" %>
 </html>
