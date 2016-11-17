@@ -69,9 +69,9 @@ public class MemberController {
 		Map<String, String> data = null;
 		for(MemberDto s : list){
 			data = new HashMap<String,String>();
-			/*data.put("m_image",s.getM_image());
+			data.put("m_image",s.getM_image());
 			data.put("m_email", s.getM_email());
-			*/
+			
 			data.put("m_name", s.getM_name());
 			
 			data.put("m_no", s.getM_no());
