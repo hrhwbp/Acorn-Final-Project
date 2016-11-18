@@ -62,8 +62,8 @@ public class MemberController {
 	
 	@RequestMapping(value="searching",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> search(@RequestParam("name") String name){
-		
+
+	public List<Map<String, String>> search(@RequestParam("name") String name){
 		List<MemberDto> list = daoInter.searchMember(name);
 		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
 		Map<String, String> data = null;
@@ -71,16 +71,28 @@ public class MemberController {
 			data = new HashMap<String,String>();
 			data.put("m_image",s.getM_image());
 			data.put("m_email", s.getM_email());
-			
 			data.put("m_name", s.getM_name());
 			data.put("m_no", s.getM_no());
 			dataList.add(data);
 		}
-		Map<String, Object> searchData = new HashMap<String, Object>();
-		searchData.put("datas", dataList);
-		
-		return searchData;
-			
+		return dataList;
+	}
+	@RequestMapping(value="searching",method=RequestMethod.GET)
+	@ResponseBody
+	public List<Map<String, String>> search2(@RequestParam("name") String name){
+		System.out.println(name);
+		List<MemberDto> list = daoInter.searchMember(name);
+		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
+		Map<String, String> data = null;
+		for(MemberDto s : list){
+			data = new HashMap<String,String>();
+			data.put("m_image",s.getM_image());
+			data.put("m_email", s.getM_email());
+			data.put("m_name", s.getM_name());
+			data.put("m_no", s.getM_no());
+			dataList.add(data);
+		}
+		return dataList;
 	}
 	
 	@RequestMapping(value="out", method= RequestMethod.POST)

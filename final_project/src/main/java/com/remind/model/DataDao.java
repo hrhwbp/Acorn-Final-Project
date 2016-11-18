@@ -83,9 +83,9 @@ public class DataDao implements DaoInter {
 		return annoInter.showMemberDetail(m_no);
 	}
 	@Override
-	public List<MemberDto> searchMember(String m_name) throws DataAccessException {
+	public List<MemberDto> searchMember(String name) throws DataAccessException {
 		
-		return annoInter.searchMember("%" + m_name + "%");
+		return annoInter.searchMember("%"+name +"%");
 	}
 	@Override
 	public MemberDto memberDetail(String m_name) throws DataAccessException {

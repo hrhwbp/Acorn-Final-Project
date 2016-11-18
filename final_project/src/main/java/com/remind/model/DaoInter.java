@@ -24,7 +24,7 @@ public interface DaoInter {
 	
 	//member
 	List<BoardDto> showMyMain(String b_mno) throws DataAccessException;
-	List<MemberDto> searchMember(String m_name) throws DataAccessException;
+	List<MemberDto> searchMember(String name) throws DataAccessException;
 	MemberDto showMemberDetail(String m_no) throws DataAccessException;
 	MemberDto memberDetail(String m_name) throws DataAccessException;
 	boolean joinMember(MemberBean bean) throws DataAccessException;
