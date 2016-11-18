@@ -18,6 +18,12 @@
 var lastbno_save = null;
 $(document).ready(function () {
    $(window).bind("scroll",scrolling);
+   $('form').bind("keypress", function(e) {
+	   if (e.keyCode == 13) {               
+	     e.preventDefault();
+	     return false;
+	   }
+	 });
 });
 
 function scrolling(){ 
@@ -269,6 +275,7 @@ function scrolling(){
        
        
     }
+    
    
 </script>
 <style type="text/css">
@@ -437,7 +444,7 @@ function scrolling(){
 													%>
 												</span> <input type="text" class="form-control"
 													placeholder="답글달기..." aria-describedby="sizing-addon2"
-													name="r_content" id="r_content${list.b_no}"> <input
+													name="r_content" id="r_content${list.b_no}" onkeydown="javascript:if(event.keyCode==13){replySubmit(${list.b_no})}"> <input
 													type="hidden" name="r_bno" value="${list. b_no}"> <input
 													type="hidden" name="r_mno" value="${mno }"> 
 												<!-- 답글 버튼 --> 
