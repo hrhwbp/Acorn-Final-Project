@@ -10,17 +10,12 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="icon" href="../../favicon.ico">
-
 <title>RE:MIND [READ MIND]</title>
 <link rel="stylesheet" type="text/css" media="screen" href="resources/css/index.css"/>
-
 <!-- Bootstrap core CSS -->
 <link href="resources/css/bootstrap.min.css" rel="stylesheet">
-
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <link href="http://getbootstrap.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-
-
 <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
 <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 <script src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>
@@ -50,27 +45,20 @@
    } */
    
    function logsubmit(){
-
 	      $.ajax({
-
 	           type:"post",
 	           url:"loginsub",
 	           data:$("#loginform").serialize(),
 	           dataType:"text",
 	           success:function(result){
 	               if(result =="fail"){
-	                  
 	                 jQuery("#loginresult").html("로그인 정보가 틀렸습니다.");
-	                 
-	                 
 	              }
 	              else if(result == "success"){
 	                 window.location.href = "snslist"
 	              }
 	           }
-	        
 	      });}
-  
 </script>
 
 </head>

@@ -31,9 +31,10 @@
 <script type="text/javascript">
 /*WishList Group관련 Jquery!!!!!!!!!!!!!!!*/
 $(document).ready(function(){
-	
+  
+   
    /*open된 어코디언 다시열시 작업 시작 */
-   /*insert후 wg_detail, wg_no 파라미터값 잘라오기  */
+   /*insert후 wg_detail 파라미터값 잘라오기  */
    $.extend({
         getUrlVars: function(){
           var vars = [], hash;
@@ -54,7 +55,7 @@ $(document).ready(function(){
    var wg_detailpara = $.getUrlVar('wg_detail');
    var wg_nopara = $.getUrlVar('wg_no');
    var cont=0;
-   alert(wg_nopara + " " + wg_detailpara);
+   
    $("#collapseTwo_" + wg_nopara).collapse();
    if(cont<=0){
       /*insert 후*/
@@ -204,7 +205,7 @@ ga('send', 'pageview');
 
 /* Insert부분  */
 function insert(mno, g_num){
-   alert(g_num + " 그룹넘버 확인")
+   /* alert(g_num + " 그룹넘버 확인") */
    $("#insertModal #itemGnum").val(g_num);
    $("#insertModal #itemMno").val(mno);
    $("#insertModal").modal();
@@ -407,7 +408,7 @@ function wgopen(wg_no, wg_detail){
 </head>
 
 <%@ include file="top.jsp"%>
-<%@ include file="sidebar.jsp"%>
+
 <body>
 
    <div class="container col-md-10 col-md-offset-1">
@@ -521,7 +522,7 @@ function wgopen(wg_no, wg_detail){
                                                                         <p class="text-center col-md-8-offset-2">세부정보를 입력하면 선물받기가 수월해질수도 있어...</p>
                                                                      </c:when>
                                                                      <c:when test="${mno != wgroup.wg_mno }">
-                                                                        <p class="text-center col-md-8-offset-2"><a href="${wlist.w_addr }">선물 할라고...? 일루와봐 싸게줄께...</a></p>
+                                                                        <p class="text-center col-md-8-offset-2"><a href="${wlist.w_addr }" target="new">구매하러가기 (일루와봐 싸게줄께...)</a></p>
                                                                      </c:when>
                                                                   </c:choose>
                                                                   
@@ -563,7 +564,7 @@ function wgopen(wg_no, wg_detail){
                                                                      </div>
                                                                      
                                                                      <div class="stats">
-                                                                        <p>Hold${wlist.w_like}</p>
+                                                                        <p>Hold</p>
                                                                         <c:choose>
                                                                            <c:when test="${mno == userwg_mno }"><!--본인의 물품 보는 경우  lock 또는 unlock하지 못한다  -->
                                                                               <c:choose>
@@ -859,4 +860,4 @@ function wgopen(wg_no, wg_detail){
                   <div class="form-group9">
                      <input type="hidden" id="itemNo" name="w_no"> 
                      <input type="hidden" id="itemMno" name="w_mno">
-                  </div></form></div></div></div></div></body></html>
+                  </

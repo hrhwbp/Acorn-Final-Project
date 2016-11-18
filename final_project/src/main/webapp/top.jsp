@@ -41,7 +41,7 @@
 <style type="text/css">
 .tt-query, /* UPDATE: newer versions use tt-input instead of tt-query */
 .tt-hint {
-    width: 396px;
+    width: 100%;
     height: 30px;
     padding: 8px 12px;
     font-size: 24px;
@@ -167,13 +167,13 @@
  				<form class="navbar-form navbar-left" id="searchfr">
 					<div class="form-group">
 						<div class="ui-widget">
+						<!-- <span class="glyphicon glyphicon-search"></span> -->
 						<input type="text" id="friendSearch" name="friendSearch"
-								data-provide="typeahead" placeholder="친구찾기">
+								 placeholder="search">
 						</div>
 					</div>
 				</form>
 				<form id="gofr" action="friendinfo" method="post">
-				
 				</form>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="../navbar/">Default</a></li>
