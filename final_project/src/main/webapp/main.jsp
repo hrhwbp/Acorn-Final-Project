@@ -155,6 +155,9 @@ function scrolling(){
       }
    }
 }
+function anniAjax(){
+	alert("dd");
+}
 
    function replySubmit(no){
 
@@ -467,15 +470,15 @@ function scrolling(){
       <div class="col-md-3 " role="complementray">
          <div class="row">
             <div class="col-md-10 col-md-offset-2">
-               <nav class="bs-docs-sidebar hidden-print hidden-xs affix"  style="background-color: rgb(2, 119, 12); opacity: 0.8; padding-top: 5px; padding-left: 20px; padding-right: 20px; padding-bottom: 20px; border-radius: 10px;">
+               <nav class="bs-docs-sidebar hidden-print hidden-xs affix"  style="background-color: rgb(153,102, 000); opacity: 0.8; padding-top: 5px; padding-left: 20px; padding-right: 20px; padding-bottom: 20px; border-radius: 10px;">
                   
                      <table style="color: white;">
                      <tr><th colspan="2">생일</th></tr>
                         <c:forEach var="anni" items="${anniversary}">                     
                         <c:if test="${anni.a_detail eq '생일'}">
                      <tr>
-                        <td>D-${anni.a_dday }</td><td><a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a><br/></td>
-                           </tr>
+                        <td>D-${anni.a_dday }</td><td><a href="showWishList?w_mno=${anni.a_mno}" style="color: rgb(153,255,153)">${anni.a_mname }</a><br/></td><!-- rgb(000,000,000)/검은색 진함 , rgb(051,051,051)/회색느낌 , rgb(051,000,051)/갈색 느낌  -->
+                           </tr>					<!-- rgb(000,051,000)//회색에 녹색섞인 느낌  , rgb(255,000,255)//핑크 , rgb(102,255,102) 녹색, rgb(153,255,153) // 연녹 ( 크리스마스 느낌? ) *추천  ,,, 색상은 더 굴려봐야 할듯-->
                               </c:if>
                               </c:forEach>
                            <tr><td colspan="2">&nbsp;</td></tr>
@@ -490,12 +493,12 @@ function scrolling(){
                      <c:if test="${day >= today}">
                      <tr>
                         <td>D-${anni.a_dday }</td>
-                        <td><a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>의 ${anni.a_detail}<br/></td>
+                        <td><a href="showWishList?w_mno=${anni.a_mno}" style="color: rgb(153,255,153)">${anni.a_mname }</a>의 ${anni.a_detail}<br/></td>
                            </tr>
                            </c:if>
                            </c:if>
                            </c:forEach>
-                           <tr><td colspan="2"><a href="">기념일 더보기</a></td></tr>
+                           <tr><td colspan="2"><a href="" onclick="anniAjax()" style="color: rgb(153,255,153)">기념일 더보기</a></td></tr>
                            </table>
                      </nav>               
             </div>
@@ -516,7 +519,7 @@ function scrolling(){
    <c:set var="listSizeTest" value="${fn:length(list)}" />
    <c:if test="${listSizeTest == 0}">
    <script type="text/javascript">
-      alert("dd");
+      console.log("게시물 없음")
    </script>
    </c:if>
 
