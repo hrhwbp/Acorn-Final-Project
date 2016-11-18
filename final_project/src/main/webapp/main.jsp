@@ -3,7 +3,7 @@
 <%@page import="com.remind.model.ReplyDto"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt"%>
@@ -13,11 +13,11 @@
 <meta charset="UTF-8">
 <title>ReMind : [RE:AD MIND]</title>
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+   src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
 var lastbno_save = null;
 $(document).ready(function () {
-	$(window).bind("scroll",scrolling);
+   $(window).bind("scroll",scrolling);
 });
 
 function scrolling(){ 
@@ -152,97 +152,97 @@ function scrolling(){
 			}
 		});	
 
-		}
-	}
+      }
+   }
 }
 
-	function replySubmit(no){
+   function replySubmit(no){
 
-		if($( "#r_content"+no ).val() == ""){
-			alert("댓글에 내용을 써주세요");
-			return;
-		}else{
-		
-		
-		$.ajax({
-			type:"post",
-			url:"insertReply",
-			data:$("#reply"+no).serialize(),
-			dataType:'json',
-			success:function(replyData){
-				var str = "<table class='table-condensed small' style='background-color: rgb(245, 245, 245); width: 100%'>"
-				var list = replyData.datas;
-				var count = replyData.count;
-				if(count>5){
-					str += '<tr><td> <a href="javascript:;" onclick= "showReplyMore('+no+')">show reply all</a></td></tr>'
-				}
-					jQuery(list).each(function(index, objArr){
-					str += "<tr>";
-					str += "<td><a href='#'>" + objArr.r_name +"</a>&nbsp;"+ objArr.r_content + "</td>";
-					str += "</tr>";
-				})
-				str += "</table>";
-				jQuery("#showreply"+no).html(str);
-				jQuery("#r_content"+no).val("");
-			}
-		
-		});
-		}
-	}
-		
+      if($( "#r_content"+no ).val() == ""){
+         alert("댓글에 내용을 써주세요");
+         return;
+      }else{
+      
+      
+      $.ajax({
+         type:"post",
+         url:"insertReply",
+         data:$("#reply"+no).serialize(),
+         dataType:'json',
+         success:function(replyData){
+            var str = "<table class='table-condensed small' style='background-color: rgb(245, 245, 245); width: 100%'>"
+            var list = replyData.datas;
+            var count = replyData.count;
+            if(count>5){
+               str += '<tr><td> <a href="javascript:;" onclick= "showReplyMore('+no+')">show reply all</a></td></tr>'
+            }
+               jQuery(list).each(function(index, objArr){
+               str += "<tr>";
+               str += "<td><a href='#'>" + objArr.r_name +"</a>&nbsp;"+ objArr.r_content + "</td>";
+               str += "</tr>";
+            })
+            str += "</table>";
+            jQuery("#showreply"+no).html(str);
+            jQuery("#r_content"+no).val("");
+         }
+      
+      });
+      }
+   }
+      
 
-	function likesubmit(b_no){
-			jQuery.ajax({
-			type:"post",
-			url:"insertLike",
-			data:{"l_bno":b_no, "l_mno":"${mno}"},
-			dataType:'json',
-			success:function(likeData){
-				var list = likeData.datas;
-				var count = likeData.likecount
-				str = "";
-				if(count >11){
-             	    str += count + "명이 좋아합니다";
+   function likesubmit(b_no){
+         jQuery.ajax({
+         type:"post",
+         url:"insertLike",
+         data:{"l_bno":b_no, "l_mno":"${mno}"},
+         dataType:'json',
+         success:function(likeData){
+            var list = likeData.datas;
+            var count = likeData.likecount
+            str = "";
+            if(count >11){
+                    str += count + "명이 좋아합니다";
                    }
                else if(count<=11){
-            	   jQuery(list).each(function(index, objArr){
+                  jQuery(list).each(function(index, objArr){
                       str += objArr.l_name + "&nbsp&nbsp";
                      }) 
                      str += "님이 좋아합니다";
                    }
-				jQuery("#showlike"+b_no).html(str);
-				jQuery("#likeYN"+b_no).attr({style:'color: red'});
-				jQuery("#likeYN"+b_no).attr({onclick:'likecancel('+b_no+')'})
-		}
+            jQuery("#showlike"+b_no).html(str);
+            jQuery("#likeYN"+b_no).attr({style:'color: red'});
+            jQuery("#likeYN"+b_no).attr({onclick:'likecancel('+b_no+')'})
+      }
     })
-	}
-	function likecancel(b_no){
-			jQuery.ajax({
-			type:"post",
-			url:"cancelLike",
-			data:{"l_bno":b_no, "l_mno":"${mno}"},
-			dataType:'json',
-			success:function(likeData){
-				var list = likeData.datas;
-				var count = likeData.likecount
-				str = "";
-				if(count == 0){
-					str +="처음 좋아요의 주인공이 되세요";
-				}else if(count >11){
-             	    str += count + "명이 좋아합니다";
+   }
+   function likecancel(b_no){
+         jQuery.ajax({
+         type:"post",
+         url:"cancelLike",
+         data:{"l_bno":b_no, "l_mno":"${mno}"},
+         dataType:'json',
+         success:function(likeData){
+            var list = likeData.datas;
+            var count = likeData.likecount
+            str = "";
+            if(count == 0){
+               str +="처음 좋아요의 주인공이 되세요";
+            }else if(count >11){
+                    str += count + "명이 좋아합니다";
                    }
                else if(count<=11){
-            	   jQuery(list).each(function(index, objArr){
+                  jQuery(list).each(function(index, objArr){
                       str += objArr.l_name + " ";
                      })
                      str += "님이 좋아합니다";
                    }
-				jQuery("#showlike"+b_no).html(str);
-				jQuery("#likeYN"+b_no).removeAttr("style");
-				jQuery("#likeYN"+b_no).attr({onclick:'likesubmit('+b_no+')'})
-			}
-		});
-	}
+            jQuery("#showlike"+b_no).html(str);
+            jQuery("#likeYN"+b_no).removeAttr("style");
+            jQuery("#likeYN"+b_no).attr({onclick:'likesubmit('+b_no+')'})
+         }
+      });
+   }
     function showReplyMore(b_no){
     	$.ajax({
     		type:"post",
@@ -265,31 +265,31 @@ function scrolling(){
     }	
 
     function gofriend(b_no){
-    	jQuery("#friend"+b_no).submit();
-    	
-    	
+       jQuery("#friend"+b_no).submit();
+       
+       
     }
-	
+   
 </script>
 <style type="text/css">
 .follower_post {
-	position: relative;
-	left: 5%;
-	top: 50%;
+   position: relative;
+   left: 5%;
+   top: 50%;
 }
 
 .mywishlist_table {
-	background-color: lightblue;
-	border: black;
-	border-style: solid;
-	border-width: thin;
+   background-color: lightblue;
+   border: black;
+   border-style: solid;
+   border-width: thin;
 }
 
 .upcomingevent_table {
-	background-color: pink;
-	border: black;
-	border-style: solid;
-	border-width: thin;
+   background-color: pink;
+   border: black;
+   border-style: solid;
+   border-width: thin;
 }
 .thumbnail-wrappper1 {
     width: 25%; 
@@ -449,75 +449,76 @@ function scrolling(){
 											 </div>
 										</div>
 										<%-- <div class="col-md-3">
+
                   <a href="javascript:;" onclick= "replySubmit(${list.b_no })" class="btn btn-default col-md-12" role="button">답글</a>
                   </div> --%>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</c:forEach>
-		</div>
-	</div>
-	
-	<!-- 이벤트일 표시 DIV -->
-	<div class="container col-md-3 col-md-offset-1">
-		<div class="col-md-3 " role="complementray">
-			<div class="row">
-				<div class="col-md-10 col-md-offset-2">
-					<nav class="bs-docs-sidebar hidden-print hidden-xs affix"  style="background-color: rgb(2, 119, 12); opacity: 0.8; padding-top: 5px; padding-left: 20px; padding-right: 20px; padding-bottom: 20px; border-radius: 10px;">
-						
-							<table style="color: white;">
-							<tr><th colspan="2">생일</th></tr>
-								<c:forEach var="anni" items="${anniversary}">							
-								<c:if test="${anni.a_detail eq '생일'}">
-							<tr>
-								<td>D-${anni.a_dday }</td><td><a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a><br/></td>
-                     		</tr>
-                     			</c:if>
-                     			</c:forEach>
-                     		<tr><td colspan="2">&nbsp;</td></tr>
-                     		<tr><th colspan="2">다른날</th></tr>
-                     		<jsp:useBean id="now" class="java.util.Date" />
-                     		<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" var="today" />
-                     		  
-                     		<c:forEach var="anni" items="${anniversary}">
-                     		<fmt:parseDate var="date" value="${anni.a_date}" pattern="yyyy-MM-dd" />
-                     		<fmt:formatDate value="${date }" pattern="yyyy-MM-dd" var="day" />
-							<c:if test="${anni.a_detail ne '생일'}">
-							<c:if test="${day >= today}">
-							<tr>
-								<td>D-${anni.a_dday }</td>
-								<td><a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>의 ${anni.a_detail}<br/></td>
-                     		</tr>
-                     		</c:if>
-                     		</c:if>
-                     		</c:forEach>
-                     		<tr><td colspan="2"><a href="">기념일 더보기</a></td></tr>
-                     		</table>
-                     </nav>					
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- 이벤트일 표시 DIV 끝-->
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<!-- 게시물이 없으면  -->
-	<c:set var="listSizeTest" value="${fn:length(list)}" />
-	<c:if test="${listSizeTest == 0}">
-	<script type="text/javascript">
-		alert("dd");
-	</script>
-	</c:if>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </c:forEach>
+      </div>
+   </div>
+   
+   <!-- 이벤트일 표시 DIV -->
+   <div class="container col-md-3 col-md-offset-1">
+      <div class="col-md-3 " role="complementray">
+         <div class="row">
+            <div class="col-md-10 col-md-offset-2">
+               <nav class="bs-docs-sidebar hidden-print hidden-xs affix"  style="background-color: rgb(2, 119, 12); opacity: 0.8; padding-top: 5px; padding-left: 20px; padding-right: 20px; padding-bottom: 20px; border-radius: 10px;">
+                  
+                     <table style="color: white;">
+                     <tr><th colspan="2">생일</th></tr>
+                        <c:forEach var="anni" items="${anniversary}">                     
+                        <c:if test="${anni.a_detail eq '생일'}">
+                     <tr>
+                        <td>D-${anni.a_dday }</td><td><a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a><br/></td>
+                           </tr>
+                              </c:if>
+                              </c:forEach>
+                           <tr><td colspan="2">&nbsp;</td></tr>
+                           <tr><th colspan="2">다른날</th></tr>
+                           <jsp:useBean id="now" class="java.util.Date" />
+                           <fmt:formatDate value="${now}" pattern="yyyy-MM-dd" var="today" />
+                             
+                           <c:forEach var="anni" items="${anniversary}">
+                           <fmt:parseDate var="date" value="${anni.a_date}" pattern="yyyy-MM-dd" />
+                           <fmt:formatDate value="${date }" pattern="yyyy-MM-dd" var="day" />
+                     <c:if test="${anni.a_detail ne '생일'}">
+                     <c:if test="${day >= today}">
+                     <tr>
+                        <td>D-${anni.a_dday }</td>
+                        <td><a href="showWishList?w_mno=${anni.a_mno}">${anni.a_mname }</a>의 ${anni.a_detail}<br/></td>
+                           </tr>
+                           </c:if>
+                           </c:if>
+                           </c:forEach>
+                           <tr><td colspan="2"><a href="">기념일 더보기</a></td></tr>
+                           </table>
+                     </nav>               
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- 이벤트일 표시 DIV 끝-->
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   <!-- 게시물이 없으면  -->
+   <c:set var="listSizeTest" value="${fn:length(list)}" />
+   <c:if test="${listSizeTest == 0}">
+   <script type="text/javascript">
+      alert("dd");
+   </script>
+   </c:if>
 
 </body>
 

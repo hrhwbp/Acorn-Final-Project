@@ -62,28 +62,8 @@ public class MemberController {
 	
 	@RequestMapping(value="searching",method=RequestMethod.POST)
 	@ResponseBody
-	public List<Map<String, String>> search(@RequestParam("name") String name){
+	public Map<String, Object> search(@RequestParam("name") String name){
 		
-		List<MemberDto> list = daoInter.searchMember(name);
-		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
-		Map<String, String> data = null;
-		for(MemberDto s : list){
-			data = new HashMap<String,String>();
-			/*data.put("m_image",s.getM_image());
-			data.put("m_email", s.getM_email());
-			*/
-			data.put("m_name", s.getM_name());
-			
-			data.put("m_no", s.getM_no());
-			dataList.add(data);
-		}
-		System.out.println("asfjdflasjfosa");
-		return dataList;
-			
-	}
-	@RequestMapping(value="searching",method=RequestMethod.GET)
-	@ResponseBody
-	public List<Map<String, String>> search2(@RequestParam("name") String name){
 		List<MemberDto> list = daoInter.searchMember(name);
 		List<Map<String, String>> dataList = new ArrayList<Map<String,String>>();
 		Map<String, String> data = null;
@@ -91,11 +71,15 @@ public class MemberController {
 			data = new HashMap<String,String>();
 			data.put("m_image",s.getM_image());
 			data.put("m_email", s.getM_email());
+			
 			data.put("m_name", s.getM_name());
 			data.put("m_no", s.getM_no());
 			dataList.add(data);
 		}
-		return dataList;
+		Map<String, Object> searchData = new HashMap<String, Object>();
+		searchData.put("datas", dataList);
+		
+		return searchData;
 			
 	}
 	
@@ -174,9 +158,9 @@ public class MemberController {
 	
 	//내 정보 보기
 	@RequestMapping(value="friendinfo", method = RequestMethod.POST)
-	public ModelAndView showFriendinfo(@RequestParam("m_no")String m_no, HttpSession session){
-		String m_no2 = (String)session.getAttribute("mno");
-		
+	public ModelAndView showFriendinfo(@RequestParam("m_no")String m_no){
+		System.out.println("들어옴?");
+		System.out.println("m_no"+ m_no);
 		ModelAndView view = new ModelAndView();
 		MemberDto dto = daoInter.showMemberDetail(m_no);
 		view.addObject("myinfo", dto);
@@ -186,47 +170,9 @@ public class MemberController {
 		view.addObject("ilist", ilist);
 		List<BoardDto> list = daoInter.showMyMain(m_no);
 		view.addObject("board",list);
-		List<FollowDto> follow = daoInter.showIFollow(m_no2);
-		boolean flw = false;
-		for(FollowDto f:follow){
-			if(f.getF_mno().equals(m_no)){
-				flw = true;
-				break;
-			}
-		}
-		view.addObject("follow",flw);
 		view.setViewName("myinfo");
 		return view;
 	}
-	
-	@RequestMapping(value="friendinfo", method = RequestMethod.GET)
-	public ModelAndView showFriendinfo2(@RequestParam("m_no")String m_no, HttpSession session){
-		String m_no2 = (String)session.getAttribute("mno");
-		
-		ModelAndView view = new ModelAndView();
-		MemberDto dto = daoInter.showMemberDetail(m_no);
-		view.addObject("myinfo", dto);
-		List<FollowDto> mylist = daoInter.showMyFollower(m_no);
-		view.addObject("mylist", mylist);
-		List<FollowDto> ilist = daoInter.showIFollow(m_no);
-		view.addObject("ilist", ilist);
-		List<BoardDto> list = daoInter.showMyMain(m_no);
-		view.addObject("board",list);
-		List<FollowDto> follow = daoInter.showIFollow(m_no2);
-		boolean flw = false;
-		for(FollowDto f:follow){
-			System.out.println("fmno" + f.getF_mno() + " mno" + m_no);
-			if(f.getF_mno().equals(m_no)){
-				flw = true;
-				break;
-			}
-			System.out.println(flw);
-		}
-		view.addObject("follow",flw);
-		view.setViewName("myinfo");
-		return view;
-	}
-	
 	@RequestMapping(value="myinfo", method = RequestMethod.POST)
 	public ModelAndView showMyinfo(@RequestParam("m_no")String m_no){
 		ModelAndView view = new ModelAndView();

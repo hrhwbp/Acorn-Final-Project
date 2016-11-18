@@ -9,7 +9,7 @@
 @import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
 }
 @import url(http://fonts.googleapis.com/css?family=Titillium+Web:300);
-.fa-5x {
+.fa-2x {
 font-size: 2em;
 }
 .fa {
@@ -19,7 +19,7 @@ width: 60px;
 height: 32px;
 text-align: center;
 vertical-align: middle;
-font-size:40px;
+font-size:20px;
 }
 
 
@@ -77,7 +77,7 @@ width:60px;
 height:34px;
 text-align:center;
 vertical-align:middle;
-font-size:40px;
+font-size:25px;
 }
 
 .main-menu .nav-text {
@@ -149,13 +149,13 @@ height: 100%;
 		            <ul class="bs-docs-sidenav">
 		                <li>
 		                    <a href="snslist">
-		                        <i class="fa fa-home fa-5x"></i>
+		                        <i class="fa fa-home fa-2x"></i>
 		                        <span class="nav-text">HOME</span>
 		                    </a>
 		                </li>
 		                <li class="has-subnav">
 		                    <a href="showWishList?w_mno=<%=session.getAttribute("mno")%>">
-		                        <i class="fa fa-gift fa-5x"></i>
+		                        <i class="fa fa-gift fa-2x"></i>
 		                        <span class="nav-text">
 		                            WISHLIST
 		                        </span>
@@ -163,7 +163,7 @@ height: 100%;
 		                </li>
 		                <li class="has-subnav">
 		                    <a href="#">
-		                        <i class="fa fa-list fa-5x"></i>
+		                        <i class="fa fa-list fa-2x"></i>
 		                        <span class="nav-text">
 		                            EVENTLIST
 		                        </span>
@@ -171,7 +171,7 @@ height: 100%;
 		                </li>
 		                <li class="has-subnav">
 		                    <a href="#">
-		                       <i class="fa fa-edit fa-5x"></i>
+		                       <i class="fa fa-edit fa-2x"></i>
 		                        <span class="nav-text">
 		                            POSTING
 		                        </span>
@@ -179,7 +179,7 @@ height: 100%;
 		                </li>
 		                <li>
 		                    <a onclick="follower(${myinfo.m_no})"">
-		                        <i class="fa fa-hand-o-left fa-5x"></i>
+		                        <i class="fa fa-hand-o-left fa-2x"></i>
 		                        <span class="nav-text">
 		                            MY FOLLWERS
 		                        </span>
@@ -187,7 +187,7 @@ height: 100%;
 		                </li>
 		                <li>
 		                    <a onclick="follow(${myinfo.m_no})">
-		                        <i class="fa fa-hand-o-right fa-5x"></i>
+		                        <i class="fa fa-hand-o-right fa-2x"></i>
 		                        <span class="nav-text">
 		                            PEOPLE I FOLLOW
 		                        </span>
@@ -195,7 +195,7 @@ height: 100%;
 		                </li>
 		                <li>
 		                   <a href="#">
-		                       <i class="fa fa-table fa-5x"></i>
+		                       <i class="fa fa-table fa-2x"></i>
 		                        <span class="nav-text">
 		                            Tables
 		                        </span>
@@ -203,7 +203,7 @@ height: 100%;
 		                </li>
 		                <li>
 		                   <a href="#">
-		                        <i class="fa fa-map-marker fa-5x"></i>
+		                        <i class="fa fa-map-marker fa-2x"></i>
 		                        <span class="nav-text">
 		                            Maps
 		                        </span>
@@ -211,7 +211,7 @@ height: 100%;
 		                </li>
 		                <li>
 		                   <a href="logout">
-		                         <i class="fa fa-power-off fa-5x"></i>
+		                         <i class="fa fa-power-off fa-2x"></i>
 		                        <span class="nav-text">
 		                            Logout
 		                        </span>
@@ -223,7 +223,7 @@ height: 100%;
 		           <!--  <ul class="logout">
 		                <li>
 		                   <a href="logout">
-		                         <i class="fa fa-power-off fa-5x"></i>
+		                         <i class="fa fa-power-off fa-2x"></i>
 		                        <span class="nav-text">
 		                            Logout
 		                        </span>
