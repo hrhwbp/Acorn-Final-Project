@@ -557,6 +557,7 @@ function boardDeleteOk(b_no) {
 					<input type="hidden" name="hiddenBoardImg" value="" id="hiddenBoardImg">
 				</div>
 			</div>
+
 	      </div>
 	      <div class="modal-body">
 	     
@@ -578,6 +579,33 @@ function boardDeleteOk(b_no) {
 	      </div>
 	      <input type="hidden" value="" id="hiddenNo" name="b_no">
 	      <input type="hidden" value="" id="hiddenImage" name="b_image">
+
+	      </div>
+	      <div class="modal-body">
+	     
+	 
+	      	<div class="row">	      
+				<h3 class="col-md-12">
+				<c:choose>
+				<c:when test="${mno == myinfo.m_no }">
+				<input name="b_content" id="modalContent" type="text" class="form-control" value="">
+				</c:when>
+				<c:otherwise>
+				<input name="b_content" id="modalContent" type="text" class="form-control" value="" readonly="readonly">
+				</c:otherwise>
+				</c:choose>
+				</h3>
+				
+				<p class="col-md-6" id="modalLike"></p><p id="modalDate" class="text-right col-md-6"></p>
+	      	</div>
+	     	<hr>
+	     	<div class="row">
+	     		
+	     	</div>
+	      </div>
+	      <input type="hidden" value="" id="hiddenNo" name="b_no" class="sr-only">
+	      <input type="hidden" value="" id="hiddenImage" name="b_image" class="sr-only">
+
 	     </form>
 	      <div class="modal-footer">
 		      <c:if test="${mno == myinfo.m_no }">
