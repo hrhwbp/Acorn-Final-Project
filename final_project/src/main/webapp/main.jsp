@@ -84,9 +84,11 @@ function scrolling(){
 			        str += '	</div>';
 			        str += '</div>';
 					//댓글
+					var reply_Mno = this.reply_Mno;
 					var reply_Name = this.reply_Name;
 					var reply_Content = this.reply_Content;
 					var reply_Count = this.reply_Count;
+					var reply_Mno_view = reply_Mno.split(',');
 					var reply_name_view = reply_Name.split(',');
 					var reply_content_view = reply_Content.split(',');
 			        str += '<div class="row">';
@@ -100,7 +102,7 @@ function scrolling(){
 					}
 					for (var i in reply_name_view) {
 						str += '				<tr>';
-						str += '<td><a href="#">'+ reply_name_view[i]+'</a> '+reply_content_view[i]+'</td>';
+						str += '<td><a href="friendinfo?m_no=' + reply_Mno_view[i] + '">'+ reply_name_view[i]+'</a> '+reply_content_view[i]+'</td>';
 						str += '				</tr>';
 					}
 					str += '			</table>';
@@ -252,7 +254,7 @@ function scrolling(){
     			var list = replyData.datas;
     			jQuery(list).each(function(index, objArr){
     				str += "<tr>";
-    				str += "<td><a href='#'>" + objArr.r_name +"</a>"+ objArr.r_content + "</td>";
+    				str += "<td><a href='friendinfo?m_no=" + objArr.r_mno + "'>" + objArr.r_name +"</a>"+ objArr.r_content + "</td>";
     				str += "</tr>";
     			})
     			str += "</table>";
@@ -407,7 +409,7 @@ function scrolling(){
 														for (ReplyDto dto : reply) {
 												%>
 												<tr>
-													<td><a href="#"><%=dto.getR_name()%></a> <%=dto.getR_content()%></td>
+													<td><a href="friendinfo?m_no=<%=dto.getR_mno()%>"><%=dto.getR_name()%></a> <%=dto.getR_content()%></td>
 												</tr>
 												<%
 													}

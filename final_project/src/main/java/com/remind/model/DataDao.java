@@ -19,6 +19,7 @@ import com.remind.controller.WishlistBean;
 public class DataDao implements DaoInter {
 	@Autowired
 	private AnnoInter annoInter;
+	
 
 	@Override
 	public List<BoardDto> showBoard(String m_no) throws DataAccessException {

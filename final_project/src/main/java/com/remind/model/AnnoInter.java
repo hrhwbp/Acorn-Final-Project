@@ -99,7 +99,7 @@ public interface AnnoInter {
    boolean followUpdate2(String f_no);
    
    // reply
-   @Select("select r_no, r_bno, r_content, r_date, (select m_name from member where m_no = r_mno) r_name from reply where r_bno = #{b_no} limit ${limit},5")
+   @Select("select r_no, r_bno, r_content, r_mno , r_date, (select m_name from member where m_no = r_mno) r_name from reply where r_bno = #{b_no} limit ${limit},5")
    List<ReplyDto> showReply(@Param("b_no") String b_no, @Param("limit")int limit);
    @Select("select count(*) from reply where r_bno = #{b_no}")
    int countreply(String b_no);
@@ -110,7 +110,7 @@ public interface AnnoInter {
    
    @Select("select * from reply where r_no = #{r_no}")
    ReplyDto showReplyDetail(String r_no);
-   @Select("select r_no, r_bno, r_content, r_date, (select m_name from member where m_no = r_mno) r_name from reply where r_bno = #{b_no}")
+   @Select("select r_no, r_bno, r_content, r_mno , r_date, (select m_name from member where m_no = r_mno) r_name from reply where r_bno = #{b_no}")
    List<ReplyDto> showReplyMore(String b_no);
    
    @Insert("insert into reply (r_mno, r_bno, r_content) values(#{r_mno}, #{r_bno},#{r_content})")

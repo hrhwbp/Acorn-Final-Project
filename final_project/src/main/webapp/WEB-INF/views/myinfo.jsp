@@ -93,7 +93,7 @@ $(document).ready(function() {
 	})
 })
 
-/* 내 게시물 자세히 복 */
+/* 내 게시물 자세히 보기 */
 function modalToggle(b_no) {
 	/* alert(b_no) 보드 번호 받기. */ 
 	 jQuery.ajax({
@@ -107,6 +107,7 @@ function modalToggle(b_no) {
         	 var likeCnt = data.likeCount;
         	 var reply = data.reply;
         	 var date = dto.b_date.substring(0,16);
+        	 var likeYN = data.likeYN;
         	 /* alert(dto.b_image); */
         	 /* modalContent modalLike modalDate */
         	 /* document.getElementById("modalimg").src = dto.b_image;  */
@@ -119,10 +120,27 @@ function modalToggle(b_no) {
         	 $('#hiddenImage').val(dto.b_image); 
         	 $('#hiddenBoardImg').attr('value',dto.b_image);
         	 $('#boardNo').attr('value', b_no );
-        	 $.each(reply,function(ss){
-        		 /* var str = "<div class='col-md-12'>" + ss.r_name + "</div>";
-	        	 $('#boardReplyModal').append(str);     */		 
+        	 $('#replyHiddenBno').attr('value', b_no );
+        	 $('#boardReplyModal').text('');
+        	 if(reply == ""){
+        		 $('#boardReplyModal').append("<div>등록된 댓글이 없습니다.</div>");
+        	 }
+        	 $.each(reply,function(i,ss){
+        		 
+        		 var str = "";
+        		
+	        	 str = "<a href='friendinfo?m_no=" + ss.r_mno + "'>" + ss.r_name + "</a>&nbsp;" + ss.r_content + "<br>";
+        		
+	        	 $('#boardReplyModal').append(str);
         	 });
+        	 if(likeYN == 0){
+        	 	$("#likeYN").attr("onclick","likesubmit(" + dto.b_no + ")");        		 
+        	 	$("#likeYN").attr("style","cursor:pointer");        		 
+        	 }else{
+        	 	$("#likeYN").attr("onclick","likecancel(" + dto.b_no + ")");        		         		 
+        	 	$("#likeYN").attr("style","cursor:pointer;color:red;");        		 
+        	 }
+	       	 $("#boardReplyModal").scrollTop($("#boardReplyModal")[0].scrollHeight);
         	 $('#boardDetail').modal('show');
          },
          error : function(xhr, status, error) {
@@ -131,6 +149,69 @@ function modalToggle(b_no) {
    });
 	
 }
+
+/* 게시물 답글 달기 */
+function replySubmit() {
+	var b_no = $("#replyHiddenBno").val();
+	var m_no = $("#replyHiddenMno").val();
+	var r_content = $("#r_content").val();
+	var array = {"r_bno":b_no, "r_mno":m_no, "r_content":r_content}
+	$.ajax({
+		type:"post",
+		url:"insertReply",
+		data: array,
+		dataType:'json',
+		success:function(replyData){
+			var str = ""
+			var list = replyData.datas;
+			var count = replyData.count;
+			$('#boardReplyModal').text('');
+			jQuery(list).each(function(index, objArr){		
+			str = "<a href='#'>" + objArr.r_name + "</a>&nbsp;" + objArr.r_content + "<br>";				
+			$('#boardReplyModal').append(str);
+			})
+			$("#r_content").val("");
+		}
+	
+	});
+}
+
+
+/* 게시물 좋아요 하기 */
+function likesubmit(b_no){
+	jQuery.ajax({
+	type:"post",
+	url:"insertLike",
+	data:{"l_bno":b_no, "l_mno":"${mno}"},
+	dataType:'json',
+	success:function(likeData){
+		var list = likeData.datas;
+		var count = likeData.likecount;
+		$('#modalLike').text('좋아요 ' + count + '개');
+		jQuery("#likeYN").attr({style:'color: red'});
+		jQuery("#likeYN").attr({onclick:'likecancel('+b_no+')'});
+		}
+	});
+
+}
+
+/* 게시물 좋아요 취소 */
+function likecancel(b_no){
+	jQuery.ajax({
+	type:"post",
+	url:"cancelLike",
+	data:{"l_bno":b_no, "l_mno":"${mno}"},
+	dataType:'json',
+	success:function(likeData){
+		var list = likeData.datas;
+		var count = likeData.likecount;
+		$('#modalLike').text('좋아요 ' + count + '개');
+		jQuery("#likeYN").removeAttr("style");
+		jQuery("#likeYN").attr({onclick:'likesubmit('+b_no+')'});
+	}
+});
+}
+
 /* 내 팔로워 보기 */
 function follower(m_no) {
 	$('#followHead').text('팔로워');
@@ -283,7 +364,7 @@ function cancelFollow(f_mno,f_sno) {
 }
 
 /* 친구 정보에서 팔로우 하기 */
-function upFollow(f_mno,f_sno) {
+function upFollow2(f_mno,f_sno) {
 	/* alert(m_no + " " + f_sno); */
 	var array = {"f_mno":f_mno,"f_sno":f_sno};
 	jQuery.ajax({
@@ -303,7 +384,7 @@ function upFollow(f_mno,f_sno) {
 }
 
 /* 친구 정보에서 팔로우 취소 */
-function cancelFollow(f_mno,f_sno) {
+function cancelFollow2(f_mno,f_sno) {
 	/* alert(f_mno + " " + f_sno); */
 	var array = {"f_mno":f_sno,"f_sno":f_mno};
 	jQuery.ajax({
@@ -408,10 +489,10 @@ function boardDeleteOk(b_no) {
 				<c:otherwise>
 					<c:choose>
 					<c:when test="${follow == false}">
-						<button type="button" id="followBtn${mno}" class="btn btn-default col-md-12" onclick="upFollow(${mno},${myinfo.m_no })">팔로우</button>
+						<button type="button" id="followBtn${mno}" class="btn btn-default col-md-12" onclick="upFollow2(${mno},${myinfo.m_no })">팔로우</button>
 					</c:when>
 					<c:otherwise>
-						<button type="button" class="btn btn-default col-md-12" id="followBtn${mno}" style='background-color: #70c050; color: white;' onclick="cancelFollow(${myinfo.m_no},${mno})">팔로잉</button>
+						<button type="button" class="btn btn-default col-md-12" id="followBtn${mno}" style='background-color: #70c050; color: white;' onclick="cancelFollow2(${myinfo.m_no},${mno})">팔로잉</button>
 					</c:otherwise>
 					</c:choose>
 				</c:otherwise>
@@ -706,14 +787,17 @@ function boardDeleteOk(b_no) {
 		     	<div class="col-md-4">
 		     	<div class="input-group " style="padding-top: 1%">
 		     		<span class="input-group-addon " id="sizing-addon2">
-		     			<span class="glyphicon glyphicon-heart" onclick="" style="color: red" id="likeYN"></span>
+		     		
+		     			<span class="glyphicon glyphicon-heart" onclick="" style="cursor: pointer;" id="likeYN"></span>
+		     			
 		     		</span>
-		      		<input type="text" class="form-control" placeholder="답글달기..." aria-describedby="sizing-addon2" name="r_content" id="r_content"> 
-					<input type="hidden" name="r_bno" value=""> 
-					<input type="hidden" name="r_mno" value=""> 
+		     		
+		      		<input type="text" class="form-control" placeholder="답글달기..." onkeydown="if (event.keyCode==13){ replySubmit();event.returnValue=false}" aria-describedby="sizing-addon2" name="r_content" id="r_content"> 
+					<input type="hidden" name="r_bno" value="" id="replyHiddenBno"> 
+					<input type="hidden" name="r_mno" value="${mno}" id="replyHiddenMno"> 
 													<!-- 답글 버튼 --> 
 					<span class="input-group-btn ">
-						<button class="btn btn-default" type="button" id="btn_reply" onclick="">답글</button>
+						<button class="btn btn-default" type="button" id="btn_reply" onclick="replySubmit()">답글</button>
 					</span> 		     	
 		     	</div>
 		     	</div>
