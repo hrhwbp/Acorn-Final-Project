@@ -11,6 +11,8 @@
 <meta name="author" content="">
 <link rel="icon" href="../../favicon.ico">
 
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 
 <!-- Bootstrap core CSS common.jsp에 있음-->
@@ -28,40 +30,104 @@
 <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 <script
 	src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>
-
+<!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ -->
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+<style type="text/css">
+.tt-query, /* UPDATE: newer versions use tt-input instead of tt-query */
+.tt-hint {
+    width: 396px;
+    height: 30px;
+    padding: 8px 12px;
+    font-size: 24px;
+    line-height: 30px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+}
+
+.tt-query { /* UPDATE: newer versions use tt-input instead of tt-query */
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+    color: #999;
+}
+
+.tt-menu { /* UPDATE: newer versions use tt-menu instead of tt-dropdown-menu */
+    width: 422px;
+    margin-top: 12px;
+    padding: 8px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+/* .tt-menu.img-circle{
+	width:5%;
+} */
+
+.tt-suggestion {
+    padding: 3px 20px;
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.tt-suggestion.tt-is-under-cursor { /* UPDATE: newer versions use .tt-suggestion.tt-cursor */
+    color: #fff;
+    background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+    margin: 0;
+}
+
+</style>
+<script src="//twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>
 <script type="text/javascript">
 	function myinfo() {
 		$("#info").submit();
 	}
-	function search(){
-		 $.ajax({
-	           type:"post",
-	           url:"searching",
-	           data:{"name":jQuery("#friendSearch").val()},
-	           dataType:"json",
-	           success:function(result){
-	        	   var list = result.datas;
-	           	$(list).each(function(index,objArr){
-	           		$("#seresult").html("");
-	           		$("#seresult").append()
-	           	})
-	           },error:function(request,status,error){
-	               alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	           }
-	         
-	      });
-	}
+	$( document ).ready(function(){
+		$('#friendSearch').typeahead(null,{
+			source: function(query, syncResults, asyncResults) {
+			    $.get('searching?name='+query, function(data) {
+			        asyncResults(data);
+			      });
+			    },
+		    templates: {
+				    empty: [
+				      '<div class="empty-message">',
+				        '친구가 없습니다.',
+				      '</div>'
+				    ].join('\n'),
+				    suggestion: function(data){
+				       html = "<div><img src='http://wbp.synology.me/profileimg/" + data.m_image + "' class='img-circle' style='width:10%;'/>";
+				        html +="<strong>" + data.m_email + "</strong> - " + data.m_name + "</div>";
+				        return html;
+				    },
+				  }
+			})
+			jQuery('#friendSearch').on('typeahead:selected', function (e, datum) {
+				console.log(datum.m_no);
+				 var idx = $('<input type="hidden" value="'+datum.m_no+'" name="m_no">');
+				 $("#gofr").append(idx);
+    			 $("#gofr").submit(); 
+    			
+			});
+	})
+	
 </script>
 </head>
 <body
 	style="padding-top: 70px; background-image: url('resources/image/giftshredpapernewnew1.jpg');">
-
-
 	<!-- Fixed navbar -->
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
@@ -96,15 +162,18 @@
 							<li class="dropdown-header">Nav header</li>
 							<li><a href="#">Separated link</a></li>
 							<li><a href="#">One more separated link</a></li>
-						</ul>
-					</li>
+						</ul></li>
 				</ul>
-				<form class="navbar-form navbar-left" id="searchfr">
+ 				<form class="navbar-form navbar-left" id="searchfr">
 					<div class="form-group">
-						<input type="text" class="form-control" id="friendSearch" placeholder="친구찾기" onkeydown="search()">
+						<div class="ui-widget">
+						<input type="text" id="friendSearch" name="friendSearch"
+								data-provide="typeahead" placeholder="친구찾기">
+						</div>
 					</div>
-					<div class="dropdown" id="research"></div>
-					<!-- <button type="submit" class="btn btn-default">Submit</button> -->
+				</form>
+				<form id="gofr" action="friendinfo" method="post">
+				
 				</form>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="../navbar/">Default</a></li>
