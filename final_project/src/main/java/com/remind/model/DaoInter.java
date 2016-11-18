@@ -2,6 +2,7 @@ package com.remind.model;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 
 import com.remind.controller.AnniversaryBean;
@@ -74,6 +75,7 @@ public interface DaoInter {
 	LikeDto countLike(String b_no) throws DataAccessException;
 	boolean like(LikeBean bean) throws DataAccessException;
 	boolean likeCancel(LikeBean bean) throws DataAccessException;
+	boolean likeupd(String b_no, String b_like) throws DataAccessException;
 	
 	//Anniversary
 	List<AnniversaryDto> showAnniversary(String m_no) throws DataAccessException;

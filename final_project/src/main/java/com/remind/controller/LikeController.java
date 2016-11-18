@@ -36,6 +36,7 @@ public class LikeController {
 		Map<String, Object> likeData = new HashMap<String, Object>();
 		likeData.put("datas", dataList);
 		likeData.put("likecount", daoInter.countLike(bean.getL_bno()).getL_count());
+		daoInter.likeupd(bean.getL_bno(), daoInter.countLike(bean.getL_bno()).getL_count());
 		return likeData;
 				
 	}
@@ -55,6 +56,7 @@ public class LikeController {
 		Map<String, Object> likeData = new HashMap<String, Object>();
 		likeData.put("datas", dataList);
 		likeData.put("likecount", daoInter.countLike(bean.getL_bno()).getL_count());
+		daoInter.likeupd(bean.getL_bno(), daoInter.countLike(bean.getL_bno()).getL_count());
 		return likeData;
 				
 	}
