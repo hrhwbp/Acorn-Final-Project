@@ -348,4 +348,9 @@ public class BoardController {
 		map.put("replyCount", replyCount);
 		return map;
 	}
+	
+	@RequestMapping("cal")
+	public ModelAndView cal(){
+		return new ModelAndView("fullcalendar");
+	}
 }
