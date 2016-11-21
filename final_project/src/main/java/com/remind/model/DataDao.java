@@ -333,7 +333,7 @@ public class DataDao implements DaoInter {
 	public List<LikeDto> showLike(String b_no) throws DataAccessException {
 		return annoInter.showLike(b_no);
 	}
-
+	
 	@Override
 	public int likeYN(LikeBean bean) throws DataAccessException {
 		if (annoInter.likeYN(bean) != null)
@@ -357,7 +357,16 @@ public class DataDao implements DaoInter {
 			return false;
 		}
 	}
-
+	@Override
+	public boolean likeupd(String b_no, String b_like) throws DataAccessException {
+		try{
+		annoInter.likeupd(b_no, b_like);
+		return true;
+		}catch(Exception e){
+			System.out.println("likeupderr");
+			return false;
+		}
+	}
 	@Override
 	public boolean likeCancel(LikeBean bean) throws DataAccessException {
 		try {
