@@ -479,9 +479,6 @@ function boardDeleteOk(b_no) {
 			<div class="col-md-6">
 				<blockquote>
 				  <p>${myinfo.m_name}</p>
-				  <form action="cal">
-				  	<button type="submit">ssss</button>
-				  </form>
 				</blockquote>
 			</div>
 			<div class="col-md-3 col-md-offset-1">
