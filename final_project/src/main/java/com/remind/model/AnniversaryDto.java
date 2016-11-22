@@ -1,7 +1,15 @@
 package com.remind.model;
 
 public class AnniversaryDto {
-	String a_no, a_mno, a_detail, a_date, a_mname, a_dday;
+	String a_no, a_mno, a_detail, a_date, a_mname, a_dday,a_mimage;
+
+	public String getA_mimage() {
+		return a_mimage;
+	}
+
+	public void setA_mimage(String a_mimage) {
+		this.a_mimage = a_mimage;
+	}
 
 	public String getA_dday() {
 		return a_dday;

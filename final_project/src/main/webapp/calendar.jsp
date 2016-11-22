@@ -7,12 +7,14 @@
   <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css'>
       <link rel="stylesheet" href="resources/css/style.css">
 </head>
-
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
 <body>
   <div class="container theme-showcase">
   <h1>Calendar</h1>
 <div id="holder" class="row" ></div>
 </div>
+
 <script type="text/tmpl" id="tmpl">
   {{ 
   var date = date || new Date(),
@@ -188,7 +190,8 @@
 </div> -->
 <script src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'></script>
 <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
-<script src="resources/js/index.js"></script>
+<script src="resources/js/index.js" charset="utf-8"></script>
+
 
 </body>
 </html>

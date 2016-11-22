@@ -96,7 +96,10 @@
 		$("#info").submit();
 	}
 	$( document ).ready(function(){
-		$('#friendSearch').typeahead(null,{
+		$('#friendSearch').typeahead({
+	          
+	          highlight: true
+	    },{
 			source: function(query, syncResults, asyncResults) {
 			    $.get('searching?name='+query, function(data) {
 			        asyncResults(data);
@@ -116,7 +119,7 @@
 				  }
 			})
 			jQuery('#friendSearch').on('typeahead:selected', function (e, datum) {
-				console.log(datum.m_no);
+				
 				 var idx = $('<input type="hidden" value="'+datum.m_no+'" name="m_no">');
 				 $("#gofr").append(idx);
     			 $("#gofr").submit(); 
