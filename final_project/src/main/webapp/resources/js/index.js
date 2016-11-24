@@ -260,15 +260,30 @@ var data = [],
     data.push({ title: names[c1 % names.length], start: new Date(y, m, d, h, m), end: end, allDay: !(i % 6), text: slipsum[c % slipsum.length ]  });
   }
   */
-
-data.push({ title: '생일', start: new Date(2016, 10, 21, 0, 0), end: new Date(2016,10,21,2,0), allDay: true, text: '<img src="https://www.google.co.kr/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png">'  })
-data.push({ title: '생일2', start: new Date(2016, 10, 21, 0, 0), end: new Date(2016,10,21,2,0), allDay: true, text: 'hi'  })
-data.push({ title: '생일3', start: new Date(2016, 10, 21, 0, 0), end: new Date(2016,10,21,2,0), allDay: true, text: 'hi'  })
-data.push({ title: '생일4', start: new Date(2016, 10, 21, 0, 0), end: new Date(2016,10,21,2,0), allDay: true, text: 'hi'  })
-  data.sort(function(a,b) { return (+a.start) - (+b.start); });
-  
+$.ajax({
+    type:"get",
+    url:"showanniversary",
+    dataType:'json',
+    success:function(replyData){
+    	  jQuery(replyData).each(function(index, objArr){
+    		  var year = objArr.A_date.substr(0,4);
+			  var month = objArr.A_date.substr(5,2)-1;
+			  var days = objArr.A_date.substr(8,2);
+			  if(objArr.A_detail =="생일"){
+    			  for (var int = 2010; int < 2200; int++) {
+    				  data.push({ title: objArr.A_mname, start: new Date(int,month,days,0,0), end:  new Date(int,month,days,0,0), allDay: false,
+                		  text: '<img src="https://www.google.co.kr/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png">'+'"님의"'+objArr.A_detail   })
+				}
+    		  }else{
+        	  data.push({ title: objArr.A_mname, start: new Date(year,month,days,0,0), end: new Date(year,month,days,0,0), allDay: true,
+        		  text: '<img src="https://www.google.co.kr/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png">'+'"님의"'+objArr.A_detail   })
+    		  }})
+ },
+});
+data.push({ title: 'test', start: new Date(2016,10,12,0,0), end:  new Date(2016,10,12,0,0), allDay: false,
+	  text: '<img src="https://www.google.co.kr/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png">'+'"님의"'   })
 //data must be sorted by start date
-
+data.sort(function(a,b) { return (+a.start) - (+b.start); });
 //Actually do everything
 $('#holder').calendar({
   data: data

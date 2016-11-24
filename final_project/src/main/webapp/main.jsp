@@ -12,8 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ReMind : [RE:AD MIND]</title>
-<script
-   src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
 var lastbno_save = null;
 $(document).ready(function () {
@@ -505,7 +504,7 @@ function anniAjax(){
                            </c:if>
                            </c:if>
                            </c:forEach>
-                           <tr><td colspan="2"><a href="" onclick="anniAjax()" style="color: rgb(153,255,153)">기념일 더보기</a></td></tr>
+                           <tr><td colspan="2"><a href="anniversary"  style="color: rgb(153,255,153)">기념일 더보기</a></td></tr>
                            </table>
                      </nav>               
             </div>
