@@ -1,11 +1,17 @@
 package com.remind.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
+import com.remind.controller.AdminBean;
 import com.remind.controller.AnniversaryBean;
 import com.remind.controller.BoardBean;
 import com.remind.controller.FollowBean;
@@ -467,4 +473,92 @@ public class DataDao implements DaoInter {
 			return false;
 		}
 	}
+	
+	//Admin
+	@Override
+	public boolean AdminLogin(AdminBean bean) throws DataAccessException {
+		try {
+			annoInter.AdminLogin(bean);
+			return true;
+		} catch (Exception e) {
+			System.out.println("AdminLogin Error : " + e);	
+			return false;
+		}
+	}
+	
+	@Override
+	public List<MemberDto> showMemberA() throws DataAccessException{
+		// TODO Auto-generated method stub
+		return annoInter.showMemberA();
+	}
+	
+	@Override
+	public List<BoardDto> showBoardA() throws DataAccessException{
+		// TODO Auto-generated method stub
+		return annoInter.showBoardA();
+	}
+	
+	@Override
+	public List<BoardDto> showPBoard(String m_no) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return annoInter.showPBoard(m_no);
+	}
+	
+	@Override
+	public List<WishlistDto> eventListA() throws DataAccessException{
+		// TODO Auto-generated method stub
+		return annoInter.eventListA();
+	}
+	
+	@Override
+	public String wishlistCnt() throws DataAccessException {
+		// TODO Auto-generated method stub
+		System.out.println(annoInter.wishlistCnt() +  "주소가 넘어온다@@");
+		return annoInter.wishlistCnt();
+	}
+	
+	@Override
+	public String memberCnt() throws DataAccessException {
+		// TODO Auto-generated method stub
+		return annoInter.memberCnt();
+	}
+	
+	@Override
+	public String boardCnt() throws DataAccessException {
+		// TODO Auto-generated method stub
+		return annoInter.boardCnt();
+	}
+	
+	@Override
+	public ParserDto articleAdmin() throws DataAccessException{
+		ParserDto dto = new ParserDto();
+		try {
+	         Document doc = Jsoup.connect("http://finance.naver.com/").get();
+	         Elements article = doc.select("[class*=article] h2 a");
+	         Elements articleUrl = doc.select("[class*=article] h2 a[href]");
+	         
+	         Element articletitle = null;
+	         Element Url = null;
+	         
+	         if(article.size() > 0){
+	             System.out.println(article.get(0).text() + "~~~!~!~!");
+	        	 articletitle = article.get(0);
+	        	 dto.setName(articletitle.text());
+	          }
+	         
+	         if(articleUrl.size() > 0){
+	             //System.out.println(articleUrl.get(0).text() + "~~~!~!~!");
+	        	 Url = article.first();
+	        	 System.out.println(Url.attr("abs:href") + "기사 URL 확인");
+	        	 
+	        	 dto.setUrl(Url.attr("abs:href"));
+	          }
+	         
+		}catch (Exception e) {
+			System.out.println("articleAdmin : Error " + e);
+		}
+		return dto;
+	}
+	
+	
 }

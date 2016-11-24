@@ -1,23 +1,21 @@
 ﻿/*** First Chart in Dashboard page ***/
 
 	$(document).ready(function() {
+		
+		var s; 
 		info = new Highcharts.Chart({
 			chart: {
 				renderTo: 'load',
 				margin: [0, 0, 0, 0],
 				backgroundColor: null,
                 plotBackgroundColor: 'none',
-							
 			},
-			
 			title: {
 				text: null
 			},
-
 			tooltip: {
 				formatter: function() { 
 					return this.point.name +': '+ this.y +' %';
-						
 				} 	
 			},
 		    series: [
@@ -29,8 +27,8 @@
 				name: 'Income',
 				innerSize: '65%',
 				data: [
-					{ name: 'load percentage', y: 45.0, color: '#b2c831' },
-					{ name: 'rest', y: 55.0, color: '#3d3d3d' }
+					{ name: 'load percentage', y: 25.0, color: '#b2c831' },
+					{ name: 'rest', y: 75.0, color: '#3d3d3d' }
 				],
 				dataLabels: {
 					enabled: false,
@@ -51,17 +49,13 @@
 				margin: [0, 0, 0, 0],
 				backgroundColor: null,
                 plotBackgroundColor: 'none',
-							
 			},
-			
 			title: {
 				text: null
 			},
-
 			tooltip: {
 				formatter: function() { 
 					return this.point.name +': '+ this.y +' %';
-						
 				} 	
 			},
 		    series: [
@@ -73,8 +67,8 @@
 				name: 'SiteInfo',
 				innerSize: '65%',
 				data: [
-					{ name: 'Used', y: 65.0, color: '#fa1d2d' },
-					{ name: 'Rest', y: 35.0, color: '#3d3d3d' }
+					{ name: 'Used', y: 80.0, color: '#fa1d2d' },
+					{ name: 'Rest', y: 20.0, color: '#3d3d3d' }
 				],
 				dataLabels: {
 					enabled: false,

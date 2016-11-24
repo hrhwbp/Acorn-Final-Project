@@ -76,7 +76,7 @@ public class ParserDao implements ParserDaoInter {
             
             //System.out.println(titleelem.get(0).text() + "~~~!~!~!");
             irum = titleelem.get(0);
-            if(irum.text().length() > 20){
+            if(irum.text().length() > 20){		//이름이 너무 길면 잘라버리기
                //System.out.println(irum.text().substring(0, 20).length() + " 길이 체크!!!");
                dto.setName(irum.text().substring(0, 30));
             }else{
@@ -183,7 +183,7 @@ public class ParserDao implements ParserDaoInter {
             }
          }
          list.add(dto);
-         System.out.println(dto.getName() + "~~~~" + dto.getPrice() + " " + dto.getImage());
+         //System.out.println(dto.getName() + "~~~~" + dto.getPrice() + " " + dto.getImage());
 
       } catch (Exception e) {
          System.out.println("에러당 : " + e);

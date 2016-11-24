@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.dao.DataAccessException;
 
+import com.remind.controller.AdminBean;
 import com.remind.controller.AnniversaryBean;
 import com.remind.controller.BoardBean;
 import com.remind.controller.FollowBean;
@@ -194,4 +195,51 @@ public interface AnnoInter {
    boolean deleteAnniversary(AnniversaryBean bean);
    @Update("update anniversary set a_detail = #{a_detail}, a_date = #{a_date} where a_bno = #{a_bno}")
    boolean updateAnniversary(AnniversaryBean bean);
-}   
+   
+   
+   
+   //Admin Table Page
+   @Select("select ad_name, ad_password from admin where ad_name=#{ad_name} and ad_password=#{ad_password}")
+   boolean AdminLogin(AdminBean bean);
+   
+   @Select("select * from member")
+   List<MemberDto> showMemberA();
+   
+   @Select("select * from board")
+   List<BoardDto> showBoardA();
+   
+   @Select("select * from board where b_mno=#{b_mno}")
+   List<BoardDto> showPBoard(String m_no);
+   
+   @Select("select w_mno, m_name, m_email, w_pname,w_price, w_image, w_addr, w_detail FROM wishlist left join member on m_no=w_mno ORDER BY RAND() LIMIT 4")
+   List<WishlistDto> eventListA();
+   
+   //Admin Main Page
+   @Select("select count(*) wishcnt from wishlist")
+   String wishlistCnt();
+   
+   @Select("select count(*) membercnt from member")
+   String memberCnt();
+   
+   @Select("select count(*) boardcnt from board")
+   String boardCnt();
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+}

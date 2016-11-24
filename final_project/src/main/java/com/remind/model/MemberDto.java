@@ -1,7 +1,7 @@
 package com.remind.model;
 
 public class MemberDto {
-String m_no, m_name, m_bdate, m_email, m_gender, m_password, m_image, m_introduce;
+String m_no, m_name, m_bdate, m_email, m_gender, m_password, m_image, m_introduce, membercnt;
 
 public String getM_no() {
 	return m_no;
@@ -66,6 +66,15 @@ public String getM_introduce() {
 public void setM_introduce(String m_introduce) {
 	this.m_introduce = m_introduce;
 }
+
+public String getMembercnt() {
+	return membercnt;
+}
+
+public void setMembercnt(String membercnt) {
+	this.membercnt = membercnt;
+}
+
 
 
 

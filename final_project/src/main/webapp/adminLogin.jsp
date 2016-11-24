@@ -50,91 +50,88 @@ pbfooter {
 
 <!-- Jquery Validate Script - Validation Fields -->
 <script type="text/javascript">
-	$.validator.setDefaults({
-		submitHandler : function() {
-			window.open('dashboard.html', '_self', false)
+$.validator.setDefaults({
+	submitHandler : function() {
+		window.open('dashboard.html', '_self', false)
+	}
+});
+
+$().ready(function() {
+	// validate the comment form when it is submitted
+	$("#commentForm").validate();
+
+	// validate signup form on keyup and submit
+	$("#signupForm")
+	.validate({
+		rules : {
+			firstname : "required",
+			lastname : "required",
+			username : {
+				required : true,
+				minlength : 1
+			},
+			password : {
+				required : true,
+				minlength : 1
+			},
+			confirm_password : {
+				required : true,
+				minlength : 2,
+				equalTo : "#password"
+			},
+			email : {
+				required : true,
+				email : true
+			},
+			topic : {
+				required : "#newsletter:checked",
+				minlength : 2
+			},
+			agree : "required"
+			},
+			messages : {
+				firstname : "Please enter your firstname",
+				lastname : "Please enter your lastname",
+				username : {
+					required : "Please enter a username",
+					minlength : "Your username must consist of at least 1 character"
+				},
+				password : {
+					required : "Please provide a password",
+					minlength : "Your password must be at least 1 character long"
+				},
+				confirm_password : {
+					required : "Please provide a password",
+					minlength : "Your password must be at least 5 characters long",
+					equalTo : "Please enter the same password as above"
+				},
+				email : "Please enter a valid email address",
+				agree : "Please accept our policy"
+				}
+	});
+
+	// propose username by combining first- and lastname
+	$("#username").focus(function() {
+		var firstname = $("#firstname").val();
+		var lastname = $("#lastname").val();
+		if (firstname && lastname && !this.value) {
+			this.value = firstname + "." + lastname;
 		}
 	});
 
-	$().ready(function() {
-						// validate the comment form when it is submitted
-						$("#commentForm").validate();
-
-						// validate signup form on keyup and submit
-						$("#signupForm")
-								.validate(
-										{
-											rules : {
-												firstname : "required",
-												lastname : "required",
-												username : {
-													required : true,
-													minlength : 1
-												},
-												password : {
-													required : true,
-													minlength : 1
-												},
-												confirm_password : {
-													required : true,
-													minlength : 2,
-													equalTo : "#password"
-												},
-												email : {
-													required : true,
-													email : true
-												},
-												topic : {
-													required : "#newsletter:checked",
-													minlength : 2
-												},
-												agree : "required"
-											},
-											messages : {
-												firstname : "Please enter your firstname",
-												lastname : "Please enter your lastname",
-												username : {
-													required : "Please enter a username",
-													minlength : "Your username must consist of at least 1 character"
-												},
-												password : {
-													required : "Please provide a password",
-													minlength : "Your password must be at least 1 character long"
-												},
-												confirm_password : {
-													required : "Please provide a password",
-													minlength : "Your password must be at least 5 characters long",
-													equalTo : "Please enter the same password as above"
-												},
-												email : "Please enter a valid email address",
-												agree : "Please accept our policy"
-											}
-										});
-
-						// propose username by combining first- and lastname
-						$("#username").focus(function() {
-							var firstname = $("#firstname").val();
-							var lastname = $("#lastname").val();
-							if (firstname && lastname && !this.value) {
-								this.value = firstname + "." + lastname;
-							}
-						});
-
-						//code to hide topic selection, disable for demo
-						var newsletter = $("#newsletter");
-						// newsletter topics are optional, hide at first
-						var inital = newsletter.is(":checked");
-						var topics = $("#newsletter_topics")[inital ? "removeClass"
-								: "addClass"]("gray");
-						var topicInputs = topics.find("input").attr("disabled",
-								!inital);
-						// show when newsletter is checked
-						newsletter.click(function() {
-							topics[this.checked ? "removeClass" : "addClass"]
-									("gray");
-							topicInputs.attr("disabled", !this.checked);
-						});
-					});
+	//code to hide topic selection, disable for demo
+	var newsletter = $("#newsletter");
+	// newsletter topics are optional, hide at first
+	var inital = newsletter.is(":checked");
+	var topics = $("#newsletter_topics")[inital ? "removeClass" : "addClass"]("gray");
+	var topicInputs = topics.find("input").attr("disabled",	!inital);
+	// show when newsletter is checked
+	newsletter.click(function() {
+		topics[this.checked ? "removeClass" : "addClass"] ("gray");
+	topicInputs.attr("disabled", !this.checked);
+	});
+	
+});
 </script>
 </head>
 <!--style="background-image:url('resources/admin/images/bg.jpg') no-repeat center center; height: 700px;"  -->
@@ -159,10 +156,10 @@ pbfooter {
 						<a href="index.html"><i class="icon-home icon-white"></i>Home</a>
 					</li>
 					<li>
-						<a href="tables.html"><i class="icon-th icon-white"></i>Tables</a>
+						<a href="showAdminTable"><i class="icon-th icon-white"></i>Tables</a>
 					</li>
 					<li class="active">
-						<a href="login.html"><i class="icon-lock icon-white"></i> Login</a>
+						<a href="loginPage"><i class="icon-lock icon-white"></i> Login</a>
 					</li>
 					<li>
 						<a href="user.html"><i class="icon-user icon-white"></i>User</a>
@@ -178,11 +175,11 @@ pbfooter {
 				<div class="block-unit"
 					style="text-align: center; padding: 8px 8px 8px 8px;">
 					<img src="resources/admin/images/face80x80.jpg" alt="" class="img-circle"> <br> <br>
-					<form class="cmxform" id="signupForm" method="get" action="">
+					<form class="cmxform" id="signupForm" method="post" action="AdminLogin">
 						<fieldset>
 							<p>
-								<input id="username" name="username" type="text" placeholder="Username"> 
-								<input id="password" name="password" type="password" placeholder="Password">
+								<input id="ad_name" name="ad_name" type="text" placeholder="Adminname"> 
+								<input id="ad_password" name="ad_password" type="password" placeholder="Password">
 							</p>
 							<input class="submit btn-success btn btn-large" type="submit" value="Login">
 						</fieldset>
@@ -200,31 +197,3 @@ pbfooter {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

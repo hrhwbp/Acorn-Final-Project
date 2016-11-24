@@ -3,7 +3,7 @@ package com.remind.controller;
 import org.springframework.web.multipart.MultipartFile;
 
 public class MemberBean {
-String m_no, m_name, m_bdate, m_email, m_gender, m_password, year, month, day, gender, m_image,m_introduce;
+String m_no, m_name, m_bdate, m_email, m_gender, m_password, year, month, day, gender, m_image,m_introduce, membercnt;
 MultipartFile fileUp;
 
 public String getYear() {
@@ -101,5 +101,15 @@ public String getM_introduce() {
 public void setM_introduce(String m_introduce) {
 	this.m_introduce = m_introduce;
 }
+
+public String getMembercnt() {
+	return membercnt;
+}
+
+public void setMembercnt(String membercnt) {
+	this.membercnt = membercnt;
+}
+
+
 
 }

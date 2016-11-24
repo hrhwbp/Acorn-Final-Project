@@ -1,7 +1,7 @@
 package com.remind.model;
 
 public class BoardDto {
-	String b_no, b_mno, b_image, b_content, b_date, b_like, b_mname, r_no, r_bno, r_content, r_date, r_name;
+	String b_no, b_mno, b_image, b_content, b_date, b_like, b_mname, r_no, r_bno, r_content, r_date, r_name, boardcnt;
 
 	public String getB_mno() {
 		return b_mno;
@@ -99,5 +99,14 @@ public class BoardDto {
 		this.r_name = r_name;
 	}
 
+	public String getBoardcnt() {
+		return boardcnt;
+	}
+
+	public void setBoardcnt(String boardcnt) {
+		this.boardcnt = boardcnt;
+	}
+
+	
 
 }

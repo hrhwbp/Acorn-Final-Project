@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="cc" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
 <title>BLOCKS - Bootstrap Dashboard Theme</title>
@@ -19,616 +19,317 @@
 <script type="text/javascript" src="resources/admin/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="resources/admin/js/admin.js"></script>
 
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->     
+<!-- Google Fonts call. Font Used Open Sans -->
+<link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<!-- DataTables Initialization -->
+<script type="text/javascript" src="resources/admin/js/datatables/jquery.dataTables.js"></script>
+
+
 <style type="text/css">
 body {
 	padding-top: 60px;
 }
 </style>
-
-<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
-	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-        
-<!-- Google Fonts call. Font Used Open Sans -->
-<link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
-
-<!-- DataTables Initialization -->
- <script type="text/javascript" src="resources/admin/js/datatables/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function () {
 	$('#dt1').dataTable();
+	
 });
+
+//선물 이벤트 관련 이메일 전송
+function send() {
+	var to = $("#compose-to").val();
+	var subject = $("#compose-subject").val();
+	var message = $("#compose-message").val();
+	//alert(aa + " " + jj + " " + hhh);
+		
+	$.ajax({
+		type:"post",
+		url:"send",
+		data: {"receiver":to,"subject":subject,"content":message},
+		dataType: "json",
+		success: function(boardData){
+			if(boardData.suc == true){
+				$("#mailcheck").modal()
+				$("#compose-modal").modal("hide");
+			}else{
+				$("#mailcheck #modal-title").empty();
+				$("#mailcheck #modal-title").val("전송 실패");
+				$("#mailcheck").modal()
+				$("#compose-modal").modal("hide");
+			}
+		},
+		error: function(){
+			alert("에러 발생");
+		}
+	});
+}
+
+//특정 User의 게시판 보기
+function showUserBoard(m_no){
+	$.ajax({
+		type:"post",
+		url:"showPartBoard",
+		data: {"m_no":m_no},
+		dataType: "json",
+		success: function(boardData){
+			var ch;
+			var str;
+			str += '<table class="display" id="dt1">';
+			str += '<thead><tr><th>Board No</th><th>Content</th><th>Upload Date</th><th>Like</th><th>Image</th></tr></thead>';
+			str += '<tbody>';
+			var list = boardData.boardlist;
+			if(list.length == 0){
+				str += '<tr class="odd gradeX">';
+				str += '<td colspan="5" class="center">게시글이 없습니다.</td></tr>';
+			}
+			$(list).each(function(index, objArr){
+				//alert(list.length == 0);
+				str += '<tr class="odd gradeC">';
+				str += '<td class="center">' + objArr["b_no"] + '</td>';
+				str += '<td>' + objArr["b_content"] + '</td>';
+				str += '<td>' + objArr["b_date"] + '</td>';
+				str += '<td class="center">' + objArr["b_like"] + '</td>';
+				str += '<td><img src="' + objArr["b_image"] + '" style="height: 50px; width: 50px;"></td></tr>';	
+				
+			});
+			str += '</tbody></table>'
+			
+			$("#boardlist").html(str);
+		},
+		error: function(){
+			alert("에러 발생");
+		}
+	});
+}
+
+/* function dropOut(m_no){
+	alert(m_no)
+	document.adminGroup.action="out";
+	document.adminGroup.method="post";
+	document.adminGroup.submit();
+} */
+
+function sendingEmail(m_email, m_name, w_pname){
+	$("#compose-to").val(m_email);
+	$("#compose-subject").val(m_name + " 님 이벤트에 당첨되었습니다!!")
+	$("#compose-message").val("<" + m_name + "> 님이 선물 받기를 희망하시는 <" + w_pname + "> 는 2주 안에 주문될 예정이므로 관리자에 의하여 상품이 Lock됩니다. 앞으로도 많은 상품을 WishList을 올려서 공짜로 받아야지... 응?... 안그래?")
+}
+
 </script>
-  
 </head>
 <body>
   
-	<!-- NAVIGATION MENU -->
+<!-- NAVIGATION MENU -->
+<div class="navbar-nav navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="index.html"><img src="resources/image/REMINDLOGO.png" style="height: 15px; width: 60px" alt=""> RE:MIND ADMIN</a>
+		</div> 
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a href="index.html"><i class="icon-home icon-white"></i> Home</a></li>              
+				<li class="active"><a href="showAdminTable"><i class="icon-th icon-white"></i> Tables</a></li>
+				<%-- <cc:choose> --%>
+					<%-- <cc:when test="<%=session.getAttribute("ad_no") == null%>">
+						<li><a href="loginPage"><i class="icon-lock icon-white"></i> Login</a></li>
+					</cc:when>
+					<cc:when test="<%=session.getAttribute("ad_no") != null%>">
+						<li><a href="loginPage"><i class="icon-lock icon-white"></i> Logout</a></li>
+					</cc:when> --%>
+				<%-- </cc:choose> --%>
+				<li><a href="user.html"><i class="icon-user icon-white"></i> User</a></li>
+			</ul>
+		</div><!--/.nav-collapse -->
+	</div>
+</div>
 
-    <div class="navbar-nav navbar-inverse navbar-fixed-top">
-        <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="index.html"><img src="resources/admin/images/logo30.png" alt=""> RE:MIND ADMIN</a>
-        </div> 
-          <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li><a href="index.html"><i class="icon-home icon-white"></i> Home</a></li>              
-              <li class="active"><a href="tables.html"><i class="icon-th icon-white"></i> Tables</a></li>
-              <li><a href="login.html"><i class="icon-lock icon-white"></i> Login</a></li>
-              <li><a href="user.html"><i class="icon-user icon-white"></i> User</a></li>
-
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-    </div>
-
-    <div class="container">
-
-      <!-- CONTENT -->
+<div class="container">
+<!-- CONTENT -->
 	<div class="row">
 		<div class="col-sm-12 col-lg-12">
+		
+			<!-- 첫번째 Table -->
 			<h4><strong>User Table</strong></h4>
-			  <table class="display">
-	          <thead>
-	            <tr>
-	              <th>사용자 번호</th>
-	              <th>성명</th>
-	              <th>E-mail</th>
-	              <th>성별</th>
-	              <th>비밀번호</th>
-	            </tr>
-	          </thead>
-	          
-	         <!--  <tbody>
-	            <tr class="odd">
-	              <td>Queen</td>
-	              <td>Brian May</td>
-	              <td>Guitar</td>
-	              <td class="center"> 7</td>
-	              <td class="center">9</td>
-	            </tr>
-	            <tr class="even">
-	              <td>Queen</td>
-	              <td>Roger Taylor</td>
-	              <td>Drums</td>
-	              <td class="center">5</td>
-	              <td class="center">7</td>
-	            </tr>
-	          </tbody> -->
-	         </table><!--/END First Table -->
-			 <br>
-			 <!--SECOND Table -->
-
-
-		<h4><strong>Data Table</strong></h4>
-
-		<table class="display" id="dt1">
-        <thead>
-          <tr>
-            <th>Rendering engine</th>
-            <th>Browser</th>
-            <th>Platform(s)</th>
-            <th>Engine version</th>
-            <th>CSS grade</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="odd gradeX">
-            <td>Trident</td>
-            <td>Internet Explorer 4.0</td>
-            <td>Win 95+</td>
-            <td class="center"> 4</td>
-            <td class="center">X</td>
-          </tr>
-          <tr class="even gradeC">
-            <td>Trident</td>
-            <td>Internet Explorer 5.0</td>
-            <td>Win 95+</td>
-            <td class="center">5</td>
-            <td class="center">C</td>
-          </tr>
-          <tr class="odd gradeA">
-            <td>Trident</td>
-            <td>Internet Explorer 5.5</td>
-            <td>Win 95+</td>
-            <td class="center">5.5</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="even gradeA">
-            <td>Trident</td>
-            <td>Internet Explorer 6</td>
-            <td>Win 98+</td>
-            <td class="center">6</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="odd gradeA">
-            <td>Trident</td>
-            <td>Internet Explorer 7</td>
-            <td>Win XP SP2+</td>
-            <td class="center">7</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="even gradeA">
-            <td>Trident</td>
-            <td>AOL browser (AOL desktop)</td>
-            <td>Win XP</td>
-            <td class="center">6</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Firefox 1.0</td>
-            <td>Win 98+ / OSX.2+</td>
-            <td class="center">1.7</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Firefox 1.5</td>
-            <td>Win 98+ / OSX.2+</td>
-            <td class="center">1.8</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Firefox 2.0</td>
-            <td>Win 98+ / OSX.2+</td>
-            <td class="center">1.8</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Firefox 3.0</td>
-            <td>Win 2k+ / OSX.3+</td>
-            <td class="center">1.9</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Camino 1.0</td>
-            <td>OSX.2+</td>
-            <td class="center">1.8</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Camino 1.5</td>
-            <td>OSX.3+</td>
-            <td class="center">1.8</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Netscape 7.2</td>
-            <td>Win 95+ / Mac OS 8.6-9.2</td>
-            <td class="center">1.7</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Netscape Browser 8</td>
-            <td>Win 98SE+</td>
-            <td class="center">1.7</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Netscape Navigator 9</td>
-            <td>Win 98+ / OSX.2+</td>
-            <td class="center">1.8</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Mozilla 1.0</td>
-            <td>Win 95+ / OSX.1+</td>
-            <td class="center">1</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Mozilla 1.1</td>
-            <td>Win 95+ / OSX.1+</td>
-            <td class="center">1.1</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Mozilla 1.2</td>
-            <td>Win 95+ / OSX.1+</td>
-            <td class="center">1.2</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Mozilla 1.3</td>
-            <td>Win 95+ / OSX.1+</td>
-            <td class="center">1.3</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Mozilla 1.4</td>
-            <td>Win 95+ / OSX.1+</td>
-            <td class="center">1.4</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Mozilla 1.5</td>
-            <td>Win 95+ / OSX.1+</td>
-            <td class="center">1.5</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Mozilla 1.6</td>
-            <td>Win 95+ / OSX.1+</td>
-            <td class="center">1.6</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Mozilla 1.7</td>
-            <td>Win 98+ / OSX.1+</td>
-            <td class="center">1.7</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Mozilla 1.8</td>
-            <td>Win 98+ / OSX.1+</td>
-            <td class="center">1.8</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Seamonkey 1.1</td>
-            <td>Win 98+ / OSX.2+</td>
-            <td class="center">1.8</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Gecko</td>
-            <td>Epiphany 2.20</td>
-            <td>Gnome</td>
-            <td class="center">1.8</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Webkit</td>
-            <td>Safari 1.2</td>
-            <td>OSX.3</td>
-            <td class="center">125.5</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Webkit</td>
-            <td>Safari 1.3</td>
-            <td>OSX.3</td>
-            <td class="center">312.8</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Webkit</td>
-            <td>Safari 2.0</td>
-            <td>OSX.4+</td>
-            <td class="center">419.3</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Webkit</td>
-            <td>Safari 3.0</td>
-            <td>OSX.4+</td>
-            <td class="center">522.1</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Webkit</td>
-            <td>OmniWeb 5.5</td>
-            <td>OSX.4+</td>
-            <td class="center">420</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Webkit</td>
-            <td>iPod Touch / iPhone</td>
-            <td>iPod</td>
-            <td class="center">420.1</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Webkit</td>
-            <td>S60</td>
-            <td>S60</td>
-            <td class="center">413</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Presto</td>
-            <td>Opera 7.0</td>
-            <td>Win 95+ / OSX.1+</td>
-            <td class="center">-</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Presto</td>
-            <td>Opera 7.5</td>
-            <td>Win 95+ / OSX.2+</td>
-            <td class="center">-</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Presto</td>
-            <td>Opera 8.0</td>
-            <td>Win 95+ / OSX.2+</td>
-            <td class="center">-</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Presto</td>
-            <td>Opera 8.5</td>
-            <td>Win 95+ / OSX.2+</td>
-            <td class="center">-</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Presto</td>
-            <td>Opera 9.0</td>
-            <td>Win 95+ / OSX.3+</td>
-            <td class="center">-</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Presto</td>
-            <td>Opera 9.2</td>
-            <td>Win 88+ / OSX.3+</td>
-            <td class="center">-</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Presto</td>
-            <td>Opera 9.5</td>
-            <td>Win 88+ / OSX.3+</td>
-            <td class="center">-</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Presto</td>
-            <td>Opera for Wii</td>
-            <td>Wii</td>
-            <td class="center">-</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Presto</td>
-            <td>Nokia N800</td>
-            <td>N800</td>
-            <td class="center">-</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Presto</td>
-            <td>Nintendo DS browser</td>
-            <td>Nintendo DS</td>
-            <td class="center">8.5</td>
-            <td class="center">C/A<sup>1</sup></td>
-          </tr>
-          <tr class="gradeC">
-            <td>KHTML</td>
-            <td>Konqureror 3.1</td>
-            <td>KDE 3.1</td>
-            <td class="center">3.1</td>
-            <td class="center">C</td>
-          </tr>
-          <tr class="gradeA">
-            <td>KHTML</td>
-            <td>Konqureror 3.3</td>
-            <td>KDE 3.3</td>
-            <td class="center">3.3</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeA">
-            <td>KHTML</td>
-            <td>Konqureror 3.5</td>
-            <td>KDE 3.5</td>
-            <td class="center">3.5</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeX">
-            <td>Tasman</td>
-            <td>Internet Explorer 4.5</td>
-            <td>Mac OS 8-9</td>
-            <td class="center">-</td>
-            <td class="center">X</td>
-          </tr>
-          <tr class="gradeC">
-            <td>Tasman</td>
-            <td>Internet Explorer 5.1</td>
-            <td>Mac OS 7.6-9</td>
-            <td class="center">1</td>
-            <td class="center">C</td>
-          </tr>
-          <tr class="gradeC">
-            <td>Tasman</td>
-            <td>Internet Explorer 5.2</td>
-            <td>Mac OS 8-X</td>
-            <td class="center">1</td>
-            <td class="center">C</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Misc</td>
-            <td>NetFront 3.1</td>
-            <td>Embedded devices</td>
-            <td class="center">-</td>
-            <td class="center">C</td>
-          </tr>
-          <tr class="gradeA">
-            <td>Misc</td>
-            <td>NetFront 3.4</td>
-            <td>Embedded devices</td>
-            <td class="center">-</td>
-            <td class="center">A</td>
-          </tr>
-          <tr class="gradeX">
-            <td>Misc</td>
-            <td>Dillo 0.8</td>
-            <td>Embedded devices</td>
-            <td class="center">-</td>
-            <td class="center">X</td>
-          </tr>
-          <tr class="gradeX">
-            <td>Misc</td>
-            <td>Links</td>
-            <td>Text only</td>
-            <td class="center">-</td>
-            <td class="center">X</td>
-          </tr>
-          <tr class="gradeX">
-            <td>Misc</td>
-            <td>Lynx</td>
-            <td>Text only</td>
-            <td class="center">-</td>
-            <td class="center">X</td>
-          </tr>
-          <tr class="gradeC">
-            <td>Misc</td>
-            <td>IE Mobile</td>
-            <td>Windows Mobile 6</td>
-            <td class="center">-</td>
-            <td class="center">C</td>
-          </tr>
-          <tr class="gradeC">
-            <td>Misc</td>
-            <td>PSP browser</td>
-            <td>PSP</td>
-            <td class="center">-</td>
-            <td class="center">C</td>
-          </tr>
-          <tr class="gradeU">
-            <td>Other browsers</td>
-            <td>All others</td>
-            <td>-</td>
-            <td class="center">-</td>
-            <td class="center">U</td>
-          </tr>
-        </tbody>
-      </table><!--/END SECOND TABLE -->
-	
+				<table class="display">
+					<thead>
+						<tr>
+							<th>사용자 번호</th>
+							<th>성명</th>
+							<th>E-mail</th>
+							<th>성별</th>
+							<th>비밀번호</th>
+							<th>강퇴</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<cc:forEach var="Member" items="${showMem}">
+							<form action="adminmemberout">
+								<input type="hidden" name="m_no" value="${Member.m_no}">
+								<tr class="odd">
+									<td>${Member.m_no }</td>
+									<td><a style="cursor: pointer;" onclick="showUserBoard('${Member.m_no}')">${Member.m_name}</a></td>
+									<td>${Member.m_email }</td>
+									<cc:choose>
+										<cc:when test="${Member.m_gender == 1}">
+											<td>남</td>
+										</cc:when>
+										<cc:when test="${Member.m_gender == 2}">
+											<td>여</td>
+										</cc:when>
+									</cc:choose>
+									<td>${Member.m_password}</td>
+									<td><button type="submit">강퇴</button></td>
+								</tr>
+							</form>
+						</cc:forEach>
+					</tbody>
+					
+				</table><!--/END 첫번째 Table-->
+				<br>
+			
+			<!--두번째 Table -->
+			<h4><strong>Board Table</strong></h4>
+			<div id="boardlist">
+				<table class="display" id="dt1">
+					<thead>
+						<tr>
+							<th>Board No</th>
+							<th>Content</th>
+							<th>Upload Date</th>
+							<th>Like</th>
+							<th>Image</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<cc:forEach var="Board" items="${showBoard}">
+							<tr class="odd gradeC">
+								<td class="center">${Board.b_no}</td>
+								<td>${Board.b_content}</td>
+								<td>${Board.b_date}</td>
+								<td class="center">${Board.b_like}</td>
+								<td><img src="${Board.b_image}" style="height: 50px; width: 50px;"></td>
+							</tr>
+						</cc:forEach>
+					</tbody>
+				</table><!--/END 두번쨰 TABLE -->
+			</div>
+			
 		</div><!--/span12 -->
-      </div><!-- /row -->
-     </div> <!-- /container -->
-    	<br>	
+	</div><!-- /row -->
+</div> <!-- /container -->
+<br>
 
-      	<div class="container">
-      	    <h4><strong>Pure CSS Price Table</strong></h4>
-      		<div class="row">
-      			<div class="col-sm-3 col-lg-3">
-      				<div id="hosting-table">
-						<div class="table_style4"> 
-							<div class="column">
-								<ul>
-				                  	<li><strong>Select Your Plan</strong></li>
-									<li class="header_row">
-										<h1>Free</h1>
-									</li>
-									<li>Disk Space 500 MB <a class="tt" href="#">(?)<span class="tooltip"><span class="triangle-obtuse">Contrary to popular belief. It has roots in a classical Latin</span></span></a></li>
-									<li>Bandwidth Unmetered</li> 
-									<li>Setup Free <a class="tt" href="#">(?)<span class="tooltip"><span class="triangle-obtuse">Do your layouts deserve better than Lorem Ipsum?</span></span></a></li> 
-									<li>1 Free Email Accounts</li>
-				                    <li>1 FTP Accounts <a class="tt" href="#">(?)<span class="tooltip"><span class="triangle-obtuse">Apply as an art than director Do your</span></span></a></li>
-				                    <li>Half Privacy</li>
-									<li class="footer_row"><a href="#" class="hosting-button">Add To Cart</a></li>
-								</ul>
-							</div><!--/ column-->
-						</div><!--/ Table Style-->
-					</div><!--/ Hosting Table-->	
-      			</div><!-- /span3 -->	
-      			<div class="col-sm-3 col-lg-3">
-      				<div id="hosting-table">
-						<div class="table_style4"> 
-							<div class="column">
-								<ul>
-				                  	<li><strong>Select Your Plan</strong></li>
-									<li class="header_row">
-										<h1>Pro</h1>
-									</li>
-									<li>Disk Space 500 MB <a class="tt" href="#">(?)<span class="tooltip"><span class="triangle-obtuse">Contrary to popular belief. It has roots in a classical Latin</span></span></a></li>
-									<li>Bandwidth Unmetered</li> 
-									<li>Setup Free <a class="tt" href="#">(?)<span class="tooltip"><span class="triangle-obtuse">Do your layouts deserve better than Lorem Ipsum?</span></span></a></li> 
-									<li>5 Free Email Accounts</li>
-				                    <li>5 FTP Accounts <a class="tt" href="#">(?)<span class="tooltip"><span class="triangle-obtuse">Apply as an art than director Do your</span></span></a></li>
-				                    <li>Full Privacy</li>
-									<li class="footer_row"><a href="#" class="hosting-button">Add To Cart</a></li>
-								</ul>
-							</div><!--/ column-->
-						</div><!--/ Table Style-->
-					</div><!--/ Hosting Table-->	
-      			</div><!-- /span3 -->	
-      			<div class="col-sm-3 col-lg-3">
-      				<div id="hosting-table">
-						<div class="table_style4"> 
-							<div class="column">
-								<ul>
-				                  	<li><strong>Select Your Plan</strong></li>
-									<li class="header_row">
-										<h1>Gold</h1>
-									</li>
-									<li>Disk Space 2000 MB <a class="tt" href="#">(?)<span class="tooltip"><span class="triangle-obtuse">Contrary to popular belief. It has roots in a classical Latin</span></span></a></li>
-									<li>Bandwidth Unmetered</li> 
-									<li>Setup Free <a class="tt" href="#">(?)<span class="tooltip"><span class="triangle-obtuse">Do your layouts deserve better than Lorem Ipsum?</span></span></a></li> 
-									<li>25 Free Email Accounts</li>
-				                    <li>5 FTP Accounts <a class="tt" href="#">(?)<span class="tooltip"><span class="triangle-obtuse">Apply as an art than director Do your</span></span></a></li>
-				                    <li>Full Privacy</li>
-									<li class="footer_row"><a href="#" class="hosting-button">Add To Cart</a></li>
-								</ul>
-							</div><!--/ column-->
-						</div><!--/ Table Style-->
-					</div><!--/ Hosting Table-->	
-      			</div><!-- /span3 -->	
-      			<div class="col-sm-3 col-lg-3">
-      				<div id="hosting-table">
-						<div class="table_style4"> 
-							<div class="column">
-								<ul>
-				                  	<li><strong>Select Your Plan</strong></li>
-									<li class="header_row">
-										<h1>Platinum</h1>
-									</li>
-									<li>Disk Space 10000 MB <a class="tt" href="#">(?)<span class="tooltip"><span class="triangle-obtuse">Contrary to popular belief. It has roots in a classical Latin</span></span></a></li>
-									<li>Bandwidth Unmetered</li> 
-									<li>Setup Free <a class="tt" href="#">(?)<span class="tooltip"><span class="triangle-obtuse">Do your layouts deserve better than Lorem Ipsum?</span></span></a></li> 
-									<li>Unlimited Email Accounts</li>
-				                    <li>Unlimited FTP Accounts <a class="tt" href="#">(?)<span class="tooltip"><span class="triangle-obtuse">Apply as an art than director Do your</span></span></a></li>
-				                    <li>Full Privacy</li>
-									<li class="footer_row"><a href="#" class="hosting-button">Add To Cart</a></li>
-								</ul>
-							</div><!--/ column-->
-						</div><!--/ Table Style-->
-					</div><!--/ Hosting Table-->	
-      			</div><!-- /span3 -->	
+<div class="container">
+	<h4><strong>선물 증정 이벤트 Table</strong></h4>
+	<!-- <a href="showAdminTable">
+		<i class="glyphicon glyphicon-refresh"></i>
+	</a><br/><br/> -->
+	
+	<div class="row">
+		<cc:forEach var="random" items="${randomList}">
+			<div class="col-sm-3 col-lg-3">
+				<div id="hosting-table">
+					<div class="table_style4"> 
+						<div class="column">
+							<ul>
+								<li><strong>놀라움을 선물 하세요</strong></li>
+								<li class="header_row"><h1>${random.m_name}</h1></li>
+								<li>${random.w_pname}</li>
+								<li>${random.w_price}</li> 
+								<li>${random.w_detail}</li>
+								<li><img src="${random.w_image}" style="height: 70px; width: 80px;"></li>
+								<li class="footer_row">
+									<!-- <a href="javascript:void(0);" class="hosting-button" onclick="">증정하기</a> -->
+									<a href="#compose-modal" data-toggle="modal" id="compose-button" class="hosting-button" onclick="sendingEmail('${random.m_email}','${random.m_name}','${random.w_pname}')">Compose</a>
+								</li>
+							</ul>
+						</div><!--/ column-->
+					</div><!--/ Table Style-->
+				</div><!--/ Hosting Table-->	
+			</div><!-- /span3 -->
+		</cc:forEach>
+		
+	</div><!-- /row -->
+</div><!-- /container -->
+<br>
 
-      		</div><!-- /row -->
-      	</div><!-- /container -->
-      	<br>
-	<!-- FOOTER -->	
-	<div id="footerwrap">
-      	<footer class="clearfix"></footer>
-      	<div class="container">
-      		<div class="row">
-      			<div class="col-sm-12 col-lg-12">
-      			<p><img src="resources/admin/images/logo.png"" alt=""></p>
-      			<p>Blocks Dashboard Theme - Crafted With Love - Copyright 2013</p>
-      			</div>
+<!-- Footer -->	
+<div id="footerwrap">
+	<footer class="clearfix"></footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 col-lg-12">
+				<p><img src="resources/image/REMINDLOGO.png" alt=""></p>
+				<p>Blocks Dashboard Theme - Crafted With Love - Copyright By Sim 2016</p>
+			</div>
+			</div><!-- /row -->
+	</div><!-- /container -->		
+</div><!-- /footerwrap -->
 
-      		</div><!-- /row -->
-      	</div><!-- /container -->		
-	</div><!-- /footerwrap -->
 
-</body></html>
+<!--Email Modal-->
+<div class="modal fade" id="compose-modal" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Compose</h4>
+			</div>
+			<form action="send" method="post">
+				<div class="modal-body">
+					<div class="form-group">
+						<input type="email" class="form-control" id="compose-to" name="receiver" placeholder="To" required />
+					</div>
+
+					<div class="form-group">
+						<input type="text" class="form-control" id="compose-subject" name="subject" placeholder="Subject" required />
+					</div>
+
+					<div class="form-group">
+						<textarea class="form-control" id="compose-message" name="content" placeholder="Message" rows="10" required></textarea>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" id="send-button" class="btn btn-primary" onclick="send()">Send</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<!--메일전송 확인 모달  -->
+<div class="modal fade" id="mailcheck" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+            
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">×</span><span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">전송 완료</h4>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>
+			</div>
+               
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

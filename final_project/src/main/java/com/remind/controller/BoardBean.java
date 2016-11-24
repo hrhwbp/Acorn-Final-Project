@@ -3,7 +3,7 @@ package com.remind.controller;
 import org.springframework.web.multipart.MultipartFile;
 
 public class BoardBean {
-String b_no, b_mno, b_image, b_content, b_date, b_like, b_mname, r_no, r_bno, r_content, r_date, r_name;
+String b_no, b_mno, b_image, b_content, b_date, b_like, b_mname, r_no, r_bno, r_content, r_date, r_name, boardcnt;
 MultipartFile fileUpload;
 
 public String getB_mno() {
@@ -110,5 +110,12 @@ public void setFileUpload(MultipartFile fileUpload) {
 	this.fileUpload = fileUpload;
 }
 
+public String getBoardcnt() {
+	return boardcnt;
+}
+
+public void setBoardcnt(String boardcnt) {
+	this.boardcnt = boardcnt;
+}
 
 }
