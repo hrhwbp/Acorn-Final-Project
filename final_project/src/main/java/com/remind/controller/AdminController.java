@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.remind.model.AdminDto;
 import com.remind.model.BoardDto;
 import com.remind.model.DaoInter;
 import com.remind.model.Email;
@@ -34,12 +37,27 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="AdminLogin", method = RequestMethod.POST)
-	public ModelAndView AdminLogin(AdminBean bean){                                 
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("adminlogin", daoInter.AdminLogin(bean));		
-		return modelAndView;
+	@ResponseBody
+	public String AdminLogin(AdminBean bean, HttpSession session){                                 
+		AdminDto dto = daoInter.AdminLogin(bean);
+		String adminlogin = "";
+		if(dto != null){
+			session.setAttribute("adno", dto.getAd_no());
+			adminlogin="success";
+			System.out.println(adminlogin);
+		}else{
+			adminlogin = "fail";
+			System.out.println(adminlogin);
+		}
+		return adminlogin;
 	}
 	
+	//로그아웃
+	@RequestMapping(value="adminLogout", method = RequestMethod.GET)
+	public String logoutConfirm(HttpSession session){		
+		session.removeAttribute("ad_no");		
+		return "redirect:/adminLogin.jsp";
+	}
 	
 	//admin Table 출력
 	@RequestMapping(value="showAdminTable", method = RequestMethod.GET)

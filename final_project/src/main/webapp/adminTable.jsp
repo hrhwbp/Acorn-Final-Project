@@ -10,7 +10,7 @@
 
 <!-- Le styles -->
 <link rel="stylesheet" type="text/css" href="resources/admin/bootstrap/css/bootstrap.min.css" />
-
+<link rel="stylesheet" type="text/css" href="resources/admin/css/adminTable.css" />
 <!-- DATA TABLE CSS -->
 <link href="resources/admin/css/table.css" rel="stylesheet">
 
@@ -18,6 +18,7 @@
 <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>    
 <script type="text/javascript" src="resources/admin/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="resources/admin/js/admin.js"></script>
+<script type="text/javascript" src="resources/admin/js/jqueryadminTable.js"></script>
 
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
@@ -33,6 +34,7 @@
 body {
 	padding-top: 60px;
 }
+
 </style>
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function () {
@@ -120,6 +122,17 @@ function sendingEmail(m_email, m_name, w_pname){
 	$("#compose-message").val("<" + m_name + "> 님이 선물 받기를 희망하시는 <" + w_pname + "> 는 2주 안에 주문될 예정이므로 관리자에 의하여 상품이 Lock됩니다. 앞으로도 많은 상품을 WishList을 올려서 공짜로 받아야지... 응?... 안그래?")
 }
 
+
+$(document).ready(function() {
+    $('#example').dataTable( {
+        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>"
+    } );
+} );
+
+$.extend( $.fn.dataTableExt.oStdClasses, {
+    "sWrapper": "dataTables_wrapper form-inline"
+} );
+
 </script>
 </head>
 <body>
@@ -137,17 +150,14 @@ function sendingEmail(m_email, m_name, w_pname){
 		</div> 
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="index.html"><i class="icon-home icon-white"></i> Home</a></li>              
+				<li><a href="admin.jsp"><i class="icon-home icon-white"></i> Home</a></li>              
 				<li class="active"><a href="showAdminTable"><i class="icon-th icon-white"></i> Tables</a></li>
-				<%-- <cc:choose> --%>
-					<%-- <cc:when test="<%=session.getAttribute("ad_no") == null%>">
-						<li><a href="loginPage"><i class="icon-lock icon-white"></i> Login</a></li>
-					</cc:when>
-					<cc:when test="<%=session.getAttribute("ad_no") != null%>">
-						<li><a href="loginPage"><i class="icon-lock icon-white"></i> Logout</a></li>
-					</cc:when> --%>
-				<%-- </cc:choose> --%>
-				<li><a href="user.html"><i class="icon-user icon-white"></i> User</a></li>
+				<%if (session.getAttribute("adno") != ""){ %>
+					<li><a href="adminLogout"><i class="icon-lock icon-white"></i> Logout</a></li>
+				<%}else{%>
+					<li><a href=adminLogin.jsp><i class="icon-lock icon-white"></i> Login</a></li>
+				<%} %>	
+				<li><a href="index.jsp"><i class="icon-user icon-white"></i> User</a></li>
 			</ul>
 		</div><!--/.nav-collapse -->
 	</div>
@@ -159,7 +169,7 @@ function sendingEmail(m_email, m_name, w_pname){
 		<div class="col-sm-12 col-lg-12">
 		
 			<!-- 첫번째 Table -->
-			<h4><strong>User Table</strong></h4>
+			<%-- <h4><strong>User Table</strong></h4>
 				<table class="display">
 					<thead>
 						<tr>
@@ -189,14 +199,63 @@ function sendingEmail(m_email, m_name, w_pname){
 										</cc:when>
 									</cc:choose>
 									<td>${Member.m_password}</td>
+									<%if (session.getAttribute("adno") != ""){ %>
 									<td><button type="submit">강퇴</button></td>
+									<%}%>
 								</tr>
 							</form>
 						</cc:forEach>
 					</tbody>
 					
-				</table><!--/END 첫번째 Table-->
-				<br>
+				</table>
+				<br> --%>
+			<!--/END 첫번째 Table-->
+			
+			<h4><strong>Member Table</strong></h4>
+			<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
+					<thead>
+						<tr>
+							<th style="display:none;"></th>
+							<th>사용자 번호</th>
+							<th>성명</th>
+							<th>E-mail</th>
+							<th>성별</th>
+							<th>비밀번호</th>
+							<th style="width: 60px">강퇴</th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<cc:forEach var="Member" items="${showMem}">
+							<form action="adminmemberout">
+								<input type="hidden" name="m_no" value="${Member.m_no}">
+									<tr class="odd gradeC">
+									<td style="display:none;"></td>
+									<td>${Member.m_no }</td>
+									<td>${Member.m_name}</td>
+									<td>${Member.m_email}</td>
+									<cc:choose>
+										<cc:when test="${Member.m_gender == 1}">
+											<td>남</td>
+										</cc:when>
+										<cc:when test="${Member.m_gender == 2}">
+											<td>여</td>
+										</cc:when>
+									</cc:choose>
+									<td>${Member.m_password}</td>
+									<td>
+									<%if (session.getAttribute("adno") != ""){ %>
+									<button type="submit" class="btn btn-default" style="width:100%">강퇴</button>
+									<%}%>
+									</td>
+								</tr>
+							</form>
+						</cc:forEach>
+					</tbody>
+					
+				</table>
+			
+			
 			
 			<!--두번째 Table -->
 			<h4><strong>Board Table</strong></h4>

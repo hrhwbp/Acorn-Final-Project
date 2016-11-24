@@ -200,7 +200,7 @@ public interface AnnoInter {
    
    //Admin Table Page
    @Select("select ad_name, ad_password from admin where ad_name=#{ad_name} and ad_password=#{ad_password}")
-   boolean AdminLogin(AdminBean bean);
+   AdminDto AdminLogin(AdminBean bean);
    
    @Select("select * from member")
    List<MemberDto> showMemberA();

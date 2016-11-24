@@ -366,14 +366,18 @@ function articleUpdate(name, url){
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.html"><img src="resources/admin/images/logo30.png" alt=""> BLOCKS Dashboard</a>
+				<a class="navbar-brand" href="index.html"><img src="resources/admin/images/logo30.png" alt=""> RE:MIND</a>
 			</div> 
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="MainAdmin"><i class="icon-home icon-white"></i> Home</a></li>                            
 					<li><a href="showAdminTable"><i class="icon-th icon-white"></i> Tables</a></li>
-					<li><a href="showadminTable"><i class="icon-lock icon-white"></i> Login</a></li>
-					<li><a href="user.html"><i class="icon-user icon-white"></i> User</a></li>
+					<%if(session.getAttribute("adno") != ""){ %>
+						<li><a href="adminLogout"><i class="icon-lock icon-white"></i> Logout</a></li>
+					<%}else{%>
+						<li><a href="adminLogin.jsp"><i class="icon-lock icon-white"></i> Login</a></li>
+					<%} %>
+					<li><a href="index.jsp"><i class="icon-user icon-white"></i> User</a></li>
 				</ul>
 			</div><!--/.nav-collapse -->
 		</div>

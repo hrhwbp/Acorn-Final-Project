@@ -61,7 +61,7 @@ $().ready(function() {
 	$("#commentForm").validate();
 
 	// validate signup form on keyup and submit
-	$("#signupForm")
+	/* $("#signupForm")
 	.validate({
 		rules : {
 			firstname : "required",
@@ -108,7 +108,7 @@ $().ready(function() {
 				email : "Please enter a valid email address",
 				agree : "Please accept our policy"
 				}
-	});
+	}); */
 
 	// propose username by combining first- and lastname
 	$("#username").focus(function() {
@@ -132,6 +132,45 @@ $().ready(function() {
 	});
 	
 });
+
+function Adminsubmit(){
+    $.ajax({
+         type:"post",
+         url:"AdminLogin",
+         data:$("#signupForm").serialize(),
+         dataType:"text",
+         success:function(adminlogin){
+             if(adminlogin =="fail"){
+            	 alert("로그인 실패")
+              /*  jQuery("#loginresult").html(
+            		   '<div class="modal fade" id="mailcheck" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
+            			'<div class="modal-dialog">' +
+            				'<div class="modal-content">' +
+            					'<div class="modal-header">' +
+            						'<button type="button" class="close" data-dismiss="modal">' +
+            							'<span aria-hidden="true">×</span><span class="sr-only">Close</span>' +
+            						'</button>' +
+            						'<h4 class="modal-title" id="myModalLabel">아이디 또는 비밀번호가 틀렸습니다.</h4>'+
+            					'</div>' +
+            					'<div class="modal-footer">' +
+            						'<button type="button" class="btn btn-primary" data-dismiss="modal">확인</button>' +
+            					'</div>' +
+            				'</div>' +
+            			'</div>' +
+            		'</div>'
+               ); */
+            }
+            else if(adminlogin == "success"){
+               window.location.href = "MainAdmin"
+            }
+         }
+    });
+}
+
+function adminLogout(){
+	window.location.href = "adminLogout"
+}
+
 </script>
 </head>
 <!--style="background-image:url('resources/admin/images/bg.jpg') no-repeat center center; height: 700px;"  -->
@@ -147,22 +186,13 @@ $().ready(function() {
 					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="index.html">
-					<img src="resources/admin/images/logo30.png" alt=""> BLOCKS Dashboard
+					<img src="resources/admin/images/logo30.png" alt=""> RE:MIND
 				</a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li>
-						<a href="index.html"><i class="icon-home icon-white"></i>Home</a>
-					</li>
-					<li>
-						<a href="showAdminTable"><i class="icon-th icon-white"></i>Tables</a>
-					</li>
-					<li class="active">
-						<a href="loginPage"><i class="icon-lock icon-white"></i> Login</a>
-					</li>
-					<li>
-						<a href="user.html"><i class="icon-user icon-white"></i>User</a>
+						<a href="index.jsp"><i class="icon-user icon-white"></i>User</a>
 					</li>
 				</ul>
 			</div><!--/.nav-collapse -->
@@ -174,16 +204,23 @@ $().ready(function() {
 			<div class="col-lg-offset-4 col-lg-4" style="margin-top: 100px">
 				<div class="block-unit"
 					style="text-align: center; padding: 8px 8px 8px 8px;">
-					<img src="resources/admin/images/face80x80.jpg" alt="" class="img-circle"> <br> <br>
-					<form class="cmxform" id="signupForm" method="post" action="AdminLogin">
+					<img src="resources/admin/images/face80x80.jpg" alt="" class="img-circle"><br><br>
+					<%if (session.getAttribute("adno") == null){ %>
+					<form class="cmxform" id="signupForm">
 						<fieldset>
 							<p>
 								<input id="ad_name" name="ad_name" type="text" placeholder="Adminname"> 
 								<input id="ad_password" name="ad_password" type="password" placeholder="Password">
 							</p>
-							<input class="submit btn-success btn btn-large" type="submit" value="Login">
+							<input class="submit btn-success btn btn-large" onclick="Adminsubmit()" value="Login">
 						</fieldset>
 					</form>
+					<%}else{%>
+						<fieldset>
+							
+							<input class="submit btn-success btn btn-large" onclick="adminLogout()" value="Logout">
+						</fieldset>
+					<%} %>
 				</div>
 			</div>
 		</div>

@@ -1,7 +1,15 @@
 package com.remind.controller;
 
 public class AdminBean {
-	private String ad_name, ad_password;
+	private String ad_no, ad_name, ad_password;
+	
+	public String getAd_no() {
+		return ad_no;
+	}
+
+	public void setAd_no(String ad_no) {
+		this.ad_no = ad_no;
+	}
 
 	public String getAd_name() {
 		return ad_name;

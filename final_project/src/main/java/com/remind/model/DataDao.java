@@ -476,14 +476,9 @@ public class DataDao implements DaoInter {
 	
 	//Admin
 	@Override
-	public boolean AdminLogin(AdminBean bean) throws DataAccessException {
-		try {
-			annoInter.AdminLogin(bean);
-			return true;
-		} catch (Exception e) {
-			System.out.println("AdminLogin Error : " + e);	
-			return false;
-		}
+	public AdminDto AdminLogin(AdminBean bean) throws DataAccessException {
+
+		return annoInter.AdminLogin(bean);
 	}
 	
 	@Override

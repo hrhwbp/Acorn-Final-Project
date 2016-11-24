@@ -88,7 +88,7 @@ public interface DaoInter {
 	boolean updateAnniversary(AnniversaryBean bean) throws DataAccessException;
 
 	//Admin
-	boolean AdminLogin(AdminBean bean) throws DataAccessException;
+	AdminDto AdminLogin(AdminBean bean) throws DataAccessException;
 
 	List<MemberDto> showMemberA() throws DataAccessException;
 	List<BoardDto> showBoardA() throws DataAccessException;
