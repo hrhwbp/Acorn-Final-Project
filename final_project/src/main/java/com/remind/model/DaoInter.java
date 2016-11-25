@@ -101,4 +101,7 @@ public interface DaoInter {
 	
 	ParserDto articleAdmin() throws DataAccessException;
 	
+	AdminDto showAdmin(String ad_no) throws DataAccessException;
+	boolean AdminUpdate(AdminBean bean) throws DataAccessException;
+	//ParserDto stockStatus() throws DataAccessException;
 }

@@ -42,6 +42,7 @@ public class AdminController {
 		AdminDto dto = daoInter.AdminLogin(bean);
 		String adminlogin = "";
 		if(dto != null){
+			System.out.println(dto.getAd_no() + " 세션좀 확인하자");
 			session.setAttribute("adno", dto.getAd_no());
 			adminlogin="success";
 			System.out.println(adminlogin);
@@ -55,7 +56,7 @@ public class AdminController {
 	//로그아웃
 	@RequestMapping(value="adminLogout", method = RequestMethod.GET)
 	public String logoutConfirm(HttpSession session){		
-		session.removeAttribute("ad_no");		
+		session.removeAttribute("adno");		
 		return "redirect:/adminLogin.jsp";
 	}
 	
@@ -156,7 +157,7 @@ public class AdminController {
 				w += 1;
 			}
 		}
-		//System.out.println(m + " : 남자" + w + " : 여자. 성별 확인");
+		
 		modelAndView.addObject("woman", w);
 		modelAndView.addObject("man", m);
 		modelAndView.addObject("showMem");
@@ -164,29 +165,65 @@ public class AdminController {
 		modelAndView.addObject("memcnt", daoInter.memberCnt());
 		modelAndView.addObject("boardcnt", daoInter.boardCnt());
 		
-		//System.out.println(daoInter.articleAdmin().getName() + " 확인@" + daoInter.articleAdmin().getUrl());
 		String name = daoInter.articleAdmin().getName().replaceAll("'", "");
-		System.out.println(name + " 기사 확인");
 		modelAndView.addObject("articleName", name);
 		modelAndView.addObject("articleUrl", daoInter.articleAdmin().getUrl());
+		/*String stock = daoInter.stockStatus().getName().replaceAll(",", "");
+		System.out.println(stock + " 주가확인~~~");
+		modelAndView.addObject("stock", stock);*/
 		
 		modelAndView.setViewName("../../admin");
-		//System.out.println(daoInter.wishlistCnt() + " " + daoInter.memberCnt() + " " + daoInter.boardCnt() + " 확인");
 		return modelAndView;
 	}
 	
-	
-	
-	/*@RequestMapping(value="article")
-	public ModelAndView articleAdmin(){
-		//System.out.println(bean.getUrl() + " @@@@@");
-		ModelAndView modelAndView = new ModelAndView();
-		System.out.println(daoInter.articleAdmin().getName() + " 확인@" + daoInter.articleAdmin().getUrl());
-		modelAndView.addObject("articleName", daoInter.articleAdmin().getName());
-		modelAndView.addObject("articleUrl", daoInter.articleAdmin().getUrl());
-		modelAndView.setViewName("../../admin");
-		return modelAndView;
-	}*/
+	@RequestMapping(value="updateAdmin", method = RequestMethod.POST)
+	public ModelAndView AdminUpdate(AdminBean bean){
+		//System.out.println(bean.getAd_name() + " 확인 " + bean.getAd_password() + " 세션확인" + bean.getAd_no());
+		
+		boolean b = daoInter.AdminUpdate(bean);
+		if(b){
+			ModelAndView modelAndView = new ModelAndView();
+			
+			List boardlist = new ArrayList();
+			List<MemberDto> list = daoInter.showMemberA();
+			for(MemberDto s:list){
+			    boardlist.add(s.getM_gender());
+			}
+			
+			int m = 0,w = 0;
+			for (int i = 0; i < boardlist.size(); i++) {
+				if(Integer.parseInt((String)boardlist.get(i)) == 1){
+					m += 1;
+				}else{
+					w += 1;
+				}
+			}
+			
+			modelAndView.addObject("woman", w);
+			modelAndView.addObject("man", m);
+			modelAndView.addObject("showMem");
+			modelAndView.addObject("wishcnt",daoInter.wishlistCnt()); 
+			modelAndView.addObject("memcnt", daoInter.memberCnt());
+			modelAndView.addObject("boardcnt", daoInter.boardCnt());
+			
+			String name = daoInter.articleAdmin().getName().replaceAll("'", "");
+			modelAndView.addObject("articleName", name);
+			modelAndView.addObject("articleUrl", daoInter.articleAdmin().getUrl());
+			modelAndView.addObject("updateCheck", 1);
+			modelAndView.setViewName("../../admin");
+			
+			return modelAndView;
+		}else{
+			return null;
+		}
+	}
 
+	@RequestMapping(value="selectAdmin", method = RequestMethod.POST)
+	@ResponseBody
+	public AdminDto showAdmin(@RequestParam("ad_no") String ad_no){
+		AdminDto dto = daoInter.showAdmin(ad_no);
+		//System.out.println(dto.getAd_name() + " 확인 모달 " + dto.getAd_password());
+		return dto;
+	}
 	
 }

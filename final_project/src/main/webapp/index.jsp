@@ -58,7 +58,8 @@
 	                 window.location.href = "snslist"
 	              }
 	           }
-	      });}
+	      });
+	}
 </script>
 
 </head>

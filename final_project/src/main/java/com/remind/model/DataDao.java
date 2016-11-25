@@ -536,7 +536,7 @@ public class DataDao implements DaoInter {
 	         Element Url = null;
 	         
 	         if(article.size() > 0){
-	             System.out.println(article.get(0).text() + "~~~!~!~!");
+	             //System.out.println(article.get(0).text() + "~~~!~!~!");
 	        	 articletitle = article.get(0);
 	        	 dto.setName(articletitle.text());
 	          }
@@ -544,7 +544,7 @@ public class DataDao implements DaoInter {
 	         if(articleUrl.size() > 0){
 	             //System.out.println(articleUrl.get(0).text() + "~~~!~!~!");
 	        	 Url = article.first();
-	        	 System.out.println(Url.attr("abs:href") + "기사 URL 확인");
+	        	 //System.out.println(Url.attr("abs:href") + "기사 URL 확인");
 	        	 
 	        	 dto.setUrl(Url.attr("abs:href"));
 	          }
@@ -554,6 +554,39 @@ public class DataDao implements DaoInter {
 		}
 		return dto;
 	}
+	
+	@Override
+	public boolean AdminUpdate(AdminBean bean) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return annoInter.AdminUpdate(bean);
+	}
+	
+	@Override
+	public AdminDto showAdmin(String ad_no) throws DataAccessException {
+		// TODO Auto-generated method stub
+		return annoInter.showAdmin(ad_no);
+	}
+	
+	/*@Override
+	public ParserDto stockStatus() throws DataAccessException{
+		ParserDto dto = new ParserDto();
+		try {
+	         Document doc = Jsoup.connect("http://finance.daum.net/item/company.daum?code=036800&type=11").get();
+	         Elements stockprice = doc.select("[class*=stockMyList1] [class*=cost]");
+	        
+	         Element stockcost = null;
+	        
+	         if(stockprice.size() > 0){
+	             System.out.println(stockprice.get(0).text() + "넘어와라 좀~~~!");
+	             stockcost = stockprice.get(0);
+	        	 dto.setName(stockcost.text());
+	          }
+	         
+		}catch (Exception e) {
+			System.out.println("stockStatus : Error " + e);
+		}
+		return dto;
+	}*/
 	
 	
 }

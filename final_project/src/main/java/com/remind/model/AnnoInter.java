@@ -199,8 +199,7 @@ public interface AnnoInter {
    
    
    //Admin Table Page
-   @Select("select ad_name, ad_password from admin where ad_name=#{ad_name} and ad_password=#{ad_password}")
-   AdminDto AdminLogin(AdminBean bean);
+   
    
    @Select("select * from member")
    List<MemberDto> showMemberA();
@@ -224,8 +223,16 @@ public interface AnnoInter {
    @Select("select count(*) boardcnt from board")
    String boardCnt();
    
+   @Select("select ad_no from admin where ad_name=#{ad_name} and ad_password=#{ad_password}")
+   AdminDto AdminLogin(AdminBean bean);
    
+   @Select("select * from admin where ad_no = #{ad_no}")
+   AdminDto showAdmin(String ad_no);
    
+   @Update("update admin set ad_name=#{ad_name}, ad_password= #{ad_password} where ad_no= #{ad_no}")
+   boolean AdminUpdate(AdminBean bean);
+   
+  
    
    
    

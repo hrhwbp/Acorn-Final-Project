@@ -216,12 +216,21 @@ function stockChart(name, url){
 		return Math.floor((Math.random() * max) + min);
 	}
 	
+	
+	
 	var chart,
 		categories = ['Categorie 1', 'Categorie 2', 'Categorie 3', 'Categorie 4', 'Categorie 5','Categorie 6', 'Categorie 7', 'Categorie 8', 'Categorie 9', 'Categorie 10', 'Categorie 11', 'Categorie 12', 'Categorie 13', 'Categorie 14', 'Categorie 15', 'Categorie 16', 'Categorie 17', 'Categorie 18', 'Categorie 19','Categorie 20', 'Categorie 21','Categorie 22', 'Categorie 23', 'Categorie 24', 'Categorie 25', 'Categorie 26', 'Categorie 27', 'Categorie 28', 'Categorie 29', 'Categorie 30'],
 		serie1 = [13, 13, 46, 61, 23, 12, 24, 16, 14, 12, 12, 24, 19, 13, 11, 11, 14, 11, 11, 11, 11, 13, 22, 10, 18, 15, 24, 31, 19, 10],
 		serie2 = [52, 41, 58, 63, 55, 46, 45, 41, 38, 54, 50, 39, 48, 70, 63, 60, 58, 63, 83, 89, 83, 79, 83, 100, 104, 108, 52, 46, 83, 89],
 		$aapls;
-  	
+	//categories=[], serie1 = [], serie2 = [],
+	/* var i = 0;
+	setInterval(function(){
+		categories += 'Categorie '+ i; 
+		serie1 += stock; 
+		
+	}, 6000); */
+	
 	$(document).ready(function() {
 		chart = new Highcharts.Chart({
 			chart: {
@@ -291,6 +300,9 @@ function stockChart(name, url){
 			chart.series[0].addPoint(generateNumber(), true, true);
 			chart.series[1].addPoint(generateNumber(50, 150), true, true);
 			new stockStatus(serie1[0]);
+			
+			/* new stockStatus2(stock);
+			alert(stock + "되라"); */
 		}, 1000);
 		
 		setInterval(function() {
@@ -309,10 +321,38 @@ function stockChart(name, url){
 	});
 }
 
+/* var prenum = 0;
+function stockStatus2(stock){
+	alert(stock);
+	if(prenum < stock){
+		var dif = stock-prenum;
+		var stat = defprice + stock;
+		//alert(stat);
+		$("div #stockstatus").html(
+			'<p><img src="resources/admin/images/up.png" alt="" style="width: 40px; height: 40px;"><bold>Up</bold> | ' + dif + '.</p>'		
+		);
+		$("div #totcost").html(
+				'<i class="graph-arrow"></i><span class="graph-info-big" id="totcost">'+ stat +'원</span>'	
+		);
+		
+	}else if(prenum > stock){
+		var dif = prenum-stock;
+		var stat = defprice + stock;
+		
+		$("div #stockstatus").html(
+			'<p><img src="resources/admin/images/down.png" alt="" style="width: 40px; height: 40px;"><bold>Up</bold> | ' + dif + '.</p>'		
+		);
+		$("div #totcost").html(
+			'<i class="graph-arrow"></i><span class="graph-info-big" id="totcost">'+ stat +'원</span>'	
+		);
+	}
+	prenum=stock;	
+} */
+
 
 //***주식 현황
 var prenum = 0;
-var defprice = 1200;
+var defprice = 35030;
 function stockStatus(num){
 	
 	if(prenum < num){
@@ -325,24 +365,17 @@ function stockStatus(num){
 		$("div #totcost").html(
 				'<i class="graph-arrow"></i><span class="graph-info-big" id="totcost">'+ stat +'원</span>'	
 		);
-		
-		//$("span #difcost").val(dif);
-		//alert("up");
-		
+
 	}else if(prenum > num){
 		var dif = prenum-num;
 		var stat = defprice + num;
-		//alert(stat);
+		
 		$("div #stockstatus").html(
 			'<p><img src="resources/admin/images/down.png" alt="" style="width: 40px; height: 40px;"><bold>Up</bold> | ' + dif + '.</p>'		
 		);
 		$("div #totcost").html(
 			'<i class="graph-arrow"></i><span class="graph-info-big" id="totcost">'+ stat +'원</span>'	
 		);
-		
-		//$("span #difcost").val(dif);
-		/* <span class="graph-info-small" id="difcost"></span> */
-		//alert("down");
 	}
 	prenum=num;	
 }
@@ -350,13 +383,50 @@ function stockStatus(num){
 //Article Update
 function articleUpdate(name, url){
 	//alert(name + " 검사 " + url)
-	$("#url2").html("<a href='" + url + "'>" + name + "</a>");
+	$("#url2").html("<a target='blank' href='" + url + "'>" + name + "</a>");
 }
+
+//Admin Update
+function adminUpdate(adno){
+	$.ajax({
+		type:"post",
+		url:"selectAdmin",
+		data: {"ad_no":adno},
+		dataType: "json",
+		success: function(dto){
+			alert(dto.ad_Name + " " + dto.ad_password);
+			
+			$("#AdminName").val(dto.ad_name);
+			$("#AdminPasswd").val(dto.ad_password);	
+			
+			$("#updateModal").modal();
+		},
+		error: function(){
+			
+			alert("에러 발생");
+		}
+	});
+	
+}
+
+function updateSubmit(){
+	document.wishGroupForm.action = "updateAdmin";
+    document.wishGroupForm.method = "post";
+    document.wishGroupForm.submit();
+}
+
+
 
 </script>    
 </head>
 <body onload="printClock(), chart1(${man},${woman}), chart2(), stockChart('${articleName}','${articleUrl}')">
-	
+	<c:if test="${updateCheck == 1}">
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#updateConfirm").modal();
+		});
+	</script>
+	</c:if>
   	<!-- NAVIGATION MENU -->
 	<div class="navbar-nav navbar-inverse navbar-fixed-top">
 		<div class="container">
@@ -370,12 +440,18 @@ function articleUpdate(name, url){
 			</div> 
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="MainAdmin"><i class="icon-home icon-white"></i> Home</a></li>                            
-					<li><a href="showAdminTable"><i class="icon-th icon-white"></i> Tables</a></li>
-					<%if(session.getAttribute("adno") != ""){ %>
+					<!-- <li class="active"><a href="MainAdmin"><i class="icon-home icon-white"></i> Home</a></li>                            
+					<li><a href="showAdminTable"><i class="icon-th icon-white"></i> Tables</a></li> -->
+					<%if(session.getAttribute("adno") != "" || session.getAttribute("adno") != null){ %>
+						<li class="active"><a href="MainAdmin"><i class="icon-home icon-white"></i> Home</a></li>                            
+						<li><a href="showAdminTable"><i class="icon-th icon-white"></i> Tables</a></li>
 						<li><a href="adminLogout"><i class="icon-lock icon-white"></i> Logout</a></li>
+						<li><a href="index.jsp"><i class="icon-user icon-white"></i> User</a></li>
 					<%}else{%>
+						<li class="adminLogin.jsp"><a href="MainAdmin"><i class="icon-home icon-white"></i> Home</a></li>                            
+						<li><a href="adminLogin.jsp"><i class="icon-th icon-white"></i> Tables</a></li>
 						<li><a href="adminLogin.jsp"><i class="icon-lock icon-white"></i> Login</a></li>
+						<li><a href="adminLogin.jsp"><i class="icon-user icon-white"></i> User</a></li>
 					<%} %>
 					<li><a href="index.jsp"><i class="icon-user icon-white"></i> User</a></li>
 				</ul>
@@ -392,13 +468,12 @@ function articleUpdate(name, url){
 					<div class="thumbnail">
 						<img src="resources/admin/images/face80x80.jpg" alt="Marcel Newman" class="img-circle">
 					</div><!-- /thumbnail -->
-					<h1>Create by Sim </h1>
+					<h1>Create by Sim <%=session.getAttribute("adno")%></h1>
 					<h3>Seoul, Korea</h3><br>
 					<div class="info-user">
 						<span aria-hidden="true" class="li_user fs1"></span>
-						<span aria-hidden="true" class="li_settings fs1"></span>
-						<span aria-hidden="true" class="li_mail fs1"></span>
-						<span aria-hidden="true" class="li_key fs1"></span>
+						<a href="javascript:void(0)" onclick="adminUpdate('<%=session.getAttribute("adno")%>')"><span aria-hidden="true" class="li_settings fs1"></span></a>
+						<a target="blank" href="https://accounts.google.com/ServiceLogin?service=mail&passive=true&rm=false&continue=https://mail.google.com/mail/?tab%3Dwm&scc=1&ltmpl=default&ltmplcache=2&emr=1&osid=1#identifier"><span aria-hidden="true" class="li_mail fs1"></span></a>
 					</div>
 				</div>
 			</div>
@@ -513,40 +588,11 @@ function articleUpdate(name, url){
 			</div>  
         
 		</div><!-- /row -->
-     
- 
-	    
-		<!-- <div class="row">
-			<div class="col-sm-3 col-lg-3">
-				<div class="half-unit">
-					<dtitle>이벤트 List</dtitle><hr>
-					<div class="cont">
-						<p><bold>13</bold> | Pending Tasks</p>
-					</div>
-					<div class="progress">
-						<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:20%;">
-							<span class="sr-only">60% Complete</span>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-sm-3 col-lg-3">
-				<div class="half-unit">
-					<dtitle>Total Subscribers</dtitle><hr>
-					<div class="cont">
-						<p><bold>14.744</bold></p>
-						<p>98 Subscribed Today</p>
-					</div>
-				</div>
-			</div>
-     	</div>  -->
-   
-		
-     
-      
       
 	</div> <!-- /container -->
+	
+	
+	
 	
 	<div id="footerwrap">
       	<footer class="clearfix"></footer>
@@ -560,5 +606,57 @@ function articleUpdate(name, url){
       		</div><!-- /row -->
       	</div><!-- /container -->		
 	</div><!-- /footerwrap -->
-          
+       
+     <!--Admin 수정모달 팝업 BEGINNING-->
+   <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+               <h4 class="modal-title" id="updateModalLabel">수정</h4>
+            </div>
+            <div class="modal-body">
+               <form name="wishGroupForm">
+                  <div class="form-group6">
+                     <label class="form-control-label">Admin Name:</label> 
+                     <input type="hidden" id="AdminNo" name="ad_no" value="<%=session.getAttribute("adno")%>">
+                     <input type="text" class="form-control" id="AdminName" name="ad_name">
+                  </div>
+                  <div class="form-group7">
+                     <label class="form-control-label">Admin Password:</label> 
+                     <input type="text" class="form-control" id="AdminPasswd" name="ad_password">
+                  </div>
+                  <div class="modal-footer">
+                     <button onclick="updateSubmit()" class="btn btn-primary" id="updateconfirm">Confirm</button>
+                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- Admin 수정모달 팝업 END-->  
+       
+   <div class="modal fade" id="updateConfirm" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+               <h4 class="modal-title" id="updateModalLabel">수정 완료</h4>
+            </div>
+            
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">확인</button>
+			</div>
+         </div>
+      </div>
+   </div>    
+       
+       
+       
+   
 </body></html>
